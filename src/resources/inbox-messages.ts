@@ -3,6 +3,7 @@
 import { APIResource } from '../core/resource';
 import * as InboxConversationsAPI from './inbox-conversations';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -24,8 +25,70 @@ export class InboxMessages extends APIResource {
   list(
     query: InboxMessageListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<InboxMessageListResponse> {
-    return this._client.get('/inbox_messages', { query, ...options });
+  ): PagePromise<EmailMessagesCursorPage, EmailMessage> {
+    return this._client.getAPIList('/inbox_messages', CursorPage<EmailMessage>, { query, ...options });
+  }
+}
+
+export type EmailMessagesCursorPage = CursorPage<EmailMessage>;
+
+/**
+ * The Address object represents a recipient or sender of a message. It contains an
+ * email address and can be linked to a person and an organization in your
+ * collections.
+ */
+export interface Address {
+  /**
+   * Unique identifier for the object.
+   */
+  id: string;
+
+  /**
+   * The email address.
+   */
+  email: string;
+
+  /**
+   * A hash of related links.
+   */
+  links: Address.Links;
+
+  /**
+   * String representing the object’s type. Always `address` for this object.
+   */
+  type: 'address';
+
+  /**
+   * Time at which the object was created, as an RFC 3339 timestamp.
+   */
+  created_at?: string;
+
+  /**
+   * The role of the address in the message. Can be `from`, `reply_to`, `to`, `cc`,
+   * or `bcc`.
+   */
+  role?: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc';
+
+  /**
+   * Time at which the object was last updated, as an RFC 3339 timestamp.
+   */
+  updated_at?: string;
+}
+
+export namespace Address {
+  /**
+   * A hash of related links.
+   */
+  export interface Links {
+    /**
+     * A link to the associated `Organization` item.
+     */
+    organization?: string;
+
+    /**
+     * A link to the associated `Person` item.
+     */
+    person?: string;
   }
 }
 
@@ -58,7 +121,7 @@ export interface EmailMessage {
   /**
    * A list of `Address` objects associated with the message (sender and recipients).
    */
-  addresses?: Array<InboxConversationsAPI.Address>;
+  addresses?: Array<Address>;
 
   /**
    * A list of `Attachment` objects on the message.
@@ -199,70 +262,6 @@ export namespace EmailMessage {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface InboxMessageListResponse {
-  /**
-   * An array of EmailMessage items.
-   */
-  data: Array<EmailMessage>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: InboxMessageListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: InboxMessageListResponse.Meta;
-}
-
-export namespace InboxMessageListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
 export interface InboxMessageRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid options are
@@ -271,14 +270,7 @@ export interface InboxMessageRetrieveParams {
   include?: Array<'addresses' | 'attachments' | 'conversation'>;
 }
 
-export interface InboxMessageListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface InboxMessageListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -311,8 +303,9 @@ export interface InboxMessageListParams {
 
 export declare namespace InboxMessages {
   export {
+    type Address as Address,
     type EmailMessage as EmailMessage,
-    type InboxMessageListResponse as InboxMessageListResponse,
+    type EmailMessagesCursorPage as EmailMessagesCursorPage,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
     type InboxMessageListParams as InboxMessageListParams,
   };

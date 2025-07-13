@@ -1,9 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as CollectionsAPI from './collections';
 import * as ItemsAPI from './items';
+import { ItemsCursorPage } from './items';
+import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -26,8 +28,11 @@ export class Views extends APIResource {
     id: string,
     query: ViewListItemsParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ViewListItemsResponse> {
-    return this._client.get(path`/views/${id}/items`, { query, ...options });
+  ): PagePromise<ItemsCursorPage, ItemsAPI.Item> {
+    return this._client.getAPIList(path`/views/${id}/items`, CursorPage<ItemsAPI.Item>, {
+      query,
+      ...options,
+    });
   }
 }
 
@@ -83,70 +88,6 @@ export namespace View {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface ViewListItemsResponse {
-  /**
-   * An array of Item items.
-   */
-  data: Array<ItemsAPI.Item>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: ViewListItemsResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: ViewListItemsResponse.Meta;
-}
-
-export namespace ViewListItemsResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
 export interface ViewRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid option is
@@ -155,14 +96,7 @@ export interface ViewRetrieveParams {
   include?: Array<'collection'>;
 }
 
-export interface ViewListItemsParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface ViewListItemsParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -180,8 +114,9 @@ export interface ViewListItemsParams {
 export declare namespace Views {
   export {
     type View as View,
-    type ViewListItemsResponse as ViewListItemsResponse,
     type ViewRetrieveParams as ViewRetrieveParams,
     type ViewListItemsParams as ViewListItemsParams,
   };
 }
+
+export { type ItemsCursorPage };

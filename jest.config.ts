@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^moonbase-sdk$': '<rootDir>/src/index.ts',
-    '^moonbase-sdk/(.*)$': '<rootDir>/src/$1',
+    '^@moonbase/sdk$': '<rootDir>/src/index.ts',
+    '^@moonbase/sdk/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',

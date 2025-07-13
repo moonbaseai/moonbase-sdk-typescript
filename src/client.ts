@@ -14,50 +14,69 @@ import * as Opts from './internal/request-options';
 import * as qs from './internal/qs';
 import { VERSION } from './version';
 import * as Errors from './core/error';
+import * as Pagination from './core/pagination';
+import { AbstractPage, type CursorPageParams, CursorPageResponse } from './core/pagination';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Activities, Activity, ActivityListParams, ActivityListResponse } from './resources/activities';
-import { Call, CallLogParams, Calls } from './resources/calls';
+import { Activities, ActivitiesCursorPage, Activity, ActivityListParams } from './resources/activities';
+import { Call, CallCreateParams, Calls } from './resources/calls';
+import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
+import { Form, FormListParams, FormRetrieveParams, Forms, FormsCursorPage } from './resources/forms';
 import {
-  Collection,
-  CollectionListParams,
-  CollectionListResponse,
-  CollectionRetrieveFieldParams,
-  CollectionRetrieveFieldResponse,
-  CollectionRetrieveParams,
-  Collections,
-} from './resources/collections';
-import { File, FileListParams, FileListResponse, Files } from './resources/files';
-import { Form, FormListParams, FormListResponse, FormRetrieveParams, Forms } from './resources/forms';
-import {
-  Address,
   InboxConversation,
   InboxConversationListParams,
-  InboxConversationListResponse,
   InboxConversationRetrieveParams,
   InboxConversations,
-  Tag,
+  InboxConversationsCursorPage,
 } from './resources/inbox-conversations';
 import {
+  Address,
   EmailMessage,
+  EmailMessagesCursorPage,
   InboxMessageListParams,
-  InboxMessageListResponse,
   InboxMessageRetrieveParams,
   InboxMessages,
 } from './resources/inbox-messages';
-import { Inbox, InboxListParams, InboxListResponse, InboxRetrieveParams, Inboxes } from './resources/inboxes';
-import { Item, ItemCreateParams, ItemUpdateParams, ItemUpsertParams, Items } from './resources/items';
+import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
+import {
+  BooleanValue,
+  Choice,
+  DateValue,
+  DatetimeValue,
+  DomainValue,
+  EmailValue,
+  FieldValue,
+  FloatValue,
+  FunnelStep,
+  GeoValue,
+  IntegerValue,
+  Item,
+  ItemCreateParams,
+  ItemUpdateParams,
+  ItemUpsertParams,
+  Items,
+  MonetaryValue,
+  MultiLineTextValue,
+  PercentageValue,
+  RelationValue,
+  SingleLineTextValue,
+  SocialLinkedInValue,
+  SocialXValue,
+  TelephoneNumber,
+  URLValue,
+  Value,
+} from './resources/items';
 import {
   Attendee,
   Meeting,
   MeetingListParams,
-  MeetingListResponse,
   MeetingRetrieveParams,
   Meetings,
+  MeetingsCursorPage,
   Organizer,
 } from './resources/meetings';
-import { Note, NoteListParams, NoteListResponse, Notes } from './resources/notes';
+import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
 import {
   ProgramMessageSendParams,
   ProgramMessageSendResponse,
@@ -66,26 +85,29 @@ import {
 import {
   ProgramTemplate,
   ProgramTemplateListParams,
-  ProgramTemplateListResponse,
   ProgramTemplateRetrieveParams,
   ProgramTemplates,
+  ProgramTemplatesCursorPage,
 } from './resources/program-templates';
 import {
   Program,
   ProgramListParams,
-  ProgramListResponse,
   ProgramRetrieveParams,
   Programs,
+  ProgramsCursorPage,
 } from './resources/programs';
-import { Tagset, TagsetListParams, TagsetListResponse, Tagsets } from './resources/tagsets';
+import { Tagset, TagsetListParams, Tagsets, TagsetsCursorPage } from './resources/tagsets';
+import { View, ViewListItemsParams, ViewRetrieveParams, Views } from './resources/views';
 import {
-  View,
-  ViewListItemsParams,
-  ViewListItemsResponse,
-  ViewRetrieveParams,
-  Views,
-} from './resources/views';
+  Collection,
+  CollectionListParams,
+  CollectionRetrieveParams,
+  Collections,
+  CollectionsCursorPage,
+  Field,
+} from './resources/collections/collections';
 import { type Fetch } from './internal/builtin-types';
+import { isRunningInBrowser } from './internal/detect-platform';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import { readEnv } from './internal/utils/env';
@@ -107,7 +129,7 @@ export interface ClientOptions {
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['MOONBASE_SDK_BASE_URL'].
+   * Defaults to process.env['MOONBASE_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -161,7 +183,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['MOONBASE_SDK_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env['MOONBASE_LOG'] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -174,9 +196,9 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Moonbase SDK API.
+ * API Client for interfacing with the Moonbase API.
  */
-export class MoonbaseSDK {
+export class Moonbase {
   apiKey: string;
 
   baseURL: string;
@@ -192,10 +214,10 @@ export class MoonbaseSDK {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Moonbase SDK API.
+   * API Client for interfacing with the Moonbase API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['MOONBASE_SDK_API_KEY'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['MOONBASE_SDK_BASE_URL'] ?? https://api.moonbase.ai/v0] - Override the default base URL for the API.
+   * @param {string | undefined} [opts.apiKey=process.env['MOONBASE_API_KEY'] ?? undefined]
+   * @param {string} [opts.baseURL=process.env['MOONBASE_BASE_URL'] ?? https://api.moonbase.ai/v0] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -204,13 +226,13 @@ export class MoonbaseSDK {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv('MOONBASE_SDK_BASE_URL'),
-    apiKey = readEnv('MOONBASE_SDK_API_KEY'),
+    baseURL = readEnv('MOONBASE_BASE_URL'),
+    apiKey = readEnv('MOONBASE_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
-      throw new Errors.MoonbaseSDKError(
-        "The MOONBASE_SDK_API_KEY environment variable is missing or empty; either provide it, or instantiate the MoonbaseSDK client with an apiKey option, like new MoonbaseSDK({ apiKey: 'My API Key' }).",
+      throw new Errors.MoonbaseError(
+        "The MOONBASE_API_KEY environment variable is missing or empty; either provide it, or instantiate the Moonbase client with an apiKey option, like new Moonbase({ apiKey: 'My API Key' }).",
       );
     }
 
@@ -220,15 +242,21 @@ export class MoonbaseSDK {
       baseURL: baseURL || `https://api.moonbase.ai/v0`,
     };
 
+    if (isRunningInBrowser()) {
+      throw new Errors.MoonbaseError(
+        "It looks like you're running in a browser-like environment, which is disabled to protect your secret API credentials from attackers. If you have a strong business need for client-side use of this API, please open a GitHub issue with your use-case and security mitigations.",
+      );
+    }
+
     this.baseURL = options.baseURL!;
-    this.timeout = options.timeout ?? MoonbaseSDK.DEFAULT_TIMEOUT /* 1 minute */;
+    this.timeout = options.timeout ?? Moonbase.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('MOONBASE_SDK_LOG'), "process.env['MOONBASE_SDK_LOG']", this) ??
+      parseLogLevel(readEnv('MOONBASE_LOG'), "process.env['MOONBASE_LOG']", this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
@@ -279,7 +307,7 @@ export class MoonbaseSDK {
   }
 
   protected stringifyQuery(query: Record<string, unknown>): string {
-    return qs.stringify(query, { arrayFormat: 'comma' });
+    return qs.stringify(query, { arrayFormat: 'brackets' });
   }
 
   private getUserAgent(): string {
@@ -534,6 +562,25 @@ export class MoonbaseSDK {
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
 
+  getAPIList<Item, PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>>(
+    path: string,
+    Page: new (...args: any[]) => PageClass,
+    opts?: RequestOptions,
+  ): Pagination.PagePromise<PageClass, Item> {
+    return this.requestAPIList(Page, { method: 'get', path, ...opts });
+  }
+
+  requestAPIList<
+    Item = unknown,
+    PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>,
+  >(
+    Page: new (...args: ConstructorParameters<typeof Pagination.AbstractPage>) => PageClass,
+    options: FinalRequestOptions,
+  ): Pagination.PagePromise<PageClass, Item> {
+    const request = this.makeRequest(options, null, undefined);
+    return new Pagination.PagePromise<PageClass, Item>(this as any as Moonbase, request, Page);
+  }
+
   async fetchWithTimeout(
     url: RequestInfo,
     init: RequestInit | undefined,
@@ -747,10 +794,10 @@ export class MoonbaseSDK {
     }
   }
 
-  static MoonbaseSDK = this;
+  static Moonbase = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static MoonbaseSDKError = Errors.MoonbaseSDKError;
+  static MoonbaseError = Errors.MoonbaseError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -783,73 +830,74 @@ export class MoonbaseSDK {
   tagsets: API.Tagsets = new API.Tagsets(this);
   views: API.Views = new API.Views(this);
 }
-MoonbaseSDK.Activities = Activities;
-MoonbaseSDK.Calls = Calls;
-MoonbaseSDK.Collections = Collections;
-MoonbaseSDK.Files = Files;
-MoonbaseSDK.Forms = Forms;
-MoonbaseSDK.InboxConversations = InboxConversations;
-MoonbaseSDK.InboxMessages = InboxMessages;
-MoonbaseSDK.Inboxes = Inboxes;
-MoonbaseSDK.Items = Items;
-MoonbaseSDK.Meetings = Meetings;
-MoonbaseSDK.Notes = Notes;
-MoonbaseSDK.ProgramMessages = ProgramMessages;
-MoonbaseSDK.ProgramTemplates = ProgramTemplates;
-MoonbaseSDK.Programs = Programs;
-MoonbaseSDK.Tagsets = Tagsets;
-MoonbaseSDK.Views = Views;
-export declare namespace MoonbaseSDK {
+Moonbase.Activities = Activities;
+Moonbase.Calls = Calls;
+Moonbase.Collections = Collections;
+Moonbase.Files = Files;
+Moonbase.Forms = Forms;
+Moonbase.InboxConversations = InboxConversations;
+Moonbase.InboxMessages = InboxMessages;
+Moonbase.Inboxes = Inboxes;
+Moonbase.Items = Items;
+Moonbase.Meetings = Meetings;
+Moonbase.Notes = Notes;
+Moonbase.ProgramMessages = ProgramMessages;
+Moonbase.ProgramTemplates = ProgramTemplates;
+Moonbase.Programs = Programs;
+Moonbase.Tagsets = Tagsets;
+Moonbase.Views = Views;
+export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
+
+  export import CursorPage = Pagination.CursorPage;
+  export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
 
   export {
     Activities as Activities,
     type Activity as Activity,
-    type ActivityListResponse as ActivityListResponse,
+    type ActivitiesCursorPage as ActivitiesCursorPage,
     type ActivityListParams as ActivityListParams,
   };
 
-  export { Calls as Calls, type Call as Call, type CallLogParams as CallLogParams };
+  export { Calls as Calls, type Call as Call, type CallCreateParams as CallCreateParams };
 
   export {
     Collections as Collections,
     type Collection as Collection,
-    type CollectionListResponse as CollectionListResponse,
-    type CollectionRetrieveFieldResponse as CollectionRetrieveFieldResponse,
+    type Field as Field,
+    type CollectionsCursorPage as CollectionsCursorPage,
     type CollectionRetrieveParams as CollectionRetrieveParams,
     type CollectionListParams as CollectionListParams,
-    type CollectionRetrieveFieldParams as CollectionRetrieveFieldParams,
   };
 
   export {
     Files as Files,
-    type File as File,
-    type FileListResponse as FileListResponse,
+    type MoonbaseFile as MoonbaseFile,
+    type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
     type FileListParams as FileListParams,
   };
 
   export {
     Forms as Forms,
     type Form as Form,
-    type FormListResponse as FormListResponse,
+    type FormsCursorPage as FormsCursorPage,
     type FormRetrieveParams as FormRetrieveParams,
     type FormListParams as FormListParams,
   };
 
   export {
     InboxConversations as InboxConversations,
-    type Address as Address,
     type InboxConversation as InboxConversation,
-    type Tag as Tag,
-    type InboxConversationListResponse as InboxConversationListResponse,
+    type InboxConversationsCursorPage as InboxConversationsCursorPage,
     type InboxConversationRetrieveParams as InboxConversationRetrieveParams,
     type InboxConversationListParams as InboxConversationListParams,
   };
 
   export {
     InboxMessages as InboxMessages,
+    type Address as Address,
     type EmailMessage as EmailMessage,
-    type InboxMessageListResponse as InboxMessageListResponse,
+    type EmailMessagesCursorPage as EmailMessagesCursorPage,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
     type InboxMessageListParams as InboxMessageListParams,
   };
@@ -857,14 +905,35 @@ export declare namespace MoonbaseSDK {
   export {
     Inboxes as Inboxes,
     type Inbox as Inbox,
-    type InboxListResponse as InboxListResponse,
+    type InboxesCursorPage as InboxesCursorPage,
     type InboxRetrieveParams as InboxRetrieveParams,
     type InboxListParams as InboxListParams,
   };
 
   export {
     Items as Items,
+    type BooleanValue as BooleanValue,
+    type Choice as Choice,
+    type DateValue as DateValue,
+    type DatetimeValue as DatetimeValue,
+    type DomainValue as DomainValue,
+    type EmailValue as EmailValue,
+    type FieldValue as FieldValue,
+    type FloatValue as FloatValue,
+    type FunnelStep as FunnelStep,
+    type GeoValue as GeoValue,
+    type IntegerValue as IntegerValue,
     type Item as Item,
+    type MonetaryValue as MonetaryValue,
+    type MultiLineTextValue as MultiLineTextValue,
+    type PercentageValue as PercentageValue,
+    type RelationValue as RelationValue,
+    type SingleLineTextValue as SingleLineTextValue,
+    type SocialLinkedInValue as SocialLinkedInValue,
+    type SocialXValue as SocialXValue,
+    type TelephoneNumber as TelephoneNumber,
+    type URLValue as URLValue,
+    type Value as Value,
     type ItemCreateParams as ItemCreateParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemUpsertParams as ItemUpsertParams,
@@ -875,7 +944,7 @@ export declare namespace MoonbaseSDK {
     type Attendee as Attendee,
     type Meeting as Meeting,
     type Organizer as Organizer,
-    type MeetingListResponse as MeetingListResponse,
+    type MeetingsCursorPage as MeetingsCursorPage,
     type MeetingRetrieveParams as MeetingRetrieveParams,
     type MeetingListParams as MeetingListParams,
   };
@@ -883,7 +952,7 @@ export declare namespace MoonbaseSDK {
   export {
     Notes as Notes,
     type Note as Note,
-    type NoteListResponse as NoteListResponse,
+    type NotesCursorPage as NotesCursorPage,
     type NoteListParams as NoteListParams,
   };
 
@@ -896,7 +965,7 @@ export declare namespace MoonbaseSDK {
   export {
     ProgramTemplates as ProgramTemplates,
     type ProgramTemplate as ProgramTemplate,
-    type ProgramTemplateListResponse as ProgramTemplateListResponse,
+    type ProgramTemplatesCursorPage as ProgramTemplatesCursorPage,
     type ProgramTemplateRetrieveParams as ProgramTemplateRetrieveParams,
     type ProgramTemplateListParams as ProgramTemplateListParams,
   };
@@ -904,7 +973,7 @@ export declare namespace MoonbaseSDK {
   export {
     Programs as Programs,
     type Program as Program,
-    type ProgramListResponse as ProgramListResponse,
+    type ProgramsCursorPage as ProgramsCursorPage,
     type ProgramRetrieveParams as ProgramRetrieveParams,
     type ProgramListParams as ProgramListParams,
   };
@@ -912,15 +981,16 @@ export declare namespace MoonbaseSDK {
   export {
     Tagsets as Tagsets,
     type Tagset as Tagset,
-    type TagsetListResponse as TagsetListResponse,
+    type TagsetsCursorPage as TagsetsCursorPage,
     type TagsetListParams as TagsetListParams,
   };
 
   export {
     Views as Views,
     type View as View,
-    type ViewListItemsResponse as ViewListItemsResponse,
     type ViewRetrieveParams as ViewRetrieveParams,
     type ViewListItemsParams as ViewListItemsParams,
   };
+
+  export type Error = API.Error;
 }

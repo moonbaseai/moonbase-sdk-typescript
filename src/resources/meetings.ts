@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -23,10 +24,12 @@ export class Meetings extends APIResource {
   list(
     query: MeetingListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<MeetingListResponse> {
-    return this._client.get('/meetings', { query, ...options });
+  ): PagePromise<MeetingsCursorPage, Meeting> {
+    return this._client.getAPIList('/meetings', CursorPage<Meeting>, { query, ...options });
   }
 }
+
+export type MeetingsCursorPage = CursorPage<Meeting>;
 
 /**
  * The Attendee object represents a participant in a meeting. It includes their
@@ -259,70 +262,6 @@ export namespace Organizer {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface MeetingListResponse {
-  /**
-   * An array of Meeting items.
-   */
-  data: Array<Meeting>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: MeetingListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: MeetingListResponse.Meta;
-}
-
-export namespace MeetingListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
 export interface MeetingRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid options are
@@ -331,14 +270,7 @@ export interface MeetingRetrieveParams {
   include?: Array<'organizer' | 'attendees'>;
 }
 
-export interface MeetingListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface MeetingListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -358,7 +290,7 @@ export declare namespace Meetings {
     type Attendee as Attendee,
     type Meeting as Meeting,
     type Organizer as Organizer,
-    type MeetingListResponse as MeetingListResponse,
+    type MeetingsCursorPage as MeetingsCursorPage,
     type MeetingRetrieveParams as MeetingRetrieveParams,
     type MeetingListParams as MeetingListParams,
   };

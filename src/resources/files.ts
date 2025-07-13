@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -9,7 +10,7 @@ export class Files extends APIResource {
   /**
    * Retrieves the details of an existing file.
    */
-  retrieve(id: string, options?: RequestOptions): APIPromise<File> {
+  retrieve(id: string, options?: RequestOptions): APIPromise<MoonbaseFile> {
     return this._client.get(path`/files/${id}`, options);
   }
 
@@ -19,15 +20,17 @@ export class Files extends APIResource {
   list(
     query: FileListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<FileListResponse> {
-    return this._client.get('/files', { query, ...options });
+  ): PagePromise<MoonbaseFilesCursorPage, MoonbaseFile> {
+    return this._client.getAPIList('/files', CursorPage<MoonbaseFile>, { query, ...options });
   }
 }
+
+export type MoonbaseFilesCursorPage = CursorPage<MoonbaseFile>;
 
 /**
  * The File object represents a file that has been uploaded to your library.
  */
-export interface File {
+export interface MoonbaseFile {
   /**
    * Unique identifier for the object.
    */
@@ -38,7 +41,7 @@ export interface File {
    */
   filename: string;
 
-  links: File.Links;
+  links: MoonbaseFile.Links;
 
   /**
    * The display name of the file.
@@ -66,7 +69,7 @@ export interface File {
   updated_at?: string;
 }
 
-export namespace File {
+export namespace MoonbaseFile {
   export interface Links {
     /**
      * A temporary, signed URL to download the file content. The URL expires after one
@@ -81,78 +84,7 @@ export namespace File {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface FileListResponse {
-  /**
-   * An array of File items.
-   */
-  data: Array<File>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: FileListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: FileListResponse.Meta;
-}
-
-export namespace FileListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
-export interface FileListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface FileListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -169,8 +101,8 @@ export interface FileListParams {
 
 export declare namespace Files {
   export {
-    type File as File,
-    type FileListResponse as FileListResponse,
+    type MoonbaseFile as MoonbaseFile,
+    type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
     type FileListParams as FileListParams,
   };
 }

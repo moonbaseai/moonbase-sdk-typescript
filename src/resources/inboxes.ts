@@ -3,6 +3,7 @@
 import { APIResource } from '../core/resource';
 import * as TagsetsAPI from './tagsets';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -24,10 +25,12 @@ export class Inboxes extends APIResource {
   list(
     query: InboxListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<InboxListResponse> {
-    return this._client.get('/inboxes', { query, ...options });
+  ): PagePromise<InboxesCursorPage, Inbox> {
+    return this._client.getAPIList('/inboxes', CursorPage<Inbox>, { query, ...options });
   }
 }
+
+export type InboxesCursorPage = CursorPage<Inbox>;
 
 /**
  * The Inbox object represents a shared inbox for receiving and sending messages.
@@ -81,70 +84,6 @@ export namespace Inbox {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface InboxListResponse {
-  /**
-   * An array of Inbox items.
-   */
-  data: Array<Inbox>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: InboxListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: InboxListResponse.Meta;
-}
-
-export namespace InboxListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
 export interface InboxRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid option is
@@ -153,14 +92,7 @@ export interface InboxRetrieveParams {
   'include[]'?: 'tagset';
 }
 
-export interface InboxListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface InboxListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -178,7 +110,7 @@ export interface InboxListParams {
 export declare namespace Inboxes {
   export {
     type Inbox as Inbox,
-    type InboxListResponse as InboxListResponse,
+    type InboxesCursorPage as InboxesCursorPage,
     type InboxRetrieveParams as InboxRetrieveParams,
     type InboxListParams as InboxListParams,
   };

@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as ItemsAPI from './items';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage } from '../core/pagination';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -151,6 +151,143 @@ export class Items extends APIResource {
   }
 }
 
+export type ItemsCursorPage = CursorPage<Item>;
+
+/**
+ * True or false value
+ */
+export interface BooleanValue {
+  boolean: boolean;
+
+  type: 'value/boolean';
+}
+
+/**
+ * Selected choice option
+ */
+export interface Choice {
+  option: Choice.Option;
+
+  type: 'value/choice';
+}
+
+export namespace Choice {
+  export interface Option {
+    id: string;
+
+    type: 'field_option';
+
+    label?: string;
+  }
+}
+
+/**
+ * Date without time
+ */
+export interface DateValue {
+  date: string;
+
+  type: 'value/date';
+}
+
+/**
+ * Date and time value
+ */
+export interface DatetimeValue {
+  datetime: string;
+
+  type: 'value/datetime';
+}
+
+/**
+ * Internet domain name
+ */
+export interface DomainValue {
+  domain: string;
+
+  type: 'value/uri/domain';
+}
+
+/**
+ * Email address value
+ */
+export interface EmailValue {
+  email: string;
+
+  type: 'value/email';
+}
+
+/**
+ * A field can be null, a single value, or an array of values
+ */
+export type FieldValue =
+  | SingleLineTextValue
+  | MultiLineTextValue
+  | IntegerValue
+  | FloatValue
+  | MonetaryValue
+  | PercentageValue
+  | BooleanValue
+  | EmailValue
+  | URLValue
+  | DomainValue
+  | SocialXValue
+  | SocialLinkedInValue
+  | TelephoneNumber
+  | GeoValue
+  | DateValue
+  | DatetimeValue
+  | Choice
+  | FunnelStep
+  | RelationValue
+  | Array<Value>;
+
+/**
+ * Floating point number
+ */
+export interface FloatValue {
+  number: number;
+
+  type: 'value/number/unitless_float';
+}
+
+/**
+ * Funnel step value
+ */
+export interface FunnelStep {
+  step: FunnelStep.Step;
+
+  type: 'value/funnel_step';
+}
+
+export namespace FunnelStep {
+  export interface Step {
+    id: string;
+
+    type: 'funnel_step';
+
+    name?: string;
+  }
+}
+
+/**
+ * Geographic coordinate value
+ */
+export interface GeoValue {
+  geo: string;
+
+  type: 'value/geo';
+}
+
+/**
+ * Integer value without units
+ */
+export interface IntegerValue {
+  number: number;
+
+  type: 'value/number/unitless_integer';
+}
+
 /**
  * An Item represents a single record or row within a Collection. It holds a set of
  * `values` corresponding to the Collection's `fields`.
@@ -170,8 +307,143 @@ export interface Item {
    * A hash where keys are the `ref` of a `Field` and values are the data stored for
    * that field.
    */
-  values?: { [key: string]: unknown };
+  values?: { [key: string]: FieldValue | null };
 }
+
+/**
+ * Monetary or currency value
+ */
+export interface MonetaryValue {
+  amount: MonetaryValue.Amount;
+
+  type: 'value/number/monetary';
+}
+
+export namespace MonetaryValue {
+  export interface Amount {
+    amount_in_minor_units: number;
+
+    currency: string;
+
+    type: 'currency';
+  }
+}
+
+/**
+ * Multiple lines of text
+ */
+export interface MultiLineTextValue {
+  text: string;
+
+  type: 'value/text/multi_line';
+}
+
+/**
+ * Percentage numeric value
+ */
+export interface PercentageValue {
+  percentage: number;
+
+  type: 'value/number/percentage';
+}
+
+/**
+ * Related item reference
+ */
+export interface RelationValue {
+  /**
+   * An Item represents a single record or row within a Collection. It holds a set of
+   * `values` corresponding to the Collection's `fields`.
+   */
+  item: Item;
+
+  type: 'value/relation';
+}
+
+/**
+ * A single line of text
+ */
+export interface SingleLineTextValue {
+  text: string;
+
+  type: 'value/text/single_line';
+}
+
+/**
+ * LinkedIn profile link
+ */
+export interface SocialLinkedInValue {
+  profile: SocialLinkedInValue.Profile;
+
+  type: 'value/uri/social_linked_in';
+}
+
+export namespace SocialLinkedInValue {
+  export interface Profile {
+    url?: string;
+
+    username?: string;
+  }
+}
+
+/**
+ * X (formerly Twitter) username
+ */
+export interface SocialXValue {
+  profile: SocialXValue.Profile;
+
+  type: 'value/uri/social_x';
+}
+
+export namespace SocialXValue {
+  export interface Profile {
+    url?: string;
+
+    username?: string;
+  }
+}
+
+/**
+ * Telephone number value
+ */
+export interface TelephoneNumber {
+  telephone_number: string;
+
+  type: 'value/telephone_number';
+}
+
+/**
+ * URL or web address
+ */
+export interface URLValue {
+  type: 'value/uri/url';
+
+  url: string;
+}
+
+/**
+ * A typed value with discriminated union support
+ */
+export type Value =
+  | SingleLineTextValue
+  | MultiLineTextValue
+  | IntegerValue
+  | FloatValue
+  | MonetaryValue
+  | PercentageValue
+  | BooleanValue
+  | EmailValue
+  | URLValue
+  | DomainValue
+  | SocialXValue
+  | SocialLinkedInValue
+  | TelephoneNumber
+  | GeoValue
+  | DateValue
+  | DatetimeValue
+  | Choice
+  | FunnelStep
+  | RelationValue;
 
 export interface ItemCreateParams {
   /**
@@ -182,494 +454,7 @@ export interface ItemCreateParams {
   /**
    * A hash where keys are the `ref` of a `Field` and values are the data to be set.
    */
-  values: {
-    [key: string]:
-      | ItemCreateParams.SingleLineTextValue
-      | ItemCreateParams.MultiLineTextValue
-      | ItemCreateParams.IntegerValue
-      | ItemCreateParams.FloatValue
-      | ItemCreateParams.MonetaryValue
-      | ItemCreateParams.PercentageValue
-      | ItemCreateParams.BooleanValue
-      | ItemCreateParams.EmailValue
-      | ItemCreateParams.URLValue
-      | ItemCreateParams.DomainValue
-      | ItemCreateParams.SocialXValue
-      | ItemCreateParams.SocialLinkedInValue
-      | ItemCreateParams.TelephoneNumberValue
-      | ItemCreateParams.GeoValue
-      | ItemCreateParams.DateValue
-      | ItemCreateParams.DatetimeValue
-      | ItemCreateParams.ChoiceValue
-      | ItemCreateParams.FunnelStepValue
-      | ItemCreateParams.RelationValue
-      | Array<
-          | ItemCreateParams.SingleLineTextValue
-          | ItemCreateParams.MultiLineTextValue
-          | ItemCreateParams.IntegerValue
-          | ItemCreateParams.FloatValue
-          | ItemCreateParams.MonetaryValue
-          | ItemCreateParams.PercentageValue
-          | ItemCreateParams.BooleanValue
-          | ItemCreateParams.EmailValue
-          | ItemCreateParams.URLValue
-          | ItemCreateParams.DomainValue
-          | ItemCreateParams.SocialXValue
-          | ItemCreateParams.SocialLinkedInValue
-          | ItemCreateParams.TelephoneNumberValue
-          | ItemCreateParams.GeoValue
-          | ItemCreateParams.DateValue
-          | ItemCreateParams.DatetimeValue
-          | ItemCreateParams.ChoiceValue
-          | ItemCreateParams.FunnelStepValue
-          | ItemCreateParams.RelationValue
-        >
-      | null;
-  };
-}
-
-export namespace ItemCreateParams {
-  /**
-   * A single line of text
-   */
-  export interface SingleLineTextValue {
-    text: string;
-
-    type: 'value/text/single_line';
-  }
-
-  /**
-   * Multiple lines of text
-   */
-  export interface MultiLineTextValue {
-    text: string;
-
-    type: 'value/text/multi_line';
-  }
-
-  /**
-   * Integer value without units
-   */
-  export interface IntegerValue {
-    number: number;
-
-    type: 'value/number/unitless_integer';
-  }
-
-  /**
-   * Floating point number
-   */
-  export interface FloatValue {
-    number: number;
-
-    type: 'value/number/unitless_float';
-  }
-
-  /**
-   * Monetary or currency value
-   */
-  export interface MonetaryValue {
-    amount: MonetaryValue.Amount;
-
-    type: 'value/number/monetary';
-  }
-
-  export namespace MonetaryValue {
-    export interface Amount {
-      amount_in_minor_units: number;
-
-      currency: string;
-
-      type: 'currency';
-    }
-  }
-
-  /**
-   * Percentage numeric value
-   */
-  export interface PercentageValue {
-    percentage: number;
-
-    type: 'value/number/percentage';
-  }
-
-  /**
-   * True or false value
-   */
-  export interface BooleanValue {
-    boolean: boolean;
-
-    type: 'value/boolean';
-  }
-
-  /**
-   * Email address value
-   */
-  export interface EmailValue {
-    email: string;
-
-    type: 'value/email';
-  }
-
-  /**
-   * URL or web address
-   */
-  export interface URLValue {
-    type: 'value/uri/url';
-
-    url: string;
-  }
-
-  /**
-   * Internet domain name
-   */
-  export interface DomainValue {
-    domain: string;
-
-    type: 'value/uri/domain';
-  }
-
-  /**
-   * X (formerly Twitter) username
-   */
-  export interface SocialXValue {
-    profile: SocialXValue.Profile;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * LinkedIn profile link
-   */
-  export interface SocialLinkedInValue {
-    profile: SocialLinkedInValue.Profile;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * Telephone number value
-   */
-  export interface TelephoneNumberValue {
-    telephone_number: string;
-
-    type: 'value/telephone_number';
-  }
-
-  /**
-   * Geographic coordinate value
-   */
-  export interface GeoValue {
-    geo: string;
-
-    type: 'value/geo';
-  }
-
-  /**
-   * Date without time
-   */
-  export interface DateValue {
-    date: string;
-
-    type: 'value/date';
-  }
-
-  /**
-   * Date and time value
-   */
-  export interface DatetimeValue {
-    datetime: string;
-
-    type: 'value/datetime';
-  }
-
-  /**
-   * Selected choice option
-   */
-  export interface ChoiceValue {
-    option: ChoiceValue.Option;
-
-    type: 'value/choice';
-  }
-
-  export namespace ChoiceValue {
-    export interface Option {
-      id: string;
-
-      type: 'field_option';
-
-      label?: string;
-    }
-  }
-
-  /**
-   * Funnel step value
-   */
-  export interface FunnelStepValue {
-    step: FunnelStepValue.Step;
-
-    type: 'value/funnel_step';
-  }
-
-  export namespace FunnelStepValue {
-    export interface Step {
-      id: string;
-
-      type: 'funnel_step';
-
-      name?: string;
-    }
-  }
-
-  /**
-   * Related item reference
-   */
-  export interface RelationValue {
-    /**
-     * An Item represents a single record or row within a Collection. It holds a set of
-     * `values` corresponding to the Collection's `fields`.
-     */
-    item: ItemsAPI.Item;
-
-    type: 'value/relation';
-  }
-
-  /**
-   * A single line of text
-   */
-  export interface SingleLineTextValue {
-    text: string;
-
-    type: 'value/text/single_line';
-  }
-
-  /**
-   * Multiple lines of text
-   */
-  export interface MultiLineTextValue {
-    text: string;
-
-    type: 'value/text/multi_line';
-  }
-
-  /**
-   * Integer value without units
-   */
-  export interface IntegerValue {
-    number: number;
-
-    type: 'value/number/unitless_integer';
-  }
-
-  /**
-   * Floating point number
-   */
-  export interface FloatValue {
-    number: number;
-
-    type: 'value/number/unitless_float';
-  }
-
-  /**
-   * Monetary or currency value
-   */
-  export interface MonetaryValue {
-    amount: MonetaryValue.Amount;
-
-    type: 'value/number/monetary';
-  }
-
-  export namespace MonetaryValue {
-    export interface Amount {
-      amount_in_minor_units: number;
-
-      currency: string;
-
-      type: 'currency';
-    }
-  }
-
-  /**
-   * Percentage numeric value
-   */
-  export interface PercentageValue {
-    percentage: number;
-
-    type: 'value/number/percentage';
-  }
-
-  /**
-   * True or false value
-   */
-  export interface BooleanValue {
-    boolean: boolean;
-
-    type: 'value/boolean';
-  }
-
-  /**
-   * Email address value
-   */
-  export interface EmailValue {
-    email: string;
-
-    type: 'value/email';
-  }
-
-  /**
-   * URL or web address
-   */
-  export interface URLValue {
-    type: 'value/uri/url';
-
-    url: string;
-  }
-
-  /**
-   * Internet domain name
-   */
-  export interface DomainValue {
-    domain: string;
-
-    type: 'value/uri/domain';
-  }
-
-  /**
-   * X (formerly Twitter) username
-   */
-  export interface SocialXValue {
-    profile: SocialXValue.Profile;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * LinkedIn profile link
-   */
-  export interface SocialLinkedInValue {
-    profile: SocialLinkedInValue.Profile;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * Telephone number value
-   */
-  export interface TelephoneNumberValue {
-    telephone_number: string;
-
-    type: 'value/telephone_number';
-  }
-
-  /**
-   * Geographic coordinate value
-   */
-  export interface GeoValue {
-    geo: string;
-
-    type: 'value/geo';
-  }
-
-  /**
-   * Date without time
-   */
-  export interface DateValue {
-    date: string;
-
-    type: 'value/date';
-  }
-
-  /**
-   * Date and time value
-   */
-  export interface DatetimeValue {
-    datetime: string;
-
-    type: 'value/datetime';
-  }
-
-  /**
-   * Selected choice option
-   */
-  export interface ChoiceValue {
-    option: ChoiceValue.Option;
-
-    type: 'value/choice';
-  }
-
-  export namespace ChoiceValue {
-    export interface Option {
-      id: string;
-
-      type: 'field_option';
-
-      label?: string;
-    }
-  }
-
-  /**
-   * Funnel step value
-   */
-  export interface FunnelStepValue {
-    step: FunnelStepValue.Step;
-
-    type: 'value/funnel_step';
-  }
-
-  export namespace FunnelStepValue {
-    export interface Step {
-      id: string;
-
-      type: 'funnel_step';
-
-      name?: string;
-    }
-  }
-
-  /**
-   * Related item reference
-   */
-  export interface RelationValue {
-    /**
-     * An Item represents a single record or row within a Collection. It holds a set of
-     * `values` corresponding to the Collection's `fields`.
-     */
-    item: ItemsAPI.Item;
-
-    type: 'value/relation';
-  }
+  values: { [key: string]: FieldValue | null };
 }
 
 export interface ItemUpdateParams {
@@ -677,50 +462,7 @@ export interface ItemUpdateParams {
    * Body param: A hash where keys are the `ref` of a `Field` and values are the new
    * data to be set.
    */
-  values: {
-    [key: string]:
-      | ItemUpdateParams.SingleLineTextValue
-      | ItemUpdateParams.MultiLineTextValue
-      | ItemUpdateParams.IntegerValue
-      | ItemUpdateParams.FloatValue
-      | ItemUpdateParams.MonetaryValue
-      | ItemUpdateParams.PercentageValue
-      | ItemUpdateParams.BooleanValue
-      | ItemUpdateParams.EmailValue
-      | ItemUpdateParams.URLValue
-      | ItemUpdateParams.DomainValue
-      | ItemUpdateParams.SocialXValue
-      | ItemUpdateParams.SocialLinkedInValue
-      | ItemUpdateParams.TelephoneNumberValue
-      | ItemUpdateParams.GeoValue
-      | ItemUpdateParams.DateValue
-      | ItemUpdateParams.DatetimeValue
-      | ItemUpdateParams.ChoiceValue
-      | ItemUpdateParams.FunnelStepValue
-      | ItemUpdateParams.RelationValue
-      | Array<
-          | ItemUpdateParams.SingleLineTextValue
-          | ItemUpdateParams.MultiLineTextValue
-          | ItemUpdateParams.IntegerValue
-          | ItemUpdateParams.FloatValue
-          | ItemUpdateParams.MonetaryValue
-          | ItemUpdateParams.PercentageValue
-          | ItemUpdateParams.BooleanValue
-          | ItemUpdateParams.EmailValue
-          | ItemUpdateParams.URLValue
-          | ItemUpdateParams.DomainValue
-          | ItemUpdateParams.SocialXValue
-          | ItemUpdateParams.SocialLinkedInValue
-          | ItemUpdateParams.TelephoneNumberValue
-          | ItemUpdateParams.GeoValue
-          | ItemUpdateParams.DateValue
-          | ItemUpdateParams.DatetimeValue
-          | ItemUpdateParams.ChoiceValue
-          | ItemUpdateParams.FunnelStepValue
-          | ItemUpdateParams.RelationValue
-        >
-      | null;
-  };
+  values: { [key: string]: FieldValue | null };
 
   /**
    * Header param: Specifies how to update fields that allow multiple values during a
@@ -740,450 +482,6 @@ export interface ItemUpdateParams {
   'update-one-strategy'?: 'replace' | 'preserve';
 }
 
-export namespace ItemUpdateParams {
-  /**
-   * A single line of text
-   */
-  export interface SingleLineTextValue {
-    text: string;
-
-    type: 'value/text/single_line';
-  }
-
-  /**
-   * Multiple lines of text
-   */
-  export interface MultiLineTextValue {
-    text: string;
-
-    type: 'value/text/multi_line';
-  }
-
-  /**
-   * Integer value without units
-   */
-  export interface IntegerValue {
-    number: number;
-
-    type: 'value/number/unitless_integer';
-  }
-
-  /**
-   * Floating point number
-   */
-  export interface FloatValue {
-    number: number;
-
-    type: 'value/number/unitless_float';
-  }
-
-  /**
-   * Monetary or currency value
-   */
-  export interface MonetaryValue {
-    amount: MonetaryValue.Amount;
-
-    type: 'value/number/monetary';
-  }
-
-  export namespace MonetaryValue {
-    export interface Amount {
-      amount_in_minor_units: number;
-
-      currency: string;
-
-      type: 'currency';
-    }
-  }
-
-  /**
-   * Percentage numeric value
-   */
-  export interface PercentageValue {
-    percentage: number;
-
-    type: 'value/number/percentage';
-  }
-
-  /**
-   * True or false value
-   */
-  export interface BooleanValue {
-    boolean: boolean;
-
-    type: 'value/boolean';
-  }
-
-  /**
-   * Email address value
-   */
-  export interface EmailValue {
-    email: string;
-
-    type: 'value/email';
-  }
-
-  /**
-   * URL or web address
-   */
-  export interface URLValue {
-    type: 'value/uri/url';
-
-    url: string;
-  }
-
-  /**
-   * Internet domain name
-   */
-  export interface DomainValue {
-    domain: string;
-
-    type: 'value/uri/domain';
-  }
-
-  /**
-   * X (formerly Twitter) username
-   */
-  export interface SocialXValue {
-    profile: SocialXValue.Profile;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * LinkedIn profile link
-   */
-  export interface SocialLinkedInValue {
-    profile: SocialLinkedInValue.Profile;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * Telephone number value
-   */
-  export interface TelephoneNumberValue {
-    telephone_number: string;
-
-    type: 'value/telephone_number';
-  }
-
-  /**
-   * Geographic coordinate value
-   */
-  export interface GeoValue {
-    geo: string;
-
-    type: 'value/geo';
-  }
-
-  /**
-   * Date without time
-   */
-  export interface DateValue {
-    date: string;
-
-    type: 'value/date';
-  }
-
-  /**
-   * Date and time value
-   */
-  export interface DatetimeValue {
-    datetime: string;
-
-    type: 'value/datetime';
-  }
-
-  /**
-   * Selected choice option
-   */
-  export interface ChoiceValue {
-    option: ChoiceValue.Option;
-
-    type: 'value/choice';
-  }
-
-  export namespace ChoiceValue {
-    export interface Option {
-      id: string;
-
-      type: 'field_option';
-
-      label?: string;
-    }
-  }
-
-  /**
-   * Funnel step value
-   */
-  export interface FunnelStepValue {
-    step: FunnelStepValue.Step;
-
-    type: 'value/funnel_step';
-  }
-
-  export namespace FunnelStepValue {
-    export interface Step {
-      id: string;
-
-      type: 'funnel_step';
-
-      name?: string;
-    }
-  }
-
-  /**
-   * Related item reference
-   */
-  export interface RelationValue {
-    /**
-     * An Item represents a single record or row within a Collection. It holds a set of
-     * `values` corresponding to the Collection's `fields`.
-     */
-    item: ItemsAPI.Item;
-
-    type: 'value/relation';
-  }
-
-  /**
-   * A single line of text
-   */
-  export interface SingleLineTextValue {
-    text: string;
-
-    type: 'value/text/single_line';
-  }
-
-  /**
-   * Multiple lines of text
-   */
-  export interface MultiLineTextValue {
-    text: string;
-
-    type: 'value/text/multi_line';
-  }
-
-  /**
-   * Integer value without units
-   */
-  export interface IntegerValue {
-    number: number;
-
-    type: 'value/number/unitless_integer';
-  }
-
-  /**
-   * Floating point number
-   */
-  export interface FloatValue {
-    number: number;
-
-    type: 'value/number/unitless_float';
-  }
-
-  /**
-   * Monetary or currency value
-   */
-  export interface MonetaryValue {
-    amount: MonetaryValue.Amount;
-
-    type: 'value/number/monetary';
-  }
-
-  export namespace MonetaryValue {
-    export interface Amount {
-      amount_in_minor_units: number;
-
-      currency: string;
-
-      type: 'currency';
-    }
-  }
-
-  /**
-   * Percentage numeric value
-   */
-  export interface PercentageValue {
-    percentage: number;
-
-    type: 'value/number/percentage';
-  }
-
-  /**
-   * True or false value
-   */
-  export interface BooleanValue {
-    boolean: boolean;
-
-    type: 'value/boolean';
-  }
-
-  /**
-   * Email address value
-   */
-  export interface EmailValue {
-    email: string;
-
-    type: 'value/email';
-  }
-
-  /**
-   * URL or web address
-   */
-  export interface URLValue {
-    type: 'value/uri/url';
-
-    url: string;
-  }
-
-  /**
-   * Internet domain name
-   */
-  export interface DomainValue {
-    domain: string;
-
-    type: 'value/uri/domain';
-  }
-
-  /**
-   * X (formerly Twitter) username
-   */
-  export interface SocialXValue {
-    profile: SocialXValue.Profile;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * LinkedIn profile link
-   */
-  export interface SocialLinkedInValue {
-    profile: SocialLinkedInValue.Profile;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * Telephone number value
-   */
-  export interface TelephoneNumberValue {
-    telephone_number: string;
-
-    type: 'value/telephone_number';
-  }
-
-  /**
-   * Geographic coordinate value
-   */
-  export interface GeoValue {
-    geo: string;
-
-    type: 'value/geo';
-  }
-
-  /**
-   * Date without time
-   */
-  export interface DateValue {
-    date: string;
-
-    type: 'value/date';
-  }
-
-  /**
-   * Date and time value
-   */
-  export interface DatetimeValue {
-    datetime: string;
-
-    type: 'value/datetime';
-  }
-
-  /**
-   * Selected choice option
-   */
-  export interface ChoiceValue {
-    option: ChoiceValue.Option;
-
-    type: 'value/choice';
-  }
-
-  export namespace ChoiceValue {
-    export interface Option {
-      id: string;
-
-      type: 'field_option';
-
-      label?: string;
-    }
-  }
-
-  /**
-   * Funnel step value
-   */
-  export interface FunnelStepValue {
-    step: FunnelStepValue.Step;
-
-    type: 'value/funnel_step';
-  }
-
-  export namespace FunnelStepValue {
-    export interface Step {
-      id: string;
-
-      type: 'funnel_step';
-
-      name?: string;
-    }
-  }
-
-  /**
-   * Related item reference
-   */
-  export interface RelationValue {
-    /**
-     * An Item represents a single record or row within a Collection. It holds a set of
-     * `values` corresponding to the Collection's `fields`.
-     */
-    item: ItemsAPI.Item;
-
-    type: 'value/relation';
-  }
-}
-
 export interface ItemUpsertParams {
   /**
    * Body param: The ID of the `Collection` to create the item in.
@@ -1195,99 +493,13 @@ export interface ItemUpsertParams {
    * identify the item to update. When multiple identifiers are provided, the update
    * will find items that match any of the identifiers.
    */
-  identifiers: {
-    [key: string]:
-      | ItemUpsertParams.SingleLineTextValue
-      | ItemUpsertParams.MultiLineTextValue
-      | ItemUpsertParams.IntegerValue
-      | ItemUpsertParams.FloatValue
-      | ItemUpsertParams.MonetaryValue
-      | ItemUpsertParams.PercentageValue
-      | ItemUpsertParams.BooleanValue
-      | ItemUpsertParams.EmailValue
-      | ItemUpsertParams.URLValue
-      | ItemUpsertParams.DomainValue
-      | ItemUpsertParams.SocialXValue
-      | ItemUpsertParams.SocialLinkedInValue
-      | ItemUpsertParams.TelephoneNumberValue
-      | ItemUpsertParams.GeoValue
-      | ItemUpsertParams.DateValue
-      | ItemUpsertParams.DatetimeValue
-      | ItemUpsertParams.ChoiceValue
-      | ItemUpsertParams.FunnelStepValue
-      | ItemUpsertParams.RelationValue
-      | Array<
-          | ItemUpsertParams.SingleLineTextValue
-          | ItemUpsertParams.MultiLineTextValue
-          | ItemUpsertParams.IntegerValue
-          | ItemUpsertParams.FloatValue
-          | ItemUpsertParams.MonetaryValue
-          | ItemUpsertParams.PercentageValue
-          | ItemUpsertParams.BooleanValue
-          | ItemUpsertParams.EmailValue
-          | ItemUpsertParams.URLValue
-          | ItemUpsertParams.DomainValue
-          | ItemUpsertParams.SocialXValue
-          | ItemUpsertParams.SocialLinkedInValue
-          | ItemUpsertParams.TelephoneNumberValue
-          | ItemUpsertParams.GeoValue
-          | ItemUpsertParams.DateValue
-          | ItemUpsertParams.DatetimeValue
-          | ItemUpsertParams.ChoiceValue
-          | ItemUpsertParams.FunnelStepValue
-          | ItemUpsertParams.RelationValue
-        >
-      | null;
-  };
+  identifiers: { [key: string]: FieldValue | null };
 
   /**
    * Body param: A hash where keys are the `ref` of a `Field` and values are the data
    * to be set.
    */
-  values: {
-    [key: string]:
-      | ItemUpsertParams.SingleLineTextValue
-      | ItemUpsertParams.MultiLineTextValue
-      | ItemUpsertParams.IntegerValue
-      | ItemUpsertParams.FloatValue
-      | ItemUpsertParams.MonetaryValue
-      | ItemUpsertParams.PercentageValue
-      | ItemUpsertParams.BooleanValue
-      | ItemUpsertParams.EmailValue
-      | ItemUpsertParams.URLValue
-      | ItemUpsertParams.DomainValue
-      | ItemUpsertParams.SocialXValue
-      | ItemUpsertParams.SocialLinkedInValue
-      | ItemUpsertParams.TelephoneNumberValue
-      | ItemUpsertParams.GeoValue
-      | ItemUpsertParams.DateValue
-      | ItemUpsertParams.DatetimeValue
-      | ItemUpsertParams.ChoiceValue
-      | ItemUpsertParams.FunnelStepValue
-      | ItemUpsertParams.RelationValue
-      | Array<
-          | ItemUpsertParams.SingleLineTextValue
-          | ItemUpsertParams.MultiLineTextValue
-          | ItemUpsertParams.IntegerValue
-          | ItemUpsertParams.FloatValue
-          | ItemUpsertParams.MonetaryValue
-          | ItemUpsertParams.PercentageValue
-          | ItemUpsertParams.BooleanValue
-          | ItemUpsertParams.EmailValue
-          | ItemUpsertParams.URLValue
-          | ItemUpsertParams.DomainValue
-          | ItemUpsertParams.SocialXValue
-          | ItemUpsertParams.SocialLinkedInValue
-          | ItemUpsertParams.TelephoneNumberValue
-          | ItemUpsertParams.GeoValue
-          | ItemUpsertParams.DateValue
-          | ItemUpsertParams.DatetimeValue
-          | ItemUpsertParams.ChoiceValue
-          | ItemUpsertParams.FunnelStepValue
-          | ItemUpsertParams.RelationValue
-        >
-      | null;
-  };
+  values: { [key: string]: FieldValue | null };
 
   /**
    * Header param: Specifies how to update fields that allow multiple values. Use
@@ -1305,895 +517,30 @@ export interface ItemUpsertParams {
   'update-one-strategy'?: 'replace' | 'preserve';
 }
 
-export namespace ItemUpsertParams {
-  /**
-   * A single line of text
-   */
-  export interface SingleLineTextValue {
-    text: string;
-
-    type: 'value/text/single_line';
-  }
-
-  /**
-   * Multiple lines of text
-   */
-  export interface MultiLineTextValue {
-    text: string;
-
-    type: 'value/text/multi_line';
-  }
-
-  /**
-   * Integer value without units
-   */
-  export interface IntegerValue {
-    number: number;
-
-    type: 'value/number/unitless_integer';
-  }
-
-  /**
-   * Floating point number
-   */
-  export interface FloatValue {
-    number: number;
-
-    type: 'value/number/unitless_float';
-  }
-
-  /**
-   * Monetary or currency value
-   */
-  export interface MonetaryValue {
-    amount: MonetaryValue.Amount;
-
-    type: 'value/number/monetary';
-  }
-
-  export namespace MonetaryValue {
-    export interface Amount {
-      amount_in_minor_units: number;
-
-      currency: string;
-
-      type: 'currency';
-    }
-  }
-
-  /**
-   * Percentage numeric value
-   */
-  export interface PercentageValue {
-    percentage: number;
-
-    type: 'value/number/percentage';
-  }
-
-  /**
-   * True or false value
-   */
-  export interface BooleanValue {
-    boolean: boolean;
-
-    type: 'value/boolean';
-  }
-
-  /**
-   * Email address value
-   */
-  export interface EmailValue {
-    email: string;
-
-    type: 'value/email';
-  }
-
-  /**
-   * URL or web address
-   */
-  export interface URLValue {
-    type: 'value/uri/url';
-
-    url: string;
-  }
-
-  /**
-   * Internet domain name
-   */
-  export interface DomainValue {
-    domain: string;
-
-    type: 'value/uri/domain';
-  }
-
-  /**
-   * X (formerly Twitter) username
-   */
-  export interface SocialXValue {
-    profile: SocialXValue.Profile;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * LinkedIn profile link
-   */
-  export interface SocialLinkedInValue {
-    profile: SocialLinkedInValue.Profile;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * Telephone number value
-   */
-  export interface TelephoneNumberValue {
-    telephone_number: string;
-
-    type: 'value/telephone_number';
-  }
-
-  /**
-   * Geographic coordinate value
-   */
-  export interface GeoValue {
-    geo: string;
-
-    type: 'value/geo';
-  }
-
-  /**
-   * Date without time
-   */
-  export interface DateValue {
-    date: string;
-
-    type: 'value/date';
-  }
-
-  /**
-   * Date and time value
-   */
-  export interface DatetimeValue {
-    datetime: string;
-
-    type: 'value/datetime';
-  }
-
-  /**
-   * Selected choice option
-   */
-  export interface ChoiceValue {
-    option: ChoiceValue.Option;
-
-    type: 'value/choice';
-  }
-
-  export namespace ChoiceValue {
-    export interface Option {
-      id: string;
-
-      type: 'field_option';
-
-      label?: string;
-    }
-  }
-
-  /**
-   * Funnel step value
-   */
-  export interface FunnelStepValue {
-    step: FunnelStepValue.Step;
-
-    type: 'value/funnel_step';
-  }
-
-  export namespace FunnelStepValue {
-    export interface Step {
-      id: string;
-
-      type: 'funnel_step';
-
-      name?: string;
-    }
-  }
-
-  /**
-   * Related item reference
-   */
-  export interface RelationValue {
-    /**
-     * An Item represents a single record or row within a Collection. It holds a set of
-     * `values` corresponding to the Collection's `fields`.
-     */
-    item: ItemsAPI.Item;
-
-    type: 'value/relation';
-  }
-
-  /**
-   * A single line of text
-   */
-  export interface SingleLineTextValue {
-    text: string;
-
-    type: 'value/text/single_line';
-  }
-
-  /**
-   * Multiple lines of text
-   */
-  export interface MultiLineTextValue {
-    text: string;
-
-    type: 'value/text/multi_line';
-  }
-
-  /**
-   * Integer value without units
-   */
-  export interface IntegerValue {
-    number: number;
-
-    type: 'value/number/unitless_integer';
-  }
-
-  /**
-   * Floating point number
-   */
-  export interface FloatValue {
-    number: number;
-
-    type: 'value/number/unitless_float';
-  }
-
-  /**
-   * Monetary or currency value
-   */
-  export interface MonetaryValue {
-    amount: MonetaryValue.Amount;
-
-    type: 'value/number/monetary';
-  }
-
-  export namespace MonetaryValue {
-    export interface Amount {
-      amount_in_minor_units: number;
-
-      currency: string;
-
-      type: 'currency';
-    }
-  }
-
-  /**
-   * Percentage numeric value
-   */
-  export interface PercentageValue {
-    percentage: number;
-
-    type: 'value/number/percentage';
-  }
-
-  /**
-   * True or false value
-   */
-  export interface BooleanValue {
-    boolean: boolean;
-
-    type: 'value/boolean';
-  }
-
-  /**
-   * Email address value
-   */
-  export interface EmailValue {
-    email: string;
-
-    type: 'value/email';
-  }
-
-  /**
-   * URL or web address
-   */
-  export interface URLValue {
-    type: 'value/uri/url';
-
-    url: string;
-  }
-
-  /**
-   * Internet domain name
-   */
-  export interface DomainValue {
-    domain: string;
-
-    type: 'value/uri/domain';
-  }
-
-  /**
-   * X (formerly Twitter) username
-   */
-  export interface SocialXValue {
-    profile: SocialXValue.Profile;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * LinkedIn profile link
-   */
-  export interface SocialLinkedInValue {
-    profile: SocialLinkedInValue.Profile;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * Telephone number value
-   */
-  export interface TelephoneNumberValue {
-    telephone_number: string;
-
-    type: 'value/telephone_number';
-  }
-
-  /**
-   * Geographic coordinate value
-   */
-  export interface GeoValue {
-    geo: string;
-
-    type: 'value/geo';
-  }
-
-  /**
-   * Date without time
-   */
-  export interface DateValue {
-    date: string;
-
-    type: 'value/date';
-  }
-
-  /**
-   * Date and time value
-   */
-  export interface DatetimeValue {
-    datetime: string;
-
-    type: 'value/datetime';
-  }
-
-  /**
-   * Selected choice option
-   */
-  export interface ChoiceValue {
-    option: ChoiceValue.Option;
-
-    type: 'value/choice';
-  }
-
-  export namespace ChoiceValue {
-    export interface Option {
-      id: string;
-
-      type: 'field_option';
-
-      label?: string;
-    }
-  }
-
-  /**
-   * Funnel step value
-   */
-  export interface FunnelStepValue {
-    step: FunnelStepValue.Step;
-
-    type: 'value/funnel_step';
-  }
-
-  export namespace FunnelStepValue {
-    export interface Step {
-      id: string;
-
-      type: 'funnel_step';
-
-      name?: string;
-    }
-  }
-
-  /**
-   * Related item reference
-   */
-  export interface RelationValue {
-    /**
-     * An Item represents a single record or row within a Collection. It holds a set of
-     * `values` corresponding to the Collection's `fields`.
-     */
-    item: ItemsAPI.Item;
-
-    type: 'value/relation';
-  }
-
-  /**
-   * A single line of text
-   */
-  export interface SingleLineTextValue {
-    text: string;
-
-    type: 'value/text/single_line';
-  }
-
-  /**
-   * Multiple lines of text
-   */
-  export interface MultiLineTextValue {
-    text: string;
-
-    type: 'value/text/multi_line';
-  }
-
-  /**
-   * Integer value without units
-   */
-  export interface IntegerValue {
-    number: number;
-
-    type: 'value/number/unitless_integer';
-  }
-
-  /**
-   * Floating point number
-   */
-  export interface FloatValue {
-    number: number;
-
-    type: 'value/number/unitless_float';
-  }
-
-  /**
-   * Monetary or currency value
-   */
-  export interface MonetaryValue {
-    amount: MonetaryValue.Amount;
-
-    type: 'value/number/monetary';
-  }
-
-  export namespace MonetaryValue {
-    export interface Amount {
-      amount_in_minor_units: number;
-
-      currency: string;
-
-      type: 'currency';
-    }
-  }
-
-  /**
-   * Percentage numeric value
-   */
-  export interface PercentageValue {
-    percentage: number;
-
-    type: 'value/number/percentage';
-  }
-
-  /**
-   * True or false value
-   */
-  export interface BooleanValue {
-    boolean: boolean;
-
-    type: 'value/boolean';
-  }
-
-  /**
-   * Email address value
-   */
-  export interface EmailValue {
-    email: string;
-
-    type: 'value/email';
-  }
-
-  /**
-   * URL or web address
-   */
-  export interface URLValue {
-    type: 'value/uri/url';
-
-    url: string;
-  }
-
-  /**
-   * Internet domain name
-   */
-  export interface DomainValue {
-    domain: string;
-
-    type: 'value/uri/domain';
-  }
-
-  /**
-   * X (formerly Twitter) username
-   */
-  export interface SocialXValue {
-    profile: SocialXValue.Profile;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * LinkedIn profile link
-   */
-  export interface SocialLinkedInValue {
-    profile: SocialLinkedInValue.Profile;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * Telephone number value
-   */
-  export interface TelephoneNumberValue {
-    telephone_number: string;
-
-    type: 'value/telephone_number';
-  }
-
-  /**
-   * Geographic coordinate value
-   */
-  export interface GeoValue {
-    geo: string;
-
-    type: 'value/geo';
-  }
-
-  /**
-   * Date without time
-   */
-  export interface DateValue {
-    date: string;
-
-    type: 'value/date';
-  }
-
-  /**
-   * Date and time value
-   */
-  export interface DatetimeValue {
-    datetime: string;
-
-    type: 'value/datetime';
-  }
-
-  /**
-   * Selected choice option
-   */
-  export interface ChoiceValue {
-    option: ChoiceValue.Option;
-
-    type: 'value/choice';
-  }
-
-  export namespace ChoiceValue {
-    export interface Option {
-      id: string;
-
-      type: 'field_option';
-
-      label?: string;
-    }
-  }
-
-  /**
-   * Funnel step value
-   */
-  export interface FunnelStepValue {
-    step: FunnelStepValue.Step;
-
-    type: 'value/funnel_step';
-  }
-
-  export namespace FunnelStepValue {
-    export interface Step {
-      id: string;
-
-      type: 'funnel_step';
-
-      name?: string;
-    }
-  }
-
-  /**
-   * Related item reference
-   */
-  export interface RelationValue {
-    /**
-     * An Item represents a single record or row within a Collection. It holds a set of
-     * `values` corresponding to the Collection's `fields`.
-     */
-    item: ItemsAPI.Item;
-
-    type: 'value/relation';
-  }
-
-  /**
-   * A single line of text
-   */
-  export interface SingleLineTextValue {
-    text: string;
-
-    type: 'value/text/single_line';
-  }
-
-  /**
-   * Multiple lines of text
-   */
-  export interface MultiLineTextValue {
-    text: string;
-
-    type: 'value/text/multi_line';
-  }
-
-  /**
-   * Integer value without units
-   */
-  export interface IntegerValue {
-    number: number;
-
-    type: 'value/number/unitless_integer';
-  }
-
-  /**
-   * Floating point number
-   */
-  export interface FloatValue {
-    number: number;
-
-    type: 'value/number/unitless_float';
-  }
-
-  /**
-   * Monetary or currency value
-   */
-  export interface MonetaryValue {
-    amount: MonetaryValue.Amount;
-
-    type: 'value/number/monetary';
-  }
-
-  export namespace MonetaryValue {
-    export interface Amount {
-      amount_in_minor_units: number;
-
-      currency: string;
-
-      type: 'currency';
-    }
-  }
-
-  /**
-   * Percentage numeric value
-   */
-  export interface PercentageValue {
-    percentage: number;
-
-    type: 'value/number/percentage';
-  }
-
-  /**
-   * True or false value
-   */
-  export interface BooleanValue {
-    boolean: boolean;
-
-    type: 'value/boolean';
-  }
-
-  /**
-   * Email address value
-   */
-  export interface EmailValue {
-    email: string;
-
-    type: 'value/email';
-  }
-
-  /**
-   * URL or web address
-   */
-  export interface URLValue {
-    type: 'value/uri/url';
-
-    url: string;
-  }
-
-  /**
-   * Internet domain name
-   */
-  export interface DomainValue {
-    domain: string;
-
-    type: 'value/uri/domain';
-  }
-
-  /**
-   * X (formerly Twitter) username
-   */
-  export interface SocialXValue {
-    profile: SocialXValue.Profile;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * LinkedIn profile link
-   */
-  export interface SocialLinkedInValue {
-    profile: SocialLinkedInValue.Profile;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValue {
-    export interface Profile {
-      url?: string;
-
-      username?: string;
-    }
-  }
-
-  /**
-   * Telephone number value
-   */
-  export interface TelephoneNumberValue {
-    telephone_number: string;
-
-    type: 'value/telephone_number';
-  }
-
-  /**
-   * Geographic coordinate value
-   */
-  export interface GeoValue {
-    geo: string;
-
-    type: 'value/geo';
-  }
-
-  /**
-   * Date without time
-   */
-  export interface DateValue {
-    date: string;
-
-    type: 'value/date';
-  }
-
-  /**
-   * Date and time value
-   */
-  export interface DatetimeValue {
-    datetime: string;
-
-    type: 'value/datetime';
-  }
-
-  /**
-   * Selected choice option
-   */
-  export interface ChoiceValue {
-    option: ChoiceValue.Option;
-
-    type: 'value/choice';
-  }
-
-  export namespace ChoiceValue {
-    export interface Option {
-      id: string;
-
-      type: 'field_option';
-
-      label?: string;
-    }
-  }
-
-  /**
-   * Funnel step value
-   */
-  export interface FunnelStepValue {
-    step: FunnelStepValue.Step;
-
-    type: 'value/funnel_step';
-  }
-
-  export namespace FunnelStepValue {
-    export interface Step {
-      id: string;
-
-      type: 'funnel_step';
-
-      name?: string;
-    }
-  }
-
-  /**
-   * Related item reference
-   */
-  export interface RelationValue {
-    /**
-     * An Item represents a single record or row within a Collection. It holds a set of
-     * `values` corresponding to the Collection's `fields`.
-     */
-    item: ItemsAPI.Item;
-
-    type: 'value/relation';
-  }
-}
-
 export declare namespace Items {
   export {
+    type BooleanValue as BooleanValue,
+    type Choice as Choice,
+    type DateValue as DateValue,
+    type DatetimeValue as DatetimeValue,
+    type DomainValue as DomainValue,
+    type EmailValue as EmailValue,
+    type FieldValue as FieldValue,
+    type FloatValue as FloatValue,
+    type FunnelStep as FunnelStep,
+    type GeoValue as GeoValue,
+    type IntegerValue as IntegerValue,
     type Item as Item,
+    type MonetaryValue as MonetaryValue,
+    type MultiLineTextValue as MultiLineTextValue,
+    type PercentageValue as PercentageValue,
+    type RelationValue as RelationValue,
+    type SingleLineTextValue as SingleLineTextValue,
+    type SocialLinkedInValue as SocialLinkedInValue,
+    type SocialXValue as SocialXValue,
+    type TelephoneNumber as TelephoneNumber,
+    type URLValue as URLValue,
+    type Value as Value,
     type ItemCreateParams as ItemCreateParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemUpsertParams as ItemUpsertParams,
