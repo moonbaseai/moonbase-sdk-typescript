@@ -3,6 +3,7 @@
 import { APIResource } from '../core/resource';
 import * as ProgramsAPI from './programs';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -24,10 +25,12 @@ export class ProgramTemplates extends APIResource {
   list(
     query: ProgramTemplateListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ProgramTemplateListResponse> {
-    return this._client.get('/program_templates', { query, ...options });
+  ): PagePromise<ProgramTemplatesCursorPage, ProgramTemplate> {
+    return this._client.getAPIList('/program_templates', CursorPage<ProgramTemplate>, { query, ...options });
   }
 }
+
+export type ProgramTemplatesCursorPage = CursorPage<ProgramTemplate>;
 
 /**
  * The ProgramTemplate object defines the content of a message sent by a `Program`,
@@ -87,70 +90,6 @@ export namespace ProgramTemplate {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface ProgramTemplateListResponse {
-  /**
-   * An array of ProgramTemplate items.
-   */
-  data: Array<ProgramTemplate>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: ProgramTemplateListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: ProgramTemplateListResponse.Meta;
-}
-
-export namespace ProgramTemplateListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
 export interface ProgramTemplateRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid option is
@@ -159,14 +98,7 @@ export interface ProgramTemplateRetrieveParams {
   include?: Array<'program'>;
 }
 
-export interface ProgramTemplateListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface ProgramTemplateListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -190,7 +122,7 @@ export interface ProgramTemplateListParams {
 export declare namespace ProgramTemplates {
   export {
     type ProgramTemplate as ProgramTemplate,
-    type ProgramTemplateListResponse as ProgramTemplateListResponse,
+    type ProgramTemplatesCursorPage as ProgramTemplatesCursorPage,
     type ProgramTemplateRetrieveParams as ProgramTemplateRetrieveParams,
     type ProgramTemplateListParams as ProgramTemplateListParams,
   };

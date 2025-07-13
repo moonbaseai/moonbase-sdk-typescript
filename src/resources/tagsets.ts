@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as InboxConversationsAPI from './inbox-conversations';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -20,10 +20,12 @@ export class Tagsets extends APIResource {
   list(
     query: TagsetListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<TagsetListResponse> {
-    return this._client.get('/tagsets', { query, ...options });
+  ): PagePromise<TagsetsCursorPage, Tagset> {
+    return this._client.getAPIList('/tagsets', CursorPage<Tagset>, { query, ...options });
   }
 }
+
+export type TagsetsCursorPage = CursorPage<Tagset>;
 
 /**
  * A Tagset is a collection of `Tag` objects that can be applied within a specific
@@ -60,7 +62,7 @@ export interface Tagset {
   /**
    * A list of `Tag` objects belonging to this tagset.
    */
-  tags?: Array<InboxConversationsAPI.Tag>;
+  tags?: Array<Tagset.Tag>;
 
   /**
    * Time at which the object was last updated, as an RFC 3339 timestamp.
@@ -75,80 +77,30 @@ export namespace Tagset {
      */
     self: string;
   }
-}
-
-/**
- * A set of results using cursor-based pagination.
- */
-export interface TagsetListResponse {
-  /**
-   * An array of Tagset items.
-   */
-  data: Array<Tagset>;
-
-  type: 'list';
 
   /**
-   * Links for navigating through the paginated results
+   * A Tag is a label that can be applied to `Conversation` objects for organization
+   * and filtering.
    */
-  links?: TagsetListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: TagsetListResponse.Meta;
-}
-
-export namespace TagsetListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
+  export interface Tag {
+    /**
+     * Unique identifier for the object.
+     */
+    id: string;
 
     /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
+     * The name of the tag.
      */
-    has_more?: boolean;
-  }
+    name: string;
 
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
+    /**
+     * String representing the object’s type. Always `tag` for this object.
+     */
+    type: 'tag';
   }
 }
 
-export interface TagsetListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface TagsetListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -166,7 +118,7 @@ export interface TagsetListParams {
 export declare namespace Tagsets {
   export {
     type Tagset as Tagset,
-    type TagsetListResponse as TagsetListResponse,
+    type TagsetsCursorPage as TagsetsCursorPage,
     type TagsetListParams as TagsetListParams,
   };
 }

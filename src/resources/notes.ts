@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -19,10 +20,12 @@ export class Notes extends APIResource {
   list(
     query: NoteListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<NoteListResponse> {
-    return this._client.get('/notes', { query, ...options });
+  ): PagePromise<NotesCursorPage, Note> {
+    return this._client.getAPIList('/notes', CursorPage<Note>, { query, ...options });
   }
 }
+
+export type NotesCursorPage = CursorPage<Note>;
 
 /**
  * The Note object represents a block of text content, often used for meeting notes
@@ -76,78 +79,7 @@ export namespace Note {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface NoteListResponse {
-  /**
-   * An array of Note items.
-   */
-  data: Array<Note>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: NoteListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: NoteListResponse.Meta;
-}
-
-export namespace NoteListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
-export interface NoteListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface NoteListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -165,7 +97,7 @@ export interface NoteListParams {
 export declare namespace Notes {
   export {
     type Note as Note,
-    type NoteListResponse as NoteListResponse,
+    type NotesCursorPage as NotesCursorPage,
     type NoteListParams as NoteListParams,
   };
 }

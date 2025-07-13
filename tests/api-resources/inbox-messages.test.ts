@@ -1,15 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource inboxMessages', () => {
-  // skipped: tests are disabled for the time being
-  test.skip('retrieve', async () => {
+  test('retrieve', async () => {
     const responsePromise = client.inboxMessages.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -20,16 +19,14 @@ describe('resource inboxMessages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('retrieve: request options and params are passed correctly', async () => {
+  test('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.inboxMessages.retrieve('id', { include: ['addresses'] }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(MoonbaseSDK.NotFoundError);
+    ).rejects.toThrow(Moonbase.NotFoundError);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('list', async () => {
+  test('list', async () => {
     const responsePromise = client.inboxMessages.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -40,8 +37,7 @@ describe('resource inboxMessages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('list: request options and params are passed correctly', async () => {
+  test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.inboxMessages.list(
@@ -55,6 +51,6 @@ describe('resource inboxMessages', () => {
         },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(MoonbaseSDK.NotFoundError);
+    ).rejects.toThrow(Moonbase.NotFoundError);
   });
 });

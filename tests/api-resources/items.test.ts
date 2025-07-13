@@ -1,15 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource items', () => {
-  // skipped: tests are disabled for the time being
-  test.skip('create: only required params', async () => {
+  test('create: only required params', async () => {
     const responsePromise = client.items.create({
       collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
       values: {
@@ -26,22 +25,24 @@ describe('resource items', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('create: required and optional params', async () => {
+  test('create: required and optional params', async () => {
     const response = await client.items.create({
       collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
         ceo: {
-          item: { id: '1CR2QLtx9doK4wFiFB7VAS', type: 'item', values: { foo: 'bar' } },
+          item: {
+            id: '1CR2QLtx9doK4wFiFB7VAS',
+            type: 'item',
+            values: { foo: { text: 'text', type: 'value/text/single_line' } },
+          },
           type: 'value/relation',
         },
       },
     });
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('retrieve', async () => {
+  test('retrieve', async () => {
     const responsePromise = client.items.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -52,8 +53,7 @@ describe('resource items', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('update: only required params', async () => {
+  test('update: only required params', async () => {
     const responsePromise = client.items.update('id', {
       values: { foo: { text: 'text', type: 'value/text/single_line' } },
     });
@@ -66,8 +66,7 @@ describe('resource items', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('update: required and optional params', async () => {
+  test('update: required and optional params', async () => {
     const response = await client.items.update('id', {
       values: { foo: { text: 'text', type: 'value/text/single_line' } },
       'update-many-strategy': 'replace',
@@ -75,8 +74,7 @@ describe('resource items', () => {
     });
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('delete', async () => {
+  test('delete', async () => {
     const responsePromise = client.items.delete('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -87,14 +85,13 @@ describe('resource items', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('upsert: only required params', async () => {
+  test('upsert: only required params', async () => {
     const responsePromise = client.items.upsert({
       collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
-      identifiers: { domain: [{ domain: 'aperturescience.com', type: 'value/uri/domain' }] },
+      identifiers: { domain: [] },
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
-        domain: [{ domain: 'aperturescience.com', type: 'value/uri/domain' }],
+        domain: [],
         linked_in: { profile: {}, type: 'value/uri/social_linked_in' },
       },
     });
@@ -107,14 +104,13 @@ describe('resource items', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('upsert: required and optional params', async () => {
+  test('upsert: required and optional params', async () => {
     const response = await client.items.upsert({
       collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
-      identifiers: { domain: [{ domain: 'aperturescience.com', type: 'value/uri/domain' }] },
+      identifiers: { domain: [] },
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
-        domain: [{ domain: 'aperturescience.com', type: 'value/uri/domain' }],
+        domain: [],
         linked_in: {
           profile: { url: 'https://linkedin.com/company/aperturescience', username: 'username' },
           type: 'value/uri/social_linked_in',

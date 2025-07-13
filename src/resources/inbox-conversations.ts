@@ -1,7 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as InboxMessagesAPI from './inbox-messages';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -23,70 +25,15 @@ export class InboxConversations extends APIResource {
   list(
     query: InboxConversationListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<InboxConversationListResponse> {
-    return this._client.get('/inbox_conversations', { query, ...options });
+  ): PagePromise<InboxConversationsCursorPage, InboxConversation> {
+    return this._client.getAPIList('/inbox_conversations', CursorPage<InboxConversation>, {
+      query,
+      ...options,
+    });
   }
 }
 
-/**
- * The Address object represents a recipient or sender of a message. It contains an
- * email address and can be linked to a person and an organization in your
- * collections.
- */
-export interface Address {
-  /**
-   * Unique identifier for the object.
-   */
-  id: string;
-
-  /**
-   * The email address.
-   */
-  email: string;
-
-  /**
-   * A hash of related links.
-   */
-  links: Address.Links;
-
-  /**
-   * String representing the object’s type. Always `address` for this object.
-   */
-  type: 'address';
-
-  /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
-   */
-  created_at?: string;
-
-  /**
-   * The role of the address in the message. Can be `from`, `reply_to`, `to`, `cc`,
-   * or `bcc`.
-   */
-  role?: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc';
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
-}
-
-export namespace Address {
-  /**
-   * A hash of related links.
-   */
-  export interface Links {
-    /**
-     * A link to the associated `Organization` item.
-     */
-    organization?: string;
-
-    /**
-     * A link to the associated `Person` item.
-     */
-    person?: string;
-  }
-}
+export type InboxConversationsCursorPage = CursorPage<InboxConversation>;
 
 /**
  * The Conversation object represents a thread of related messages.
@@ -108,7 +55,7 @@ export interface InboxConversation {
   /**
    * A list of `Address` objects (participants) in this conversation.
    */
-  addresses?: Array<Address>;
+  addresses?: Array<InboxMessagesAPI.Address>;
 
   /**
    * `true` if the conversation appears to be part of a bulk mailing.
@@ -153,7 +100,7 @@ export interface InboxConversation {
   /**
    * A list of `Tag` objects applied to this conversation.
    */
-  tags?: Array<Tag>;
+  tags?: Array<InboxConversation.Tag>;
 
   /**
    * The time of the most recent activity in the conversation, as an RFC 3339
@@ -200,90 +147,26 @@ export namespace InboxConversation {
      */
     self: string;
   }
-}
-
-/**
- * A Tag is a label that can be applied to `Conversation` objects for organization
- * and filtering.
- */
-export interface Tag {
-  /**
-   * Unique identifier for the object.
-   */
-  id: string;
 
   /**
-   * The name of the tag.
+   * A Tag is a label that can be applied to `Conversation` objects for organization
+   * and filtering.
    */
-  name: string;
-
-  /**
-   * String representing the object’s type. Always `tag` for this object.
-   */
-  type: 'tag';
-}
-
-/**
- * A set of results using cursor-based pagination.
- */
-export interface InboxConversationListResponse {
-  /**
-   * An array of InboxConversation items.
-   */
-  data: Array<InboxConversation>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: InboxConversationListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: InboxConversationListResponse.Meta;
-}
-
-export namespace InboxConversationListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
+  export interface Tag {
+    /**
+     * Unique identifier for the object.
+     */
+    id: string;
 
     /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
+     * The name of the tag.
      */
-    has_more?: boolean;
-  }
+    name: string;
 
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
+    /**
+     * String representing the object’s type. Always `tag` for this object.
+     */
+    type: 'tag';
   }
 }
 
@@ -295,14 +178,7 @@ export interface InboxConversationRetrieveParams {
   include?: Array<'addresses' | 'tags'>;
 }
 
-export interface InboxConversationListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface InboxConversationListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -330,10 +206,8 @@ export interface InboxConversationListParams {
 
 export declare namespace InboxConversations {
   export {
-    type Address as Address,
     type InboxConversation as InboxConversation,
-    type Tag as Tag,
-    type InboxConversationListResponse as InboxConversationListResponse,
+    type InboxConversationsCursorPage as InboxConversationsCursorPage,
     type InboxConversationRetrieveParams as InboxConversationRetrieveParams,
     type InboxConversationListParams as InboxConversationListParams,
   };

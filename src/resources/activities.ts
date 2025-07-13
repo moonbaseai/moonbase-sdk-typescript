@@ -2,13 +2,13 @@
 
 import { APIResource } from '../core/resource';
 import * as CallsAPI from './calls';
-import * as CollectionsAPI from './collections';
-import * as InboxConversationsAPI from './inbox-conversations';
 import * as InboxMessagesAPI from './inbox-messages';
 import * as ItemsAPI from './items';
 import * as MeetingsAPI from './meetings';
 import * as NotesAPI from './notes';
+import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -26,10 +26,12 @@ export class Activities extends APIResource {
   list(
     query: ActivityListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ActivityListResponse> {
-    return this._client.get('/activities', { query, ...options });
+  ): PagePromise<ActivitiesCursorPage, Activity> {
+    return this._client.getAPIList('/activities', CursorPage<Activity>, { query, ...options });
   }
 }
+
+export type ActivitiesCursorPage = CursorPage<Activity>;
 
 /**
  * The Activity object represents a specific event that has occurred, such as a
@@ -175,12 +177,12 @@ export namespace Activity {
     /**
      * A list of `Address` objects for the recipients.
      */
-    recipients?: Array<InboxConversationsAPI.Address>;
+    recipients?: Array<InboxMessagesAPI.Address>;
 
     /**
      * The `Address` of the sender.
      */
-    sender?: InboxConversationsAPI.Address;
+    sender?: InboxMessagesAPI.Address;
   }
 
   export namespace InboxMessageSentActivity {
@@ -481,7 +483,7 @@ export namespace Activity {
     /**
      * The `Address` of the recipient whose message bounced.
      */
-    recipient?: InboxConversationsAPI.Address;
+    recipient?: InboxMessagesAPI.Address;
   }
 
   export namespace ProgramMessageBouncedActivity {
@@ -528,7 +530,7 @@ export namespace Activity {
     /**
      * The `Address` of the recipient who clicked the link.
      */
-    recipient?: InboxConversationsAPI.Address;
+    recipient?: InboxMessagesAPI.Address;
   }
 
   export namespace ProgramMessageClickedActivity {
@@ -565,7 +567,7 @@ export namespace Activity {
     /**
      * The `Address` of the recipient who complained.
      */
-    recipient?: InboxConversationsAPI.Address;
+    recipient?: InboxMessagesAPI.Address;
   }
 
   export namespace ProgramMessageComplainedActivity {
@@ -602,7 +604,7 @@ export namespace Activity {
     /**
      * The `Address` of the recipient whose message failed.
      */
-    recipient?: InboxConversationsAPI.Address;
+    recipient?: InboxMessagesAPI.Address;
   }
 
   export namespace ProgramMessageFailedActivity {
@@ -638,7 +640,7 @@ export namespace Activity {
     /**
      * The `Address` of the recipient who opened the message.
      */
-    recipient?: InboxConversationsAPI.Address;
+    recipient?: InboxMessagesAPI.Address;
   }
 
   export namespace ProgramMessageOpenedActivity {
@@ -674,7 +676,7 @@ export namespace Activity {
     /**
      * The `Address` of the recipient the message was sent to.
      */
-    recipient?: InboxConversationsAPI.Address;
+    recipient?: InboxMessagesAPI.Address;
   }
 
   export namespace ProgramMessageSentActivity {
@@ -711,7 +713,7 @@ export namespace Activity {
     /**
      * The `Address` of the recipient whose message was shielded.
      */
-    recipient?: InboxConversationsAPI.Address;
+    recipient?: InboxMessagesAPI.Address;
   }
 
   export namespace ProgramMessageShieldedActivity {
@@ -748,7 +750,7 @@ export namespace Activity {
     /**
      * The `Address` of the recipient who unsubscribed.
      */
-    recipient?: InboxConversationsAPI.Address;
+    recipient?: InboxMessagesAPI.Address;
   }
 
   export namespace ProgramMessageUnsubscribedActivity {
@@ -761,78 +763,7 @@ export namespace Activity {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface ActivityListResponse {
-  /**
-   * An array of Activity items.
-   */
-  data: Array<Activity>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: ActivityListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: ActivityListResponse.Meta;
-}
-
-export namespace ActivityListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
-export interface ActivityListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface ActivityListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -850,7 +781,7 @@ export interface ActivityListParams {
 export declare namespace Activities {
   export {
     type Activity as Activity,
-    type ActivityListResponse as ActivityListResponse,
+    type ActivitiesCursorPage as ActivitiesCursorPage,
     type ActivityListParams as ActivityListParams,
   };
 }

@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { MoonbaseSDK } from 'moonbase-sdk';
+import { Moonbase } from '@moonbase/sdk';
 
-const { stringifyQuery } = MoonbaseSDK.prototype as any;
+const { stringifyQuery } = Moonbase.prototype as any;
 
 describe(stringifyQuery, () => {
   for (const [input, expected] of [

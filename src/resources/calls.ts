@@ -10,7 +10,7 @@ export class Calls extends APIResource {
    *
    * @example
    * ```ts
-   * const call = await client.calls.log({
+   * const call = await client.calls.create({
    *   direction: 'incoming',
    *   participants: [
    *     { phone: '+14155551212', role: 'caller' },
@@ -31,7 +31,7 @@ export class Calls extends APIResource {
    * });
    * ```
    */
-  log(body: CallLogParams, options?: RequestOptions): APIPromise<Call> {
+  create(body: CallCreateParams, options?: RequestOptions): APIPromise<Call> {
     return this._client.post('/calls', { body, ...options });
   }
 }
@@ -157,7 +157,7 @@ export namespace Call {
   }
 }
 
-export interface CallLogParams {
+export interface CallCreateParams {
   /**
    * The direction of the call, either `incoming` or `outgoing`.
    */
@@ -166,7 +166,7 @@ export interface CallLogParams {
   /**
    * An array of participants involved in the call.
    */
-  participants: Array<CallLogParams.Participant>;
+  participants: Array<CallCreateParams.Participant>;
 
   /**
    * The name of the phone provider that handled the call (e.g., `openphone`).
@@ -217,7 +217,7 @@ export interface CallLogParams {
   provider_metadata?: { [key: string]: unknown };
 }
 
-export namespace CallLogParams {
+export namespace CallCreateParams {
   /**
    * Parameters for creating a `Participant` object.
    */
@@ -235,5 +235,5 @@ export namespace CallLogParams {
 }
 
 export declare namespace Calls {
-  export { type Call as Call, type CallLogParams as CallLogParams };
+  export { type Call as Call, type CallCreateParams as CallCreateParams };
 }

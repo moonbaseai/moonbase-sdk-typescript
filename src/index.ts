@@ -1,12 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { MoonbaseSDK as default } from './client';
+export { Moonbase as default } from './client';
 
 export { type Uploadable, toFile } from './core/uploads';
 export { APIPromise } from './core/api-promise';
-export { MoonbaseSDK, type ClientOptions } from './client';
+export { Moonbase, type ClientOptions } from './client';
+export { PagePromise } from './core/pagination';
 export {
-  MoonbaseSDKError,
+  MoonbaseError,
   APIError,
   APIConnectionError,
   APIConnectionTimeoutError,

@@ -1,16 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource calls', () => {
-  // skipped: tests are disabled for the time being
-  test.skip('log: only required params', async () => {
-    const responsePromise = client.calls.log({
+  test('create: only required params', async () => {
+    const responsePromise = client.calls.create({
       direction: 'incoming',
       participants: [
         { phone: '+14155551212', role: 'caller' },
@@ -30,9 +29,8 @@ describe('resource calls', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('log: required and optional params', async () => {
-    const response = await client.calls.log({
+  test('create: required and optional params', async () => {
+    const response = await client.calls.create({
       direction: 'incoming',
       participants: [
         { phone: '+14155551212', role: 'caller' },

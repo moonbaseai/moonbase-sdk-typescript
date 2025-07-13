@@ -1,64 +1,85 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Activities, type Activity, type ActivityListResponse, type ActivityListParams } from './activities';
-export { Calls, type Call, type CallLogParams } from './calls';
+export * from './shared';
+export { Activities, type Activity, type ActivityListParams, type ActivitiesCursorPage } from './activities';
+export { Calls, type Call, type CallCreateParams } from './calls';
 export {
   Collections,
   type Collection,
-  type CollectionListResponse,
-  type CollectionRetrieveFieldResponse,
+  type Field,
   type CollectionRetrieveParams,
   type CollectionListParams,
-  type CollectionRetrieveFieldParams,
-} from './collections';
-export { Files, type File, type FileListResponse, type FileListParams } from './files';
+  type CollectionsCursorPage,
+} from './collections/collections';
+export { Files, type MoonbaseFile, type FileListParams, type MoonbaseFilesCursorPage } from './files';
 export {
   Forms,
   type Form,
-  type FormListResponse,
   type FormRetrieveParams,
   type FormListParams,
+  type FormsCursorPage,
 } from './forms';
 export {
   InboxConversations,
-  type Address,
   type InboxConversation,
-  type Tag,
-  type InboxConversationListResponse,
   type InboxConversationRetrieveParams,
   type InboxConversationListParams,
+  type InboxConversationsCursorPage,
 } from './inbox-conversations';
 export {
   InboxMessages,
+  type Address,
   type EmailMessage,
-  type InboxMessageListResponse,
   type InboxMessageRetrieveParams,
   type InboxMessageListParams,
+  type EmailMessagesCursorPage,
 } from './inbox-messages';
 export {
   Inboxes,
   type Inbox,
-  type InboxListResponse,
   type InboxRetrieveParams,
   type InboxListParams,
+  type InboxesCursorPage,
 } from './inboxes';
 export {
   Items,
+  type BooleanValue,
+  type Choice,
+  type DateValue,
+  type DatetimeValue,
+  type DomainValue,
+  type EmailValue,
+  type FieldValue,
+  type FloatValue,
+  type FunnelStep,
+  type GeoValue,
+  type IntegerValue,
   type Item,
+  type MonetaryValue,
+  type MultiLineTextValue,
+  type PercentageValue,
+  type RelationValue,
+  type SingleLineTextValue,
+  type SocialLinkedInValue,
+  type SocialXValue,
+  type TelephoneNumber,
+  type URLValue,
+  type Value,
   type ItemCreateParams,
   type ItemUpdateParams,
   type ItemUpsertParams,
+  type ItemsCursorPage,
 } from './items';
 export {
   Meetings,
   type Attendee,
   type Meeting,
   type Organizer,
-  type MeetingListResponse,
   type MeetingRetrieveParams,
   type MeetingListParams,
+  type MeetingsCursorPage,
 } from './meetings';
-export { Notes, type Note, type NoteListResponse, type NoteListParams } from './notes';
+export { Notes, type Note, type NoteListParams, type NotesCursorPage } from './notes';
 export {
   ProgramMessages,
   type ProgramMessageSendResponse,
@@ -67,22 +88,16 @@ export {
 export {
   ProgramTemplates,
   type ProgramTemplate,
-  type ProgramTemplateListResponse,
   type ProgramTemplateRetrieveParams,
   type ProgramTemplateListParams,
+  type ProgramTemplatesCursorPage,
 } from './program-templates';
 export {
   Programs,
   type Program,
-  type ProgramListResponse,
   type ProgramRetrieveParams,
   type ProgramListParams,
+  type ProgramsCursorPage,
 } from './programs';
-export { Tagsets, type Tagset, type TagsetListResponse, type TagsetListParams } from './tagsets';
-export {
-  Views,
-  type View,
-  type ViewListItemsResponse,
-  type ViewRetrieveParams,
-  type ViewListItemsParams,
-} from './views';
+export { Tagsets, type Tagset, type TagsetListParams, type TagsetsCursorPage } from './tagsets';
+export { Views, type View, type ViewRetrieveParams, type ViewListItemsParams } from './views';

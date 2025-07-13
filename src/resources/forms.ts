@@ -1,8 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as CollectionsAPI from './collections';
+import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -24,10 +25,12 @@ export class Forms extends APIResource {
   list(
     query: FormListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<FormListResponse> {
-    return this._client.get('/forms', { query, ...options });
+  ): PagePromise<FormsCursorPage, Form> {
+    return this._client.getAPIList('/forms', CursorPage<Form>, { query, ...options });
   }
 }
+
+export type FormsCursorPage = CursorPage<Form>;
 
 /**
  * A Form provides a way to create `Items` in a `Collection`, often via a public
@@ -96,70 +99,6 @@ export namespace Form {
   }
 }
 
-/**
- * A set of results using cursor-based pagination.
- */
-export interface FormListResponse {
-  /**
-   * An array of Form items.
-   */
-  data: Array<Form>;
-
-  type: 'list';
-
-  /**
-   * Links for navigating through the paginated results
-   */
-  links?: FormListResponse.Links;
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  meta?: FormListResponse.Meta;
-}
-
-export namespace FormListResponse {
-  /**
-   * Links for navigating through the paginated results
-   */
-  export interface Links {
-    next?: string;
-
-    prev?: string;
-  }
-
-  /**
-   * Metadata about the pagination, including the cursors pointing to the previous
-   * and next pages.
-   */
-  export interface Meta {
-    cursors?: Meta.Cursors;
-
-    /**
-     * Indicates if there are more results available. If true, the `next` cursor will
-     * be present.
-     */
-    has_more?: boolean;
-  }
-
-  export namespace Meta {
-    export interface Cursors {
-      /**
-       * Cursor for the next page. This value should be used with the `after` query
-       * parameter to fetch the next page of results.
-       */
-      next?: string;
-
-      /**
-       * Cursor for the previous page. This value should be used with the `before` query
-       * parameter to fetch the previous page of results.
-       */
-      prev?: string;
-    }
-  }
-}
-
 export interface FormRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid option is
@@ -168,14 +107,7 @@ export interface FormRetrieveParams {
   include?: Array<'collection.fields'>;
 }
 
-export interface FormListParams {
-  /**
-   * When specified, returns results starting immediately after the item identified
-   * by this cursor. Use the cursor value from the previous response's metadata to
-   * fetch the next page of results.
-   */
-  after?: string;
-
+export interface FormListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
    * by this cursor. Use the cursor value from the response's metadata to fetch the
@@ -199,7 +131,7 @@ export interface FormListParams {
 export declare namespace Forms {
   export {
     type Form as Form,
-    type FormListResponse as FormListResponse,
+    type FormsCursorPage as FormsCursorPage,
     type FormRetrieveParams as FormRetrieveParams,
     type FormListParams as FormListParams,
   };

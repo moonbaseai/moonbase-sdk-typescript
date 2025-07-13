@@ -1,15 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource collections', () => {
-  // skipped: tests are disabled for the time being
-  test.skip('retrieve', async () => {
+  test('retrieve', async () => {
     const responsePromise = client.collections.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -20,16 +19,14 @@ describe('resource collections', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('retrieve: request options and params are passed correctly', async () => {
+  test('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.collections.retrieve('id', { include: ['fields'] }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(MoonbaseSDK.NotFoundError);
+    ).rejects.toThrow(Moonbase.NotFoundError);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('list', async () => {
+  test('list', async () => {
     const responsePromise = client.collections.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -40,31 +37,13 @@ describe('resource collections', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('list: request options and params are passed correctly', async () => {
+  test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.collections.list(
         { after: 'after', before: 'before', limit: 1 },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(MoonbaseSDK.NotFoundError);
-  });
-
-  // skipped: tests are disabled for the time being
-  test.skip('retrieveField: only required params', async () => {
-    const responsePromise = client.collections.retrieveField('id', { collection_id: 'collection_id' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // skipped: tests are disabled for the time being
-  test.skip('retrieveField: required and optional params', async () => {
-    const response = await client.collections.retrieveField('id', { collection_id: 'collection_id' });
+    ).rejects.toThrow(Moonbase.NotFoundError);
   });
 });

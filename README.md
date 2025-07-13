@@ -1,10 +1,10 @@
-# Moonbase SDK TypeScript API Library
+# Moonbase TypeScript API Library
 
-[![NPM version](<https://img.shields.io/npm/v/moonbase-sdk.svg?label=npm%20(stable)>)](https://npmjs.org/package/moonbase-sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/moonbase-sdk)
+[![NPM version](<https://img.shields.io/npm/v/@moonbase/sdk.svg?label=npm%20(stable)>)](https://npmjs.org/package/@moonbase/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@moonbase/sdk)
 
-This library provides convenient access to the Moonbase SDK REST API from server-side TypeScript or JavaScript.
+This library provides convenient access to the Moonbase REST API from server-side TypeScript or JavaScript.
 
-The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.moonbase.ai](https://docs.moonbase.ai/api-reference/introduction). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
@@ -15,7 +15,7 @@ npm install git+ssh://git@github.com:stainless-sdks/moonbase-sdk-typescript.git
 ```
 
 > [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install moonbase-sdk`
+> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install @moonbase/sdk`
 
 ## Usage
 
@@ -23,15 +23,16 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
-  apiKey: process.env['MOONBASE_SDK_API_KEY'], // This is the default and can be omitted
+const client = new Moonbase({
+  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const activities = await client.activities.list();
+const page = await client.collections.list();
+const collection = page.data[0];
 
-console.log(activities.data);
+console.log(collection.id);
 ```
 
 ### Request & Response types
@@ -40,13 +41,13 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
-  apiKey: process.env['MOONBASE_SDK_API_KEY'], // This is the default and can be omitted
+const client = new Moonbase({
+  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const activities: MoonbaseSDK.ActivityListResponse = await client.activities.list();
+const [collection]: [Moonbase.Collection] = await client.collections.list();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -59,8 +60,8 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const activities = await client.activities.list().catch(async (err) => {
-  if (err instanceof MoonbaseSDK.APIError) {
+const page = await client.collections.list().catch(async (err) => {
+  if (err instanceof Moonbase.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
     console.log(err.headers); // {server: 'nginx', ...}
@@ -94,12 +95,12 @@ You can use the `maxRetries` option to configure or disable this:
 <!-- prettier-ignore -->
 ```js
 // Configure the default for all requests:
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   maxRetries: 0, // default is 2
 });
 
 // Or, configure per-request:
-await client.activities.list({
+await client.collections.list({
   maxRetries: 5,
 });
 ```
@@ -111,12 +112,12 @@ Requests time out after 1 minute by default. You can configure this with a `time
 <!-- prettier-ignore -->
 ```ts
 // Configure the default for all requests:
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
 // Override per-request:
-await client.activities.list({
+await client.collections.list({
   timeout: 5 * 1000,
 });
 ```
@@ -124,6 +125,37 @@ await client.activities.list({
 On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
+
+## Auto-pagination
+
+List methods in the Moonbase API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllCollections(params) {
+  const allCollections = [];
+  // Automatically fetches more pages as needed.
+  for await (const collection of client.collections.list({ limit: 20 })) {
+    allCollections.push(collection);
+  }
+  return allCollections;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.collections.list({ limit: 20 });
+for (const collection of page.data) {
+  console.log(collection);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
 
 ## Advanced Usage
 
@@ -137,15 +169,17 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 
 <!-- prettier-ignore -->
 ```ts
-const client = new MoonbaseSDK();
+const client = new Moonbase();
 
-const response = await client.activities.list().asResponse();
+const response = await client.collections.list().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: activities, response: raw } = await client.activities.list().withResponse();
+const { data: page, response: raw } = await client.collections.list().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(activities.data);
+for await (const collection of page) {
+  console.log(collection.id);
+}
 ```
 
 ### Logging
@@ -158,13 +192,13 @@ console.log(activities.data);
 
 The log level can be configured in two ways:
 
-1. Via the `MOONBASE_SDK_LOG` environment variable
+1. Via the `MOONBASE_LOG` environment variable
 2. Using the `logLevel` client option (overrides the environment variable if set)
 
 ```ts
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   logLevel: 'debug', // Show all log messages
 });
 ```
@@ -190,13 +224,13 @@ When providing a custom logger, the `logLevel` option still controls which messa
 below the configured level will not be sent to your logger.
 
 ```ts
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 import pino from 'pino';
 
 const logger = pino();
 
-const client = new MoonbaseSDK({
-  logger: logger.child({ name: 'MoonbaseSDK' }),
+const client = new Moonbase({
+  logger: logger.child({ name: 'Moonbase' }),
   logLevel: 'debug', // Send all messages to pino, allowing it to filter
 });
 ```
@@ -225,7 +259,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.activities.list({
+client.collections.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
@@ -259,10 +293,10 @@ globalThis.fetch = fetch;
 Or pass it to the client:
 
 ```ts
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 import fetch from 'my-fetch';
 
-const client = new MoonbaseSDK({ fetch });
+const client = new Moonbase({ fetch });
 ```
 
 ### Fetch options
@@ -270,9 +304,9 @@ const client = new MoonbaseSDK({ fetch });
 If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
 ```ts
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   fetchOptions: {
     // `RequestInit` options
   },
@@ -287,11 +321,11 @@ options to requests:
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
 
 ```ts
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   fetchOptions: {
     dispatcher: proxyAgent,
   },
@@ -301,9 +335,9 @@ const client = new MoonbaseSDK({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
 
 ```ts
-import MoonbaseSDK from 'moonbase-sdk';
+import Moonbase from '@moonbase/sdk';
 
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   fetchOptions: {
     proxy: 'http://localhost:8888',
   },
@@ -313,10 +347,10 @@ const client = new MoonbaseSDK({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
 
 ```ts
-import MoonbaseSDK from 'npm:moonbase-sdk';
+import Moonbase from 'npm:@moonbase/sdk';
 
 const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
-const client = new MoonbaseSDK({
+const client = new Moonbase({
   fetchOptions: {
     client: httpClient,
   },
@@ -343,7 +377,6 @@ TypeScript >= 4.9 is supported.
 
 The following runtimes are supported:
 
-- Web browsers (Up-to-date Chrome, Firefox, Safari, Edge, and more)
 - Node.js 20 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
 - Deno v1.28.0 or higher.
 - Bun 1.0 or later.
@@ -351,6 +384,9 @@ The following runtimes are supported:
 - Vercel Edge Runtime.
 - Jest 28 or greater with the `"node"` environment (`"jsdom"` is not supported at this time).
 - Nitro v2.6 or greater.
+
+> [!WARNING]
+> Web browser runtimes aren't supported. The SDK will throw an error if used in a browser environment.
 
 Note that React Native is not supported at this time.
 
