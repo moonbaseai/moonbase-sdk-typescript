@@ -43,40 +43,6 @@ Methods:
 - <code title="get /files/{id}">client.files.<a href="./src/resources/files.ts">retrieve</a>(id) -> MoonbaseFile</code>
 - <code title="get /files">client.files.<a href="./src/resources/files.ts">list</a>({ ...params }) -> MoonbaseFilesCursorPage</code>
 
-# InboxConversations
-
-Types:
-
-- <code><a href="./src/resources/inbox-conversations.ts">InboxConversation</a></code>
-
-Methods:
-
-- <code title="get /inbox_conversations/{id}">client.inboxConversations.<a href="./src/resources/inbox-conversations.ts">retrieve</a>(id, { ...params }) -> InboxConversation</code>
-- <code title="get /inbox_conversations">client.inboxConversations.<a href="./src/resources/inbox-conversations.ts">list</a>({ ...params }) -> InboxConversationsCursorPage</code>
-
-# InboxMessages
-
-Types:
-
-- <code><a href="./src/resources/inbox-messages.ts">Address</a></code>
-- <code><a href="./src/resources/inbox-messages.ts">EmailMessage</a></code>
-
-Methods:
-
-- <code title="get /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">retrieve</a>(id, { ...params }) -> EmailMessage</code>
-- <code title="get /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">list</a>({ ...params }) -> EmailMessagesCursorPage</code>
-
-# Inboxes
-
-Types:
-
-- <code><a href="./src/resources/inboxes.ts">Inbox</a></code>
-
-Methods:
-
-- <code title="get /inboxes/{id}">client.inboxes.<a href="./src/resources/inboxes.ts">retrieve</a>(id, { ...params }) -> Inbox</code>
-- <code title="get /inboxes">client.inboxes.<a href="./src/resources/inboxes.ts">list</a>({ ...params }) -> InboxesCursorPage</code>
-
 # Items
 
 Types:

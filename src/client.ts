@@ -22,22 +22,6 @@ import { APIPromise } from './core/api-promise';
 import { Call, CallCreateParams, Calls } from './resources/calls';
 import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
 import {
-  InboxConversation,
-  InboxConversationListParams,
-  InboxConversationRetrieveParams,
-  InboxConversations,
-  InboxConversationsCursorPage,
-} from './resources/inbox-conversations';
-import {
-  Address,
-  EmailMessage,
-  EmailMessagesCursorPage,
-  InboxMessageListParams,
-  InboxMessageRetrieveParams,
-  InboxMessages,
-} from './resources/inbox-messages';
-import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
-import {
   BooleanValue,
   Choice,
   DateValue,
@@ -814,9 +798,6 @@ export class Moonbase {
   calls: API.Calls = new API.Calls(this);
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
-  inboxConversations: API.InboxConversations = new API.InboxConversations(this);
-  inboxMessages: API.InboxMessages = new API.InboxMessages(this);
-  inboxes: API.Inboxes = new API.Inboxes(this);
   items: API.Items = new API.Items(this);
   meetings: API.Meetings = new API.Meetings(this);
   notes: API.Notes = new API.Notes(this);
@@ -829,9 +810,6 @@ export class Moonbase {
 Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
-Moonbase.InboxConversations = InboxConversations;
-Moonbase.InboxMessages = InboxMessages;
-Moonbase.Inboxes = Inboxes;
 Moonbase.Items = Items;
 Moonbase.Meetings = Meetings;
 Moonbase.Notes = Notes;
@@ -862,31 +840,6 @@ export declare namespace Moonbase {
     type MoonbaseFile as MoonbaseFile,
     type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
     type FileListParams as FileListParams,
-  };
-
-  export {
-    InboxConversations as InboxConversations,
-    type InboxConversation as InboxConversation,
-    type InboxConversationsCursorPage as InboxConversationsCursorPage,
-    type InboxConversationRetrieveParams as InboxConversationRetrieveParams,
-    type InboxConversationListParams as InboxConversationListParams,
-  };
-
-  export {
-    InboxMessages as InboxMessages,
-    type Address as Address,
-    type EmailMessage as EmailMessage,
-    type EmailMessagesCursorPage as EmailMessagesCursorPage,
-    type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
-    type InboxMessageListParams as InboxMessageListParams,
-  };
-
-  export {
-    Inboxes as Inboxes,
-    type Inbox as Inbox,
-    type InboxesCursorPage as InboxesCursorPage,
-    type InboxRetrieveParams as InboxRetrieveParams,
-    type InboxListParams as InboxListParams,
   };
 
   export {
