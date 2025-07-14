@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export * from './shared';
-export { Calls, type Call, type CallCreateParams } from './calls';
 export {
   Collections,
   type Collection,
