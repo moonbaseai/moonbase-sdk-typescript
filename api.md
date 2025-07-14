@@ -33,17 +33,6 @@ Methods:
 
 - <code title="get /collections/{collection_id}/fields/{id}">client.collections.fields.<a href="./src/resources/collections/fields.ts">retrieve</a>(id, { ...params }) -> Field</code>
 
-# Files
-
-Types:
-
-- <code><a href="./src/resources/files.ts">MoonbaseFile</a></code>
-
-Methods:
-
-- <code title="get /files/{id}">client.files.<a href="./src/resources/files.ts">retrieve</a>(id) -> MoonbaseFile</code>
-- <code title="get /files">client.files.<a href="./src/resources/files.ts">list</a>({ ...params }) -> MoonbaseFilesCursorPage</code>
-
 # Items
 
 Types:

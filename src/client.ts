@@ -20,7 +20,6 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { Call, CallCreateParams, Calls } from './resources/calls';
-import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
 import {
   BooleanValue,
   Choice,
@@ -766,12 +765,10 @@ export class Moonbase {
 
   calls: API.Calls = new API.Calls(this);
   collections: API.Collections = new API.Collections(this);
-  files: API.Files = new API.Files(this);
   items: API.Items = new API.Items(this);
 }
 Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
-Moonbase.Files = Files;
 Moonbase.Items = Items;
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
@@ -788,13 +785,6 @@ export declare namespace Moonbase {
     type CollectionsCursorPage as CollectionsCursorPage,
     type CollectionRetrieveParams as CollectionRetrieveParams,
     type CollectionListParams as CollectionListParams,
-  };
-
-  export {
-    Files as Files,
-    type MoonbaseFile as MoonbaseFile,
-    type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
-    type FileListParams as FileListParams,
   };
 
   export {
