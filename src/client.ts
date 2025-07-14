@@ -21,7 +21,6 @@ import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { Call, CallCreateParams, Calls } from './resources/calls';
 import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
-import { Form, FormListParams, FormRetrieveParams, Forms, FormsCursorPage } from './resources/forms';
 import {
   InboxConversation,
   InboxConversationListParams,
@@ -815,7 +814,6 @@ export class Moonbase {
   calls: API.Calls = new API.Calls(this);
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
-  forms: API.Forms = new API.Forms(this);
   inboxConversations: API.InboxConversations = new API.InboxConversations(this);
   inboxMessages: API.InboxMessages = new API.InboxMessages(this);
   inboxes: API.Inboxes = new API.Inboxes(this);
@@ -831,7 +829,6 @@ export class Moonbase {
 Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
-Moonbase.Forms = Forms;
 Moonbase.InboxConversations = InboxConversations;
 Moonbase.InboxMessages = InboxMessages;
 Moonbase.Inboxes = Inboxes;
@@ -865,14 +862,6 @@ export declare namespace Moonbase {
     type MoonbaseFile as MoonbaseFile,
     type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
     type FileListParams as FileListParams,
-  };
-
-  export {
-    Forms as Forms,
-    type Form as Form,
-    type FormsCursorPage as FormsCursorPage,
-    type FormRetrieveParams as FormRetrieveParams,
-    type FormListParams as FormListParams,
   };
 
   export {

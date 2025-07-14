@@ -12,13 +12,6 @@ export {
 } from './collections/collections';
 export { Files, type MoonbaseFile, type FileListParams, type MoonbaseFilesCursorPage } from './files';
 export {
-  Forms,
-  type Form,
-  type FormRetrieveParams,
-  type FormListParams,
-  type FormsCursorPage,
-} from './forms';
-export {
   InboxConversations,
   type InboxConversation,
   type InboxConversationRetrieveParams,
