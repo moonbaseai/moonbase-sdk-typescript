@@ -307,7 +307,7 @@ export interface Item {
    * A hash where keys are the `ref` of a `Field` and values are the data stored for
    * that field.
    */
-  values?: { [key: string]: FieldValue | null };
+  values?: { [key: string]: FieldValue };
 }
 
 /**
@@ -454,7 +454,7 @@ export interface ItemCreateParams {
   /**
    * A hash where keys are the `ref` of a `Field` and values are the data to be set.
    */
-  values: { [key: string]: FieldValue | null };
+  values: { [key: string]: FieldValue };
 }
 
 export interface ItemUpdateParams {
@@ -462,7 +462,7 @@ export interface ItemUpdateParams {
    * Body param: A hash where keys are the `ref` of a `Field` and values are the new
    * data to be set.
    */
-  values: { [key: string]: FieldValue | null };
+  values: { [key: string]: FieldValue };
 
   /**
    * Header param: Specifies how to update fields that allow multiple values during a
@@ -493,13 +493,13 @@ export interface ItemUpsertParams {
    * identify the item to update. When multiple identifiers are provided, the update
    * will find items that match any of the identifiers.
    */
-  identifiers: { [key: string]: FieldValue | null };
+  identifiers: { [key: string]: FieldValue };
 
   /**
    * Body param: A hash where keys are the `ref` of a `Field` and values are the data
    * to be set.
    */
-  values: { [key: string]: FieldValue | null };
+  values: { [key: string]: FieldValue };
 
   /**
    * Header param: Specifies how to update fields that allow multiple values. Use
