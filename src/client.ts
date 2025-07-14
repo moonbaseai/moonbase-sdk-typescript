@@ -779,26 +779,33 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
+  views: API.Views = new API.Views(this);
   calls: API.Calls = new API.Calls(this);
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
   items: API.Items = new API.Items(this);
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
-  views: API.Views = new API.Views(this);
 }
+Moonbase.Views = Views;
 Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
 Moonbase.Items = Items;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
-Moonbase.Views = Views;
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
 
   export import CursorPage = Pagination.CursorPage;
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
+
+  export {
+    Views as Views,
+    type View as View,
+    type ViewRetrieveParams as ViewRetrieveParams,
+    type ViewListItemsParams as ViewListItemsParams,
+  };
 
   export { Calls as Calls, type Call as Call, type CallCreateParams as CallCreateParams };
 
@@ -861,13 +868,6 @@ export declare namespace Moonbase {
     type ProgramsCursorPage as ProgramsCursorPage,
     type ProgramRetrieveParams as ProgramRetrieveParams,
     type ProgramListParams as ProgramListParams,
-  };
-
-  export {
-    Views as Views,
-    type View as View,
-    type ViewRetrieveParams as ViewRetrieveParams,
-    type ViewListItemsParams as ViewListItemsParams,
   };
 
   export type Error = API.Error;
