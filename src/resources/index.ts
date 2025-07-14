@@ -41,16 +41,6 @@ export {
   type ItemsCursorPage,
 } from './items';
 export {
-  Meetings,
-  type Attendee,
-  type Meeting,
-  type Organizer,
-  type MeetingRetrieveParams,
-  type MeetingListParams,
-  type MeetingsCursorPage,
-} from './meetings';
-export { Notes, type Note, type NoteListParams, type NotesCursorPage } from './notes';
-export {
   ProgramMessages,
   type ProgramMessageSendResponse,
   type ProgramMessageSendParams,
