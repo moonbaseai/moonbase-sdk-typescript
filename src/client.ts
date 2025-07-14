@@ -49,11 +49,7 @@ import {
   URLValue,
   Value,
 } from './resources/items';
-import {
-  ProgramMessageSendParams,
-  ProgramMessageSendResponse,
-  ProgramMessages,
-} from './resources/program-messages';
+import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
 import {
   ProgramTemplate,
   ProgramTemplateListParams,
@@ -789,7 +785,7 @@ export class Moonbase {
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
   items: API.Items = new API.Items(this);
-  programMessages: API.ProgramMessages = new API.ProgramMessages(this);
+  notes: API.Notes = new API.Notes(this);
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
   tagsets: API.Tagsets = new API.Tagsets(this);
@@ -799,7 +795,7 @@ Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
 Moonbase.Items = Items;
-Moonbase.ProgramMessages = ProgramMessages;
+Moonbase.Notes = Notes;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
 Moonbase.Tagsets = Tagsets;
@@ -858,9 +854,10 @@ export declare namespace Moonbase {
   };
 
   export {
-    ProgramMessages as ProgramMessages,
-    type ProgramMessageSendResponse as ProgramMessageSendResponse,
-    type ProgramMessageSendParams as ProgramMessageSendParams,
+    Notes as Notes,
+    type Note as Note,
+    type NotesCursorPage as NotesCursorPage,
+    type NoteListParams as NoteListParams,
   };
 
   export {
