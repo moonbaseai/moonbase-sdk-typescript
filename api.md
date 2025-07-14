@@ -111,17 +111,6 @@ Methods:
 - <code title="get /programs/{id}">client.programs.<a href="./src/resources/programs.ts">retrieve</a>(id, { ...params }) -> Program</code>
 - <code title="get /programs">client.programs.<a href="./src/resources/programs.ts">list</a>({ ...params }) -> ProgramsCursorPage</code>
 
-# Tagsets
-
-Types:
-
-- <code><a href="./src/resources/tagsets.ts">Tagset</a></code>
-
-Methods:
-
-- <code title="get /tagsets/{id}">client.tagsets.<a href="./src/resources/tagsets.ts">retrieve</a>(id) -> Tagset</code>
-- <code title="get /tagsets">client.tagsets.<a href="./src/resources/tagsets.ts">list</a>({ ...params }) -> TagsetsCursorPage</code>
-
 # Views
 
 Types:

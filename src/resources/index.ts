@@ -55,5 +55,4 @@ export {
   type ProgramListParams,
   type ProgramsCursorPage,
 } from './programs';
-export { Tagsets, type Tagset, type TagsetListParams, type TagsetsCursorPage } from './tagsets';
 export { Views, type View, type ViewRetrieveParams, type ViewListItemsParams } from './views';
