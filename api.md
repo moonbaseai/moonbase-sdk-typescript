@@ -163,11 +163,11 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/program-messages.ts">ProgramMessageSendResponse</a></code>
+- <code><a href="./src/resources/program-messages.ts">ProgramMessageCreateResponse</a></code>
 
 Methods:
 
-- <code title="post /program_messages">client.programMessages.<a href="./src/resources/program-messages.ts">send</a>({ ...params }) -> ProgramMessageSendResponse</code>
+- <code title="post /program_messages">client.programMessages.<a href="./src/resources/program-messages.ts">create</a>({ ...params }) -> ProgramMessageCreateResponse</code>
 
 # ProgramTemplates
 
