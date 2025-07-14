@@ -20,7 +20,7 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { Activities, ActivitiesCursorPage, Activity, ActivityListParams } from './resources/activities';
-import { Call, CallCreateParams, Calls } from './resources/calls';
+import { Call, Calls } from './resources/calls';
 import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
 import { Form, FormListParams, FormRetrieveParams, Forms, FormsCursorPage } from './resources/forms';
 import {
@@ -859,7 +859,7 @@ export declare namespace Moonbase {
     type ActivityListParams as ActivityListParams,
   };
 
-  export { Calls as Calls, type Call as Call, type CallCreateParams as CallCreateParams };
+  export { Calls as Calls, type Call as Call };
 
   export {
     Collections as Collections,

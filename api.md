@@ -21,10 +21,6 @@ Types:
 
 - <code><a href="./src/resources/calls.ts">Call</a></code>
 
-Methods:
-
-- <code title="post /calls">client.calls.<a href="./src/resources/calls.ts">create</a>({ ...params }) -> Call</code>
-
 # Collections
 
 Types:
