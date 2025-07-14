@@ -49,7 +49,6 @@ import {
   URLValue,
   Value,
 } from './resources/items';
-import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
 import {
   ProgramTemplate,
   ProgramTemplateListParams,
@@ -784,7 +783,6 @@ export class Moonbase {
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
   items: API.Items = new API.Items(this);
-  notes: API.Notes = new API.Notes(this);
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
   views: API.Views = new API.Views(this);
@@ -793,7 +791,6 @@ Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
 Moonbase.Items = Items;
-Moonbase.Notes = Notes;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
 Moonbase.Views = Views;
@@ -848,13 +845,6 @@ export declare namespace Moonbase {
     type ItemCreateParams as ItemCreateParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemUpsertParams as ItemUpsertParams,
-  };
-
-  export {
-    Notes as Notes,
-    type Note as Note,
-    type NotesCursorPage as NotesCursorPage,
-    type NoteListParams as NoteListParams,
   };
 
   export {
