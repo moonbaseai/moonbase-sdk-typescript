@@ -20,6 +20,11 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
+  ProgramMessageSendParams,
+  ProgramMessageSendResponse,
+  ProgramMessages,
+} from './resources/program-messages';
+import {
   ProgramTemplate,
   ProgramTemplateListParams,
   ProgramTemplateRetrieveParams,
@@ -33,14 +38,6 @@ import {
   Programs,
   ProgramsCursorPage,
 } from './resources/programs';
-import {
-  Collection,
-  CollectionListParams,
-  CollectionRetrieveParams,
-  Collections,
-  CollectionsCursorPage,
-  Field,
-} from './resources/collections/collections';
 import { type Fetch } from './internal/builtin-types';
 import { isRunningInBrowser } from './internal/detect-platform';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -748,11 +745,11 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
-  collections: API.Collections = new API.Collections(this);
+  programMessages: API.ProgramMessages = new API.ProgramMessages(this);
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
 }
-Moonbase.Collections = Collections;
+Moonbase.ProgramMessages = ProgramMessages;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
 export declare namespace Moonbase {
@@ -762,12 +759,9 @@ export declare namespace Moonbase {
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
 
   export {
-    Collections as Collections,
-    type Collection as Collection,
-    type Field as Field,
-    type CollectionsCursorPage as CollectionsCursorPage,
-    type CollectionRetrieveParams as CollectionRetrieveParams,
-    type CollectionListParams as CollectionListParams,
+    ProgramMessages as ProgramMessages,
+    type ProgramMessageSendResponse as ProgramMessageSendResponse,
+    type ProgramMessageSendParams as ProgramMessageSendParams,
   };
 
   export {
@@ -787,5 +781,4 @@ export declare namespace Moonbase {
   };
 
   export type Error = API.Error;
-  export type View = API.View;
 }
