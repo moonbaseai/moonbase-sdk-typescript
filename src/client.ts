@@ -20,6 +20,34 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
+  BooleanValue,
+  Choice,
+  DateValue,
+  DatetimeValue,
+  DomainValue,
+  EmailValue,
+  FieldValue,
+  FloatValue,
+  FunnelStep,
+  GeoValue,
+  IntegerValue,
+  Item,
+  ItemCreateParams,
+  ItemUpdateParams,
+  ItemUpsertParams,
+  Items,
+  MonetaryValue,
+  MultiLineTextValue,
+  PercentageValue,
+  RelationValue,
+  SingleLineTextValue,
+  SocialLinkedInValue,
+  SocialXValue,
+  TelephoneNumber,
+  URLValue,
+  Value,
+} from './resources/items';
+import {
   ProgramMessageSendParams,
   ProgramMessageSendResponse,
   ProgramMessages,
@@ -38,6 +66,14 @@ import {
   Programs,
   ProgramsCursorPage,
 } from './resources/programs';
+import {
+  Collection,
+  CollectionListParams,
+  CollectionRetrieveParams,
+  Collections,
+  CollectionsCursorPage,
+  Field,
+} from './resources/collections/collections';
 import { type Fetch } from './internal/builtin-types';
 import { isRunningInBrowser } from './internal/detect-platform';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -745,10 +781,14 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
+  collections: API.Collections = new API.Collections(this);
+  items: API.Items = new API.Items(this);
   programMessages: API.ProgramMessages = new API.ProgramMessages(this);
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
 }
+Moonbase.Collections = Collections;
+Moonbase.Items = Items;
 Moonbase.ProgramMessages = ProgramMessages;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
@@ -757,6 +797,44 @@ export declare namespace Moonbase {
 
   export import CursorPage = Pagination.CursorPage;
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
+
+  export {
+    Collections as Collections,
+    type Collection as Collection,
+    type Field as Field,
+    type CollectionsCursorPage as CollectionsCursorPage,
+    type CollectionRetrieveParams as CollectionRetrieveParams,
+    type CollectionListParams as CollectionListParams,
+  };
+
+  export {
+    Items as Items,
+    type BooleanValue as BooleanValue,
+    type Choice as Choice,
+    type DateValue as DateValue,
+    type DatetimeValue as DatetimeValue,
+    type DomainValue as DomainValue,
+    type EmailValue as EmailValue,
+    type FieldValue as FieldValue,
+    type FloatValue as FloatValue,
+    type FunnelStep as FunnelStep,
+    type GeoValue as GeoValue,
+    type IntegerValue as IntegerValue,
+    type Item as Item,
+    type MonetaryValue as MonetaryValue,
+    type MultiLineTextValue as MultiLineTextValue,
+    type PercentageValue as PercentageValue,
+    type RelationValue as RelationValue,
+    type SingleLineTextValue as SingleLineTextValue,
+    type SocialLinkedInValue as SocialLinkedInValue,
+    type SocialXValue as SocialXValue,
+    type TelephoneNumber as TelephoneNumber,
+    type URLValue as URLValue,
+    type Value as Value,
+    type ItemCreateParams as ItemCreateParams,
+    type ItemUpdateParams as ItemUpdateParams,
+    type ItemUpsertParams as ItemUpsertParams,
+  };
 
   export {
     ProgramMessages as ProgramMessages,
@@ -781,4 +859,5 @@ export declare namespace Moonbase {
   };
 
   export type Error = API.Error;
+  export type View = API.View;
 }
