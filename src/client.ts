@@ -19,7 +19,6 @@ import { AbstractPage, type CursorPageParams, CursorPageResponse } from './core/
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Call, CallCreateParams, Calls } from './resources/calls';
 import {
   BooleanValue,
   Choice,
@@ -763,11 +762,9 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
-  calls: API.Calls = new API.Calls(this);
   collections: API.Collections = new API.Collections(this);
   items: API.Items = new API.Items(this);
 }
-Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Items = Items;
 export declare namespace Moonbase {
@@ -775,8 +772,6 @@ export declare namespace Moonbase {
 
   export import CursorPage = Pagination.CursorPage;
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
-
-  export { Calls as Calls, type Call as Call, type CallCreateParams as CallCreateParams };
 
   export {
     Collections as Collections,
