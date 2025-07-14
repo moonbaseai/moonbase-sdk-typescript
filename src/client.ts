@@ -78,8 +78,8 @@ import {
 } from './resources/meetings';
 import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
 import {
-  ProgramMessageSendParams,
-  ProgramMessageSendResponse,
+  ProgramMessageCreateParams,
+  ProgramMessageCreateResponse,
   ProgramMessages,
 } from './resources/program-messages';
 import {
@@ -958,8 +958,8 @@ export declare namespace Moonbase {
 
   export {
     ProgramMessages as ProgramMessages,
-    type ProgramMessageSendResponse as ProgramMessageSendResponse,
-    type ProgramMessageSendParams as ProgramMessageSendParams,
+    type ProgramMessageCreateResponse as ProgramMessageCreateResponse,
+    type ProgramMessageCreateParams as ProgramMessageCreateParams,
   };
 
   export {

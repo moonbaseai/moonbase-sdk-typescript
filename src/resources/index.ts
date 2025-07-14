@@ -82,8 +82,8 @@ export {
 export { Notes, type Note, type NoteListParams, type NotesCursorPage } from './notes';
 export {
   ProgramMessages,
-  type ProgramMessageSendResponse,
-  type ProgramMessageSendParams,
+  type ProgramMessageCreateResponse,
+  type ProgramMessageCreateParams,
 } from './program-messages';
 export {
   ProgramTemplates,
