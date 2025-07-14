@@ -2,13 +2,10 @@
 
 export * from './shared';
 export {
-  Collections,
-  type Collection,
-  type Field,
-  type CollectionRetrieveParams,
-  type CollectionListParams,
-  type CollectionsCursorPage,
-} from './collections/collections';
+  ProgramMessages,
+  type ProgramMessageSendResponse,
+  type ProgramMessageSendParams,
+} from './program-messages';
 export {
   ProgramTemplates,
   type ProgramTemplate,

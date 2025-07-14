@@ -3,25 +3,16 @@
 Types:
 
 - <code><a href="./src/resources/shared.ts">Error</a></code>
-- <code><a href="./src/resources/shared.ts">View</a></code>
 
-# Collections
+# ProgramMessages
 
 Types:
 
-- <code><a href="./src/resources/collections/collections.ts">Collection</a></code>
-- <code><a href="./src/resources/collections/collections.ts">Field</a></code>
+- <code><a href="./src/resources/program-messages.ts">ProgramMessageSendResponse</a></code>
 
 Methods:
 
-- <code title="get /collections/{id}">client.collections.<a href="./src/resources/collections/collections.ts">retrieve</a>(id, { ...params }) -> Collection</code>
-- <code title="get /collections">client.collections.<a href="./src/resources/collections/collections.ts">list</a>({ ...params }) -> CollectionsCursorPage</code>
-
-## Fields
-
-Methods:
-
-- <code title="get /collections/{collection_id}/fields/{id}">client.collections.fields.<a href="./src/resources/collections/fields.ts">retrieve</a>(id, { ...params }) -> Field</code>
+- <code title="post /program_messages">client.programMessages.<a href="./src/resources/program-messages.ts">send</a>({ ...params }) -> ProgramMessageSendResponse</code>
 
 # ProgramTemplates
 
