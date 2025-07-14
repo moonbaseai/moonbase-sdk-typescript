@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as ViewsAPI from '../views';
+import * as Shared from '../shared';
 import * as FieldsAPI from './fields';
 import { FieldRetrieveParams, Fields } from './fields';
 import { APIPromise } from '../../core/api-promise';
@@ -91,7 +91,7 @@ export interface Collection {
   /**
    * A list of saved `View` objects for presenting the collection's data.
    */
-  views?: Array<ViewsAPI.View>;
+  views?: Array<Shared.View>;
 }
 
 export namespace Collection {

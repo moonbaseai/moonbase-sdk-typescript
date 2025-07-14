@@ -63,7 +63,6 @@ import {
   Programs,
   ProgramsCursorPage,
 } from './resources/programs';
-import { View, ViewListItemsParams, ViewRetrieveParams, Views } from './resources/views';
 import {
   Collection,
   CollectionListParams,
@@ -779,7 +778,6 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
-  views: API.Views = new API.Views(this);
   calls: API.Calls = new API.Calls(this);
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
@@ -787,7 +785,6 @@ export class Moonbase {
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
 }
-Moonbase.Views = Views;
 Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
@@ -799,13 +796,6 @@ export declare namespace Moonbase {
 
   export import CursorPage = Pagination.CursorPage;
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
-
-  export {
-    Views as Views,
-    type View as View,
-    type ViewRetrieveParams as ViewRetrieveParams,
-    type ViewListItemsParams as ViewListItemsParams,
-  };
 
   export { Calls as Calls, type Call as Call, type CallCreateParams as CallCreateParams };
 
@@ -871,4 +861,5 @@ export declare namespace Moonbase {
   };
 
   export type Error = API.Error;
+  export type View = API.View;
 }
