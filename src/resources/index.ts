@@ -40,11 +40,7 @@ export {
   type ItemUpsertParams,
   type ItemsCursorPage,
 } from './items';
-export {
-  ProgramMessages,
-  type ProgramMessageSendResponse,
-  type ProgramMessageSendParams,
-} from './program-messages';
+export { Notes, type Note, type NoteListParams, type NotesCursorPage } from './notes';
 export {
   ProgramTemplates,
   type ProgramTemplate,
