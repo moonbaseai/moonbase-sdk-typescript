@@ -19,7 +19,6 @@ import { AbstractPage, type CursorPageParams, CursorPageResponse } from './core/
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Activities, ActivitiesCursorPage, Activity, ActivityListParams } from './resources/activities';
 import { Call, CallCreateParams, Calls } from './resources/calls';
 import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
 import { Form, FormListParams, FormRetrieveParams, Forms, FormsCursorPage } from './resources/forms';
@@ -813,7 +812,6 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
-  activities: API.Activities = new API.Activities(this);
   calls: API.Calls = new API.Calls(this);
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
@@ -830,7 +828,6 @@ export class Moonbase {
   tagsets: API.Tagsets = new API.Tagsets(this);
   views: API.Views = new API.Views(this);
 }
-Moonbase.Activities = Activities;
 Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
@@ -851,13 +848,6 @@ export declare namespace Moonbase {
 
   export import CursorPage = Pagination.CursorPage;
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
-
-  export {
-    Activities as Activities,
-    type Activity as Activity,
-    type ActivitiesCursorPage as ActivitiesCursorPage,
-    type ActivityListParams as ActivityListParams,
-  };
 
   export { Calls as Calls, type Call as Call, type CallCreateParams as CallCreateParams };
 

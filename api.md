@@ -4,17 +4,6 @@ Types:
 
 - <code><a href="./src/resources/shared.ts">Error</a></code>
 
-# Activities
-
-Types:
-
-- <code><a href="./src/resources/activities.ts">Activity</a></code>
-
-Methods:
-
-- <code title="get /activities/{id}">client.activities.<a href="./src/resources/activities.ts">retrieve</a>(id) -> Activity</code>
-- <code title="get /activities">client.activities.<a href="./src/resources/activities.ts">list</a>({ ...params }) -> ActivitiesCursorPage</code>
-
 # Calls
 
 Types:
