@@ -12,28 +12,6 @@ export {
 } from './collections/collections';
 export { Files, type MoonbaseFile, type FileListParams, type MoonbaseFilesCursorPage } from './files';
 export {
-  InboxConversations,
-  type InboxConversation,
-  type InboxConversationRetrieveParams,
-  type InboxConversationListParams,
-  type InboxConversationsCursorPage,
-} from './inbox-conversations';
-export {
-  InboxMessages,
-  type Address,
-  type EmailMessage,
-  type InboxMessageRetrieveParams,
-  type InboxMessageListParams,
-  type EmailMessagesCursorPage,
-} from './inbox-messages';
-export {
-  Inboxes,
-  type Inbox,
-  type InboxRetrieveParams,
-  type InboxListParams,
-  type InboxesCursorPage,
-} from './inboxes';
-export {
   Items,
   type BooleanValue,
   type Choice,
