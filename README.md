@@ -4,7 +4,7 @@
 
 This library provides convenient access to the Moonbase REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.moonbase.ai](https://docs.moonbase.ai/api-reference/introduction). The full API of this library can be found in [api.md](api.md).
+The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
