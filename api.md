@@ -4,6 +4,17 @@ Types:
 
 - <code><a href="./src/resources/shared.ts">Error</a></code>
 
+# Views
+
+Types:
+
+- <code><a href="./src/resources/views.ts">View</a></code>
+
+Methods:
+
+- <code title="get /views/{id}">client.views.<a href="./src/resources/views.ts">retrieve</a>(id, { ...params }) -> View</code>
+- <code title="get /views/{id}/items">client.views.<a href="./src/resources/views.ts">listItems</a>(id, { ...params }) -> ItemsCursorPage</code>
+
 # Calls
 
 Types:
@@ -99,14 +110,3 @@ Methods:
 
 - <code title="get /programs/{id}">client.programs.<a href="./src/resources/programs.ts">retrieve</a>(id, { ...params }) -> Program</code>
 - <code title="get /programs">client.programs.<a href="./src/resources/programs.ts">list</a>({ ...params }) -> ProgramsCursorPage</code>
-
-# Views
-
-Types:
-
-- <code><a href="./src/resources/views.ts">View</a></code>
-
-Methods:
-
-- <code title="get /views/{id}">client.views.<a href="./src/resources/views.ts">retrieve</a>(id, { ...params }) -> View</code>
-- <code title="get /views/{id}/items">client.views.<a href="./src/resources/views.ts">listItems</a>(id, { ...params }) -> ItemsCursorPage</code>
