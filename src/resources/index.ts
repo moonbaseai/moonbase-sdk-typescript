@@ -10,7 +10,6 @@ export {
   type CollectionListParams,
   type CollectionsCursorPage,
 } from './collections/collections';
-export { Files, type MoonbaseFile, type FileListParams, type MoonbaseFilesCursorPage } from './files';
 export {
   Items,
   type BooleanValue,
