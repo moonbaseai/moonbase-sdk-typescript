@@ -64,7 +64,6 @@ import {
   Programs,
   ProgramsCursorPage,
 } from './resources/programs';
-import { Tagset, TagsetListParams, Tagsets, TagsetsCursorPage } from './resources/tagsets';
 import { View, ViewListItemsParams, ViewRetrieveParams, Views } from './resources/views';
 import {
   Collection,
@@ -788,7 +787,6 @@ export class Moonbase {
   notes: API.Notes = new API.Notes(this);
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
-  tagsets: API.Tagsets = new API.Tagsets(this);
   views: API.Views = new API.Views(this);
 }
 Moonbase.Calls = Calls;
@@ -798,7 +796,6 @@ Moonbase.Items = Items;
 Moonbase.Notes = Notes;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
-Moonbase.Tagsets = Tagsets;
 Moonbase.Views = Views;
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
@@ -874,13 +871,6 @@ export declare namespace Moonbase {
     type ProgramsCursorPage as ProgramsCursorPage,
     type ProgramRetrieveParams as ProgramRetrieveParams,
     type ProgramListParams as ProgramListParams,
-  };
-
-  export {
-    Tagsets as Tagsets,
-    type Tagset as Tagset,
-    type TagsetsCursorPage as TagsetsCursorPage,
-    type TagsetListParams as TagsetListParams,
   };
 
   export {
