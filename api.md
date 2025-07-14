@@ -43,17 +43,6 @@ Methods:
 - <code title="get /files/{id}">client.files.<a href="./src/resources/files.ts">retrieve</a>(id) -> MoonbaseFile</code>
 - <code title="get /files">client.files.<a href="./src/resources/files.ts">list</a>({ ...params }) -> MoonbaseFilesCursorPage</code>
 
-# Forms
-
-Types:
-
-- <code><a href="./src/resources/forms.ts">Form</a></code>
-
-Methods:
-
-- <code title="get /forms/{id}">client.forms.<a href="./src/resources/forms.ts">retrieve</a>(id, { ...params }) -> Form</code>
-- <code title="get /forms">client.forms.<a href="./src/resources/forms.ts">list</a>({ ...params }) -> FormsCursorPage</code>
-
 # InboxConversations
 
 Types:
