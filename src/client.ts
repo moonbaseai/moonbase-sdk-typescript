@@ -19,6 +19,26 @@ import { AbstractPage, type CursorPageParams, CursorPageResponse } from './core/
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
+import { Activities, ActivitiesCursorPage, Activity, ActivityListParams } from './resources/activities';
+import { Call, CallCreateParams, Calls } from './resources/calls';
+import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
+import { Form, FormListParams, FormRetrieveParams, Forms, FormsCursorPage } from './resources/forms';
+import {
+  InboxConversation,
+  InboxConversationListParams,
+  InboxConversationRetrieveParams,
+  InboxConversations,
+  InboxConversationsCursorPage,
+} from './resources/inbox-conversations';
+import {
+  Address,
+  EmailMessage,
+  EmailMessagesCursorPage,
+  InboxMessageListParams,
+  InboxMessageRetrieveParams,
+  InboxMessages,
+} from './resources/inbox-messages';
+import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
 import {
   BooleanValue,
   Choice,
@@ -48,6 +68,16 @@ import {
   Value,
 } from './resources/items';
 import {
+  Attendee,
+  Meeting,
+  MeetingListParams,
+  MeetingRetrieveParams,
+  Meetings,
+  MeetingsCursorPage,
+  Organizer,
+} from './resources/meetings';
+import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
+import {
   ProgramMessageSendParams,
   ProgramMessageSendResponse,
   ProgramMessages,
@@ -66,6 +96,7 @@ import {
   Programs,
   ProgramsCursorPage,
 } from './resources/programs';
+import { Tagset, TagsetListParams, Tagsets, TagsetsCursorPage } from './resources/tagsets';
 import {
   Collection,
   CollectionListParams,
@@ -74,6 +105,7 @@ import {
   CollectionsCursorPage,
   Field,
 } from './resources/collections/collections';
+import { ViewRetrieveParams, Views } from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
 import { isRunningInBrowser } from './internal/detect-platform';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -781,22 +813,53 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
+  activities: API.Activities = new API.Activities(this);
+  calls: API.Calls = new API.Calls(this);
   collections: API.Collections = new API.Collections(this);
+  files: API.Files = new API.Files(this);
+  forms: API.Forms = new API.Forms(this);
+  inboxConversations: API.InboxConversations = new API.InboxConversations(this);
+  inboxMessages: API.InboxMessages = new API.InboxMessages(this);
+  inboxes: API.Inboxes = new API.Inboxes(this);
   items: API.Items = new API.Items(this);
+  meetings: API.Meetings = new API.Meetings(this);
+  notes: API.Notes = new API.Notes(this);
   programMessages: API.ProgramMessages = new API.ProgramMessages(this);
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
+  tagsets: API.Tagsets = new API.Tagsets(this);
+  views: API.Views = new API.Views(this);
 }
+Moonbase.Activities = Activities;
+Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
+Moonbase.Files = Files;
+Moonbase.Forms = Forms;
+Moonbase.InboxConversations = InboxConversations;
+Moonbase.InboxMessages = InboxMessages;
+Moonbase.Inboxes = Inboxes;
 Moonbase.Items = Items;
+Moonbase.Meetings = Meetings;
+Moonbase.Notes = Notes;
 Moonbase.ProgramMessages = ProgramMessages;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
+Moonbase.Tagsets = Tagsets;
+Moonbase.Views = Views;
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
 
   export import CursorPage = Pagination.CursorPage;
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
+
+  export {
+    Activities as Activities,
+    type Activity as Activity,
+    type ActivitiesCursorPage as ActivitiesCursorPage,
+    type ActivityListParams as ActivityListParams,
+  };
+
+  export { Calls as Calls, type Call as Call, type CallCreateParams as CallCreateParams };
 
   export {
     Collections as Collections,
@@ -805,6 +868,46 @@ export declare namespace Moonbase {
     type CollectionsCursorPage as CollectionsCursorPage,
     type CollectionRetrieveParams as CollectionRetrieveParams,
     type CollectionListParams as CollectionListParams,
+  };
+
+  export {
+    Files as Files,
+    type MoonbaseFile as MoonbaseFile,
+    type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
+    type FileListParams as FileListParams,
+  };
+
+  export {
+    Forms as Forms,
+    type Form as Form,
+    type FormsCursorPage as FormsCursorPage,
+    type FormRetrieveParams as FormRetrieveParams,
+    type FormListParams as FormListParams,
+  };
+
+  export {
+    InboxConversations as InboxConversations,
+    type InboxConversation as InboxConversation,
+    type InboxConversationsCursorPage as InboxConversationsCursorPage,
+    type InboxConversationRetrieveParams as InboxConversationRetrieveParams,
+    type InboxConversationListParams as InboxConversationListParams,
+  };
+
+  export {
+    InboxMessages as InboxMessages,
+    type Address as Address,
+    type EmailMessage as EmailMessage,
+    type EmailMessagesCursorPage as EmailMessagesCursorPage,
+    type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
+    type InboxMessageListParams as InboxMessageListParams,
+  };
+
+  export {
+    Inboxes as Inboxes,
+    type Inbox as Inbox,
+    type InboxesCursorPage as InboxesCursorPage,
+    type InboxRetrieveParams as InboxRetrieveParams,
+    type InboxListParams as InboxListParams,
   };
 
   export {
@@ -837,6 +940,23 @@ export declare namespace Moonbase {
   };
 
   export {
+    Meetings as Meetings,
+    type Attendee as Attendee,
+    type Meeting as Meeting,
+    type Organizer as Organizer,
+    type MeetingsCursorPage as MeetingsCursorPage,
+    type MeetingRetrieveParams as MeetingRetrieveParams,
+    type MeetingListParams as MeetingListParams,
+  };
+
+  export {
+    Notes as Notes,
+    type Note as Note,
+    type NotesCursorPage as NotesCursorPage,
+    type NoteListParams as NoteListParams,
+  };
+
+  export {
     ProgramMessages as ProgramMessages,
     type ProgramMessageSendResponse as ProgramMessageSendResponse,
     type ProgramMessageSendParams as ProgramMessageSendParams,
@@ -857,6 +977,15 @@ export declare namespace Moonbase {
     type ProgramRetrieveParams as ProgramRetrieveParams,
     type ProgramListParams as ProgramListParams,
   };
+
+  export {
+    Tagsets as Tagsets,
+    type Tagset as Tagset,
+    type TagsetsCursorPage as TagsetsCursorPage,
+    type TagsetListParams as TagsetListParams,
+  };
+
+  export { Views as Views, type ViewRetrieveParams as ViewRetrieveParams };
 
   export type Error = API.Error;
   export type View = API.View;

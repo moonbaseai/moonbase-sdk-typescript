@@ -1,6 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export * from './shared';
+export { Activities, type Activity, type ActivityListParams, type ActivitiesCursorPage } from './activities';
+export { Calls, type Call, type CallCreateParams } from './calls';
 export {
   Collections,
   type Collection,
@@ -9,6 +11,36 @@ export {
   type CollectionListParams,
   type CollectionsCursorPage,
 } from './collections/collections';
+export { Files, type MoonbaseFile, type FileListParams, type MoonbaseFilesCursorPage } from './files';
+export {
+  Forms,
+  type Form,
+  type FormRetrieveParams,
+  type FormListParams,
+  type FormsCursorPage,
+} from './forms';
+export {
+  InboxConversations,
+  type InboxConversation,
+  type InboxConversationRetrieveParams,
+  type InboxConversationListParams,
+  type InboxConversationsCursorPage,
+} from './inbox-conversations';
+export {
+  InboxMessages,
+  type Address,
+  type EmailMessage,
+  type InboxMessageRetrieveParams,
+  type InboxMessageListParams,
+  type EmailMessagesCursorPage,
+} from './inbox-messages';
+export {
+  Inboxes,
+  type Inbox,
+  type InboxRetrieveParams,
+  type InboxListParams,
+  type InboxesCursorPage,
+} from './inboxes';
 export {
   Items,
   type BooleanValue,
@@ -36,7 +68,18 @@ export {
   type ItemCreateParams,
   type ItemUpdateParams,
   type ItemUpsertParams,
+  type ItemsCursorPage,
 } from './items';
+export {
+  Meetings,
+  type Attendee,
+  type Meeting,
+  type Organizer,
+  type MeetingRetrieveParams,
+  type MeetingListParams,
+  type MeetingsCursorPage,
+} from './meetings';
+export { Notes, type Note, type NoteListParams, type NotesCursorPage } from './notes';
 export {
   ProgramMessages,
   type ProgramMessageSendResponse,
@@ -56,3 +99,5 @@ export {
   type ProgramListParams,
   type ProgramsCursorPage,
 } from './programs';
+export { Tagsets, type Tagset, type TagsetListParams, type TagsetsCursorPage } from './tagsets';
+export { Views, type ViewRetrieveParams } from './views/views';
