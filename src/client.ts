@@ -50,20 +50,6 @@ import {
   Value,
 } from './resources/items';
 import {
-  ProgramTemplate,
-  ProgramTemplateListParams,
-  ProgramTemplateRetrieveParams,
-  ProgramTemplates,
-  ProgramTemplatesCursorPage,
-} from './resources/program-templates';
-import {
-  Program,
-  ProgramListParams,
-  ProgramRetrieveParams,
-  Programs,
-  ProgramsCursorPage,
-} from './resources/programs';
-import {
   Collection,
   CollectionListParams,
   CollectionRetrieveParams,
@@ -782,15 +768,11 @@ export class Moonbase {
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
   items: API.Items = new API.Items(this);
-  programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
-  programs: API.Programs = new API.Programs(this);
 }
 Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
 Moonbase.Items = Items;
-Moonbase.ProgramTemplates = ProgramTemplates;
-Moonbase.Programs = Programs;
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
 
@@ -842,22 +824,6 @@ export declare namespace Moonbase {
     type ItemCreateParams as ItemCreateParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemUpsertParams as ItemUpsertParams,
-  };
-
-  export {
-    ProgramTemplates as ProgramTemplates,
-    type ProgramTemplate as ProgramTemplate,
-    type ProgramTemplatesCursorPage as ProgramTemplatesCursorPage,
-    type ProgramTemplateRetrieveParams as ProgramTemplateRetrieveParams,
-    type ProgramTemplateListParams as ProgramTemplateListParams,
-  };
-
-  export {
-    Programs as Programs,
-    type Program as Program,
-    type ProgramsCursorPage as ProgramsCursorPage,
-    type ProgramRetrieveParams as ProgramRetrieveParams,
-    type ProgramListParams as ProgramListParams,
   };
 
   export type Error = API.Error;

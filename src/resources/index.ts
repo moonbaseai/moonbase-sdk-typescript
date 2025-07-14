@@ -39,17 +39,3 @@ export {
   type ItemUpdateParams,
   type ItemUpsertParams,
 } from './items';
-export {
-  ProgramTemplates,
-  type ProgramTemplate,
-  type ProgramTemplateRetrieveParams,
-  type ProgramTemplateListParams,
-  type ProgramTemplatesCursorPage,
-} from './program-templates';
-export {
-  Programs,
-  type Program,
-  type ProgramRetrieveParams,
-  type ProgramListParams,
-  type ProgramsCursorPage,
-} from './programs';
