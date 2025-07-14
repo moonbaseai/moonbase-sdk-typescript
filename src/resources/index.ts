@@ -38,7 +38,6 @@ export {
   type ItemCreateParams,
   type ItemUpdateParams,
   type ItemUpsertParams,
-  type ItemsCursorPage,
 } from './items';
 export {
   ProgramTemplates,
@@ -54,4 +53,3 @@ export {
   type ProgramListParams,
   type ProgramsCursorPage,
 } from './programs';
-export { Views, type View, type ViewRetrieveParams, type ViewListItemsParams } from './views';

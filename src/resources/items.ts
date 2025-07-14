@@ -2,7 +2,6 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
-import { CursorPage } from '../core/pagination';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -150,8 +149,6 @@ export class Items extends APIResource {
     });
   }
 }
-
-export type ItemsCursorPage = CursorPage<Item>;
 
 /**
  * True or false value

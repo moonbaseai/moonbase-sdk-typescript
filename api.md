@@ -3,17 +3,7 @@
 Types:
 
 - <code><a href="./src/resources/shared.ts">Error</a></code>
-
-# Views
-
-Types:
-
-- <code><a href="./src/resources/views.ts">View</a></code>
-
-Methods:
-
-- <code title="get /views/{id}">client.views.<a href="./src/resources/views.ts">retrieve</a>(id, { ...params }) -> View</code>
-- <code title="get /views/{id}/items">client.views.<a href="./src/resources/views.ts">listItems</a>(id, { ...params }) -> ItemsCursorPage</code>
+- <code><a href="./src/resources/shared.ts">View</a></code>
 
 # Calls
 
