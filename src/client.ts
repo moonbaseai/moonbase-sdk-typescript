@@ -50,16 +50,6 @@ import {
   Value,
 } from './resources/items';
 import {
-  Attendee,
-  Meeting,
-  MeetingListParams,
-  MeetingRetrieveParams,
-  Meetings,
-  MeetingsCursorPage,
-  Organizer,
-} from './resources/meetings';
-import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
-import {
   ProgramMessageSendParams,
   ProgramMessageSendResponse,
   ProgramMessages,
@@ -799,8 +789,6 @@ export class Moonbase {
   collections: API.Collections = new API.Collections(this);
   files: API.Files = new API.Files(this);
   items: API.Items = new API.Items(this);
-  meetings: API.Meetings = new API.Meetings(this);
-  notes: API.Notes = new API.Notes(this);
   programMessages: API.ProgramMessages = new API.ProgramMessages(this);
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
   programs: API.Programs = new API.Programs(this);
@@ -811,8 +799,6 @@ Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
 Moonbase.Files = Files;
 Moonbase.Items = Items;
-Moonbase.Meetings = Meetings;
-Moonbase.Notes = Notes;
 Moonbase.ProgramMessages = ProgramMessages;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
@@ -869,23 +855,6 @@ export declare namespace Moonbase {
     type ItemCreateParams as ItemCreateParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemUpsertParams as ItemUpsertParams,
-  };
-
-  export {
-    Meetings as Meetings,
-    type Attendee as Attendee,
-    type Meeting as Meeting,
-    type Organizer as Organizer,
-    type MeetingsCursorPage as MeetingsCursorPage,
-    type MeetingRetrieveParams as MeetingRetrieveParams,
-    type MeetingListParams as MeetingListParams,
-  };
-
-  export {
-    Notes as Notes,
-    type Note as Note,
-    type NotesCursorPage as NotesCursorPage,
-    type NoteListParams as NoteListParams,
   };
 
   export {

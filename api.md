@@ -78,30 +78,6 @@ Methods:
 - <code title="delete /items/{id}">client.items.<a href="./src/resources/items.ts">delete</a>(id) -> Item</code>
 - <code title="post /items/upsert">client.items.<a href="./src/resources/items.ts">upsert</a>({ ...params }) -> Item</code>
 
-# Meetings
-
-Types:
-
-- <code><a href="./src/resources/meetings.ts">Attendee</a></code>
-- <code><a href="./src/resources/meetings.ts">Meeting</a></code>
-- <code><a href="./src/resources/meetings.ts">Organizer</a></code>
-
-Methods:
-
-- <code title="get /meetings/{id}">client.meetings.<a href="./src/resources/meetings.ts">retrieve</a>(id, { ...params }) -> Meeting</code>
-- <code title="get /meetings">client.meetings.<a href="./src/resources/meetings.ts">list</a>({ ...params }) -> MeetingsCursorPage</code>
-
-# Notes
-
-Types:
-
-- <code><a href="./src/resources/notes.ts">Note</a></code>
-
-Methods:
-
-- <code title="get /notes/{id}">client.notes.<a href="./src/resources/notes.ts">retrieve</a>(id) -> Note</code>
-- <code title="get /notes">client.notes.<a href="./src/resources/notes.ts">list</a>({ ...params }) -> NotesCursorPage</code>
-
 # ProgramMessages
 
 Types:
