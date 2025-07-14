@@ -1,40 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import { APIPromise } from '../core/api-promise';
-import { RequestOptions } from '../internal/request-options';
 
-export class Calls extends APIResource {
-  /**
-   * Logs a phone call.
-   *
-   * @example
-   * ```ts
-   * const call = await client.calls.create({
-   *   direction: 'incoming',
-   *   participants: [
-   *     { phone: '+14155551212', role: 'caller' },
-   *     { phone: '+16505551212', role: 'callee' },
-   *   ],
-   *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000002',
-   *   start_at: '2025-07-12T02:19:39.553Z',
-   *   status: 'completed',
-   *   answered_at: '2025-07-12T02:20:39Z',
-   *   end_at: '2025-07-12T02:49:39.553Z',
-   *   provider_metadata: {
-   *     answered_by: 'UShjUatqtF',
-   *     user_id: 'UShjUatqtF',
-   *     phone_number_id: 'PN72zMikBJ',
-   *     conversation_id: 'CNddadaffe2745828f5739f9310fd05dbc',
-   *   },
-   * });
-   * ```
-   */
-  create(body: CallCreateParams, options?: RequestOptions): APIPromise<Call> {
-    return this._client.post('/calls', { body, ...options });
-  }
-}
+export class Calls extends APIResource {}
 
 /**
  * The Call object represents a phone call that has been logged in the system. It
@@ -157,83 +125,6 @@ export namespace Call {
   }
 }
 
-export interface CallCreateParams {
-  /**
-   * The direction of the call, either `incoming` or `outgoing`.
-   */
-  direction: 'incoming' | 'outgoing';
-
-  /**
-   * An array of participants involved in the call.
-   */
-  participants: Array<CallCreateParams.Participant>;
-
-  /**
-   * The name of the phone provider that handled the call (e.g., `openphone`).
-   */
-  provider: string;
-
-  /**
-   * The unique identifier for the call from the provider's system.
-   */
-  provider_id: string;
-
-  /**
-   * The time the call started, as an RFC 3339 timestamp.
-   */
-  start_at: string;
-
-  /**
-   * The status of the call.
-   */
-  status:
-    | 'queued'
-    | 'initiated'
-    | 'ringing'
-    | 'in_progress'
-    | 'completed'
-    | 'busy'
-    | 'failed'
-    | 'no_answer'
-    | 'canceled'
-    | 'missed'
-    | 'answered'
-    | 'forwarded'
-    | 'abandoned';
-
-  /**
-   * The time the call was answered, as an RFC 3339 timestamp.
-   */
-  answered_at?: string;
-
-  /**
-   * The time the call ended, as an RFC 3339 timestamp.
-   */
-  end_at?: string;
-
-  /**
-   * A hash of additional metadata from the provider.
-   */
-  provider_metadata?: { [key: string]: unknown };
-}
-
-export namespace CallCreateParams {
-  /**
-   * Parameters for creating a `Participant` object.
-   */
-  export interface Participant {
-    /**
-     * The E.164 formatted phone number of the participant.
-     */
-    phone: string;
-
-    /**
-     * The role of the participant in the call. Can be `caller`, `callee`, or `other`.
-     */
-    role: 'caller' | 'callee' | 'other';
-  }
-}
-
 export declare namespace Calls {
-  export { type Call as Call, type CallCreateParams as CallCreateParams };
+  export { type Call as Call };
 }
