@@ -20,33 +20,19 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
-  BooleanValue,
-  Choice,
-  DateValue,
-  DatetimeValue,
-  DomainValue,
-  EmailValue,
-  FieldValue,
-  FloatValue,
-  FunnelStep,
-  GeoValue,
-  IntegerValue,
-  Item,
-  ItemCreateParams,
-  ItemUpdateParams,
-  ItemUpsertParams,
-  Items,
-  MonetaryValue,
-  MultiLineTextValue,
-  PercentageValue,
-  RelationValue,
-  SingleLineTextValue,
-  SocialLinkedInValue,
-  SocialXValue,
-  TelephoneNumber,
-  URLValue,
-  Value,
-} from './resources/items';
+  ProgramTemplate,
+  ProgramTemplateListParams,
+  ProgramTemplateRetrieveParams,
+  ProgramTemplates,
+  ProgramTemplatesCursorPage,
+} from './resources/program-templates';
+import {
+  Program,
+  ProgramListParams,
+  ProgramRetrieveParams,
+  Programs,
+  ProgramsCursorPage,
+} from './resources/programs';
 import {
   Collection,
   CollectionListParams,
@@ -763,10 +749,12 @@ export class Moonbase {
   static toFile = Uploads.toFile;
 
   collections: API.Collections = new API.Collections(this);
-  items: API.Items = new API.Items(this);
+  programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
+  programs: API.Programs = new API.Programs(this);
 }
 Moonbase.Collections = Collections;
-Moonbase.Items = Items;
+Moonbase.ProgramTemplates = ProgramTemplates;
+Moonbase.Programs = Programs;
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
 
@@ -783,32 +771,19 @@ export declare namespace Moonbase {
   };
 
   export {
-    Items as Items,
-    type BooleanValue as BooleanValue,
-    type Choice as Choice,
-    type DateValue as DateValue,
-    type DatetimeValue as DatetimeValue,
-    type DomainValue as DomainValue,
-    type EmailValue as EmailValue,
-    type FieldValue as FieldValue,
-    type FloatValue as FloatValue,
-    type FunnelStep as FunnelStep,
-    type GeoValue as GeoValue,
-    type IntegerValue as IntegerValue,
-    type Item as Item,
-    type MonetaryValue as MonetaryValue,
-    type MultiLineTextValue as MultiLineTextValue,
-    type PercentageValue as PercentageValue,
-    type RelationValue as RelationValue,
-    type SingleLineTextValue as SingleLineTextValue,
-    type SocialLinkedInValue as SocialLinkedInValue,
-    type SocialXValue as SocialXValue,
-    type TelephoneNumber as TelephoneNumber,
-    type URLValue as URLValue,
-    type Value as Value,
-    type ItemCreateParams as ItemCreateParams,
-    type ItemUpdateParams as ItemUpdateParams,
-    type ItemUpsertParams as ItemUpsertParams,
+    ProgramTemplates as ProgramTemplates,
+    type ProgramTemplate as ProgramTemplate,
+    type ProgramTemplatesCursorPage as ProgramTemplatesCursorPage,
+    type ProgramTemplateRetrieveParams as ProgramTemplateRetrieveParams,
+    type ProgramTemplateListParams as ProgramTemplateListParams,
+  };
+
+  export {
+    Programs as Programs,
+    type Program as Program,
+    type ProgramsCursorPage as ProgramsCursorPage,
+    type ProgramRetrieveParams as ProgramRetrieveParams,
+    type ProgramListParams as ProgramListParams,
   };
 
   export type Error = API.Error;

@@ -29,10 +29,10 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const page = await client.collections.list();
-const collection = page.data[0];
+const page = await client.programTemplates.list();
+const programTemplate = page.data[0];
 
-console.log(collection.id);
+console.log(programTemplate.id);
 ```
 
 ### Request & Response types
@@ -47,7 +47,7 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const [collection]: [Moonbase.Collection] = await client.collections.list();
+const [programTemplate]: [Moonbase.ProgramTemplate] = await client.programTemplates.list();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -60,7 +60,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const page = await client.collections.list().catch(async (err) => {
+const page = await client.programTemplates.list().catch(async (err) => {
   if (err instanceof Moonbase.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -100,7 +100,7 @@ const client = new Moonbase({
 });
 
 // Or, configure per-request:
-await client.collections.list({
+await client.programTemplates.list({
   maxRetries: 5,
 });
 ```
@@ -117,7 +117,7 @@ const client = new Moonbase({
 });
 
 // Override per-request:
-await client.collections.list({
+await client.programTemplates.list({
   timeout: 5 * 1000,
 });
 ```
@@ -132,22 +132,22 @@ List methods in the Moonbase API are paginated.
 You can use the `for await … of` syntax to iterate through items across all pages:
 
 ```ts
-async function fetchAllCollections(params) {
-  const allCollections = [];
+async function fetchAllProgramTemplates(params) {
+  const allProgramTemplates = [];
   // Automatically fetches more pages as needed.
-  for await (const collection of client.collections.list({ limit: 20 })) {
-    allCollections.push(collection);
+  for await (const programTemplate of client.programTemplates.list({ limit: 20 })) {
+    allProgramTemplates.push(programTemplate);
   }
-  return allCollections;
+  return allProgramTemplates;
 }
 ```
 
 Alternatively, you can request a single page at a time:
 
 ```ts
-let page = await client.collections.list({ limit: 20 });
-for (const collection of page.data) {
-  console.log(collection);
+let page = await client.programTemplates.list({ limit: 20 });
+for (const programTemplate of page.data) {
+  console.log(programTemplate);
 }
 
 // Convenience methods are provided for manually paginating:
@@ -171,14 +171,14 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Moonbase();
 
-const response = await client.collections.list().asResponse();
+const response = await client.programTemplates.list().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: page, response: raw } = await client.collections.list().withResponse();
+const { data: page, response: raw } = await client.programTemplates.list().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-for await (const collection of page) {
-  console.log(collection.id);
+for await (const programTemplate of page) {
+  console.log(programTemplate.id);
 }
 ```
 
@@ -259,7 +259,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.collections.list({
+client.programTemplates.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
