@@ -11,11 +11,14 @@ describe('resource calls', () => {
   test('create: only required params', async () => {
     const responsePromise = client.calls.create({
       direction: 'incoming',
-      participants: [{ phone: 'phone', role: 'caller' }],
-      provider: 'provider',
-      provider_id: 'provider_id',
-      start_at: '2019-12-27T18:11:19.117Z',
-      status: 'queued',
+      participants: [
+        { phone: '+14155551212', role: 'caller' },
+        { phone: '+16505551212', role: 'callee' },
+      ],
+      provider: 'openphone',
+      provider_id: 'openphone_id_000000000002',
+      start_at: '2025-07-12T02:19:39.553Z',
+      status: 'completed',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -29,14 +32,22 @@ describe('resource calls', () => {
   test('create: required and optional params', async () => {
     const response = await client.calls.create({
       direction: 'incoming',
-      participants: [{ phone: 'phone', role: 'caller' }],
-      provider: 'provider',
-      provider_id: 'provider_id',
-      start_at: '2019-12-27T18:11:19.117Z',
-      status: 'queued',
-      answered_at: '2019-12-27T18:11:19.117Z',
-      end_at: '2019-12-27T18:11:19.117Z',
-      provider_metadata: { foo: 'bar' },
+      participants: [
+        { phone: '+14155551212', role: 'caller' },
+        { phone: '+16505551212', role: 'callee' },
+      ],
+      provider: 'openphone',
+      provider_id: 'openphone_id_000000000002',
+      start_at: '2025-07-12T02:19:39.553Z',
+      status: 'completed',
+      answered_at: '2025-07-12T02:20:39Z',
+      end_at: '2025-07-12T02:49:39.553Z',
+      provider_metadata: {
+        answered_by: 'bar',
+        user_id: 'bar',
+        phone_number_id: 'bar',
+        conversation_id: 'bar',
+      },
     });
   });
 });
