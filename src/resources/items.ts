@@ -14,7 +14,7 @@ export class Items extends APIResource {
    * @example
    * ```ts
    * const item = await client.items.create({
-   *   collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
+   *   collection_id: '1CR8ZUPSRgSsYUg8HVzSV6',
    *   values: {
    *     name: {
    *       type: 'value/text/single_line',
@@ -22,7 +22,7 @@ export class Items extends APIResource {
    *     },
    *     ceo: {
    *       type: 'value/relation',
-   *       item: { type: 'item', id: '1CR2QLtx9doK4wFiFB7VAS' },
+   *       item: { type: 'item', id: '1CR8ZUQk3g9D6v8bvQPh7U' },
    *     },
    *   },
    * });
@@ -51,7 +51,10 @@ export class Items extends APIResource {
    * ```ts
    * const item = await client.items.update('id', {
    *   values: {
-   *     foo: { text: 'text', type: 'value/text/single_line' },
+   *     name: {
+   *       type: 'value/text/single_line',
+   *       text: 'Jony Appleseed',
+   *     },
    *   },
    * });
    * ```
@@ -97,7 +100,7 @@ export class Items extends APIResource {
    * @example
    * ```ts
    * const item = await client.items.upsert({
-   *   collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
+   *   collection_id: '1CR8ZTkjJggbDcKLRBk8FL',
    *   identifiers: {
    *     domain: [
    *       {
