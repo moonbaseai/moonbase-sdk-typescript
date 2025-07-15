@@ -3,7 +3,6 @@
 Types:
 
 - <code><a href="./src/resources/shared.ts">Error</a></code>
-- <code><a href="./src/resources/shared.ts">View</a></code>
 
 # Activities
 
@@ -204,9 +203,13 @@ Methods:
 
 # Views
 
+Types:
+
+- <code><a href="./src/resources/views/views.ts">ViewRetrieveResponse</a></code>
+
 Methods:
 
-- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id, { ...params }) -> View</code>
+- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id, { ...params }) -> ViewRetrieveResponse</code>
 
 ## Items
 
