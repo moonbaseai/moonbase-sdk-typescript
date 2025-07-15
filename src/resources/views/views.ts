@@ -18,7 +18,7 @@ export class Views extends APIResource {
     id: string,
     query: ViewRetrieveParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ViewRetrieveResponse> {
+  ): APIPromise<View> {
     return this._client.get(path`/views/${id}`, { query, ...options });
   }
 }
@@ -27,13 +27,13 @@ export class Views extends APIResource {
  * A View represents a saved configuration for displaying items in a collection,
  * including filters and sorting rules.
  */
-export interface ViewRetrieveResponse {
+export interface View {
   /**
    * Unique identifier for the object.
    */
   id: string;
 
-  links: ViewRetrieveResponse.Links;
+  links: View.Links;
 
   /**
    * The name of the view.
@@ -56,7 +56,7 @@ export interface ViewRetrieveResponse {
   view_type?: 'table' | 'board';
 }
 
-export namespace ViewRetrieveResponse {
+export namespace View {
   export interface Links {
     /**
      * A link to the `Collection` this view belongs to.
@@ -86,7 +86,7 @@ export interface ViewRetrieveParams {
 Views.Items = Items;
 
 export declare namespace Views {
-  export { type ViewRetrieveResponse as ViewRetrieveResponse, type ViewRetrieveParams as ViewRetrieveParams };
+  export { type View as View, type ViewRetrieveParams as ViewRetrieveParams };
 
   export { Items as Items, type ItemListParams as ItemListParams };
 }
