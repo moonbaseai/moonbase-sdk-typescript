@@ -8,15 +8,6 @@ import { RequestOptions } from '../internal/request-options';
 export class ProgramMessages extends APIResource {
   /**
    * Sends a message using a program template.
-   *
-   * @example
-   * ```ts
-   * const programMessage = await client.programMessages.create({
-   *   person: { email: 'person-71@example-71.com' },
-   *   program_template_id: '1CR2QLhLQPX9WCiWH3cXCe',
-   *   custom_variables: { coupon_code: 'HOWDY' },
-   * });
-   * ```
    */
   create(
     body: ProgramMessageCreateParams,

@@ -10,23 +10,6 @@ import { path } from '../internal/utils/path';
 export class Items extends APIResource {
   /**
    * Creates a new item in a collection.
-   *
-   * @example
-   * ```ts
-   * const item = await client.items.create({
-   *   collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
-   *   values: {
-   *     name: {
-   *       type: 'value/text/single_line',
-   *       text: 'Aperture Science',
-   *     },
-   *     ceo: {
-   *       type: 'value/relation',
-   *       item: { type: 'item', id: '1CR2QLtx9doK4wFiFB7VAS' },
-   *     },
-   *   },
-   * });
-   * ```
    */
   create(body: ItemCreateParams, options?: RequestOptions): APIPromise<Item> {
     return this._client.post('/items', { body, ...options });
@@ -34,11 +17,6 @@ export class Items extends APIResource {
 
   /**
    * Retrieves the details of an existing item.
-   *
-   * @example
-   * ```ts
-   * const item = await client.items.retrieve('id');
-   * ```
    */
   retrieve(id: string, options?: RequestOptions): APIPromise<Item> {
     return this._client.get(path`/items/${id}`, options);
@@ -46,15 +24,6 @@ export class Items extends APIResource {
 
   /**
    * Updates an item.
-   *
-   * @example
-   * ```ts
-   * const item = await client.items.update('id', {
-   *   values: {
-   *     foo: { text: 'text', type: 'value/text/single_line' },
-   *   },
-   * });
-   * ```
    */
   update(id: string, params: ItemUpdateParams, options?: RequestOptions): APIPromise<Item> {
     const {
@@ -81,11 +50,6 @@ export class Items extends APIResource {
 
   /**
    * Permanently deletes an item.
-   *
-   * @example
-   * ```ts
-   * const item = await client.items.delete('id');
-   * ```
    */
   delete(id: string, options?: RequestOptions): APIPromise<Item> {
     return this._client.delete(path`/items/${id}`, options);
@@ -93,39 +57,6 @@ export class Items extends APIResource {
 
   /**
    * Find and update an existing item, or create a new one.
-   *
-   * @example
-   * ```ts
-   * const item = await client.items.upsert({
-   *   collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
-   *   identifiers: {
-   *     domain: [
-   *       {
-   *         type: 'value/uri/domain',
-   *         domain: 'aperturescience.com',
-   *       },
-   *     ],
-   *   },
-   *   values: {
-   *     name: {
-   *       type: 'value/text/single_line',
-   *       text: 'Aperture Science',
-   *     },
-   *     domain: [
-   *       {
-   *         type: 'value/uri/domain',
-   *         domain: 'aperturescience.com',
-   *       },
-   *     ],
-   *     linked_in: {
-   *       type: 'value/uri/social_linked_in',
-   *       profile: {
-   *         url: 'https://linkedin.com/company/aperturescience',
-   *       },
-   *     },
-   *   },
-   * });
-   * ```
    */
   upsert(params: ItemUpsertParams, options?: RequestOptions): APIPromise<Item> {
     const {

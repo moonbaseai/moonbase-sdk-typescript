@@ -7,29 +7,6 @@ import { RequestOptions } from '../internal/request-options';
 export class Calls extends APIResource {
   /**
    * Logs a phone call.
-   *
-   * @example
-   * ```ts
-   * const call = await client.calls.create({
-   *   direction: 'incoming',
-   *   participants: [
-   *     { phone: '+14155551212', role: 'caller' },
-   *     { phone: '+16505551212', role: 'callee' },
-   *   ],
-   *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000002',
-   *   start_at: '2025-07-12T02:19:39.553Z',
-   *   status: 'completed',
-   *   answered_at: '2025-07-12T02:20:39Z',
-   *   end_at: '2025-07-12T02:49:39.553Z',
-   *   provider_metadata: {
-   *     answered_by: 'UShjUatqtF',
-   *     user_id: 'UShjUatqtF',
-   *     phone_number_id: 'PN72zMikBJ',
-   *     conversation_id: 'CNddadaffe2745828f5739f9310fd05dbc',
-   *   },
-   * });
-   * ```
    */
   create(body: CallCreateParams, options?: RequestOptions): APIPromise<Call> {
     return this._client.post('/calls', { body, ...options });
