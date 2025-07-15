@@ -10,11 +10,8 @@ const client = new Moonbase({
 describe('resource items', () => {
   test('create: only required params', async () => {
     const responsePromise = client.items.create({
-      collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
-      values: {
-        name: { text: 'Aperture Science', type: 'value/text/single_line' },
-        ceo: { item: { id: '1CR2QLtx9doK4wFiFB7VAS', type: 'item' }, type: 'value/relation' },
-      },
+      collection_id: 'collection_id',
+      values: { foo: { text: 'text', type: 'value/text/single_line' } },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -27,18 +24,8 @@ describe('resource items', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.items.create({
-      collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
-      values: {
-        name: { text: 'Aperture Science', type: 'value/text/single_line' },
-        ceo: {
-          item: {
-            id: '1CR2QLtx9doK4wFiFB7VAS',
-            type: 'item',
-            values: { foo: { text: 'text', type: 'value/text/single_line' } },
-          },
-          type: 'value/relation',
-        },
-      },
+      collection_id: 'collection_id',
+      values: { foo: { text: 'text', type: 'value/text/single_line' } },
     });
   });
 
@@ -87,13 +74,9 @@ describe('resource items', () => {
 
   test('upsert: only required params', async () => {
     const responsePromise = client.items.upsert({
-      collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
-      identifiers: { domain: [] },
-      values: {
-        name: { text: 'Aperture Science', type: 'value/text/single_line' },
-        domain: [],
-        linked_in: { profile: {}, type: 'value/uri/social_linked_in' },
-      },
+      collection_id: 'collection_id',
+      identifiers: { foo: { text: 'text', type: 'value/text/single_line' } },
+      values: { foo: { text: 'text', type: 'value/text/single_line' } },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -106,16 +89,9 @@ describe('resource items', () => {
 
   test('upsert: required and optional params', async () => {
     const response = await client.items.upsert({
-      collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
-      identifiers: { domain: [] },
-      values: {
-        name: { text: 'Aperture Science', type: 'value/text/single_line' },
-        domain: [],
-        linked_in: {
-          profile: { url: 'https://linkedin.com/company/aperturescience', username: 'username' },
-          type: 'value/uri/social_linked_in',
-        },
-      },
+      collection_id: 'collection_id',
+      identifiers: { foo: { text: 'text', type: 'value/text/single_line' } },
+      values: { foo: { text: 'text', type: 'value/text/single_line' } },
       'update-many-strategy': 'replace',
       'update-one-strategy': 'replace',
     });
