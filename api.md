@@ -205,11 +205,11 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/views/views.ts">ViewRetrieveResponse</a></code>
+- <code><a href="./src/resources/views/views.ts">View</a></code>
 
 Methods:
 
-- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id, { ...params }) -> ViewRetrieveResponse</code>
+- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id, { ...params }) -> View</code>
 
 ## Items
 

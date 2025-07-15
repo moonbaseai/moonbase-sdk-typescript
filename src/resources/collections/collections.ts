@@ -3,6 +3,7 @@
 import { APIResource } from '../../core/resource';
 import * as FieldsAPI from './fields';
 import { FieldRetrieveParams, Fields } from './fields';
+import * as ViewsAPI from '../views/views';
 import { APIPromise } from '../../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
@@ -90,7 +91,7 @@ export interface Collection {
   /**
    * A list of saved `View` objects for presenting the collection's data.
    */
-  views?: Array<unknown>;
+  views?: Array<ViewsAPI.View>;
 }
 
 export namespace Collection {

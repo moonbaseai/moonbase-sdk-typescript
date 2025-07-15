@@ -100,4 +100,4 @@ export {
   type ProgramsCursorPage,
 } from './programs';
 export { Tagsets, type Tagset, type TagsetListParams, type TagsetsCursorPage } from './tagsets';
-export { Views, type ViewRetrieveResponse, type ViewRetrieveParams } from './views/views';
+export { Views, type View, type ViewRetrieveParams } from './views/views';

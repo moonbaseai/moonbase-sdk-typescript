@@ -105,7 +105,7 @@ import {
   CollectionsCursorPage,
   Field,
 } from './resources/collections/collections';
-import { ViewRetrieveParams, ViewRetrieveResponse, Views } from './resources/views/views';
+import { View, ViewRetrieveParams, Views } from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
 import { isRunningInBrowser } from './internal/detect-platform';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -985,11 +985,7 @@ export declare namespace Moonbase {
     type TagsetListParams as TagsetListParams,
   };
 
-  export {
-    Views as Views,
-    type ViewRetrieveResponse as ViewRetrieveResponse,
-    type ViewRetrieveParams as ViewRetrieveParams,
-  };
+  export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
 
   export type Error = API.Error;
 }
