@@ -314,21 +314,6 @@ export interface Item {
 }
 
 /**
- * Parameters for creating an `Item`.
- */
-export interface ItemCreateParams {
-  /**
-   * The ID of the `Collection` to create the item in.
-   */
-  collection_id: string;
-
-  /**
-   * A hash where keys are the `ref` of a `Field` and values are the data to be set.
-   */
-  values: { [key: string]: FieldValue | null };
-}
-
-/**
  * Monetary or currency value
  */
 export interface MonetaryValue {
@@ -549,7 +534,6 @@ export declare namespace Items {
     type GeoValue as GeoValue,
     type IntegerValue as IntegerValue,
     type Item as Item,
-    type ItemCreateParams as ItemCreateParams,
     type MonetaryValue as MonetaryValue,
     type MultiLineTextValue as MultiLineTextValue,
     type PercentageValue as PercentageValue,
@@ -560,6 +544,7 @@ export declare namespace Items {
     type TelephoneNumber as TelephoneNumber,
     type URLValue as URLValue,
     type Value as Value,
+    type ItemCreateParams as ItemCreateParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemUpsertParams as ItemUpsertParams,
   };

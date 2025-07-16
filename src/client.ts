@@ -924,7 +924,6 @@ export declare namespace Moonbase {
     type GeoValue as GeoValue,
     type IntegerValue as IntegerValue,
     type Item as Item,
-    type ItemCreateParams as ItemCreateParams,
     type MonetaryValue as MonetaryValue,
     type MultiLineTextValue as MultiLineTextValue,
     type PercentageValue as PercentageValue,
@@ -935,6 +934,7 @@ export declare namespace Moonbase {
     type TelephoneNumber as TelephoneNumber,
     type URLValue as URLValue,
     type Value as Value,
+    type ItemCreateParams as ItemCreateParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemUpsertParams as ItemUpsertParams,
   };
