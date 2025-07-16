@@ -29,10 +29,13 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const page = await client.programTemplates.list();
-const programTemplate = page.data[0];
+const programMessage = await client.programMessages.create({
+  person: { email: 'user@example.com' },
+  program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+  custom_variables: {},
+});
 
-console.log(programTemplate.id);
+console.log(programMessage.id);
 ```
 
 ### Request & Response types
@@ -47,7 +50,12 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const [programTemplate]: [Moonbase.ProgramTemplate] = await client.programTemplates.list();
+const params: Moonbase.ProgramMessageCreateParams = {
+  person: { email: 'user@example.com' },
+  program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+  custom_variables: {},
+};
+const programMessage: Moonbase.ProgramMessageCreateResponse = await client.programMessages.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -60,15 +68,21 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const page = await client.programTemplates.list().catch(async (err) => {
-  if (err instanceof Moonbase.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const programMessage = await client.programMessages
+  .create({
+    person: { email: 'user@example.com' },
+    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+    custom_variables: {},
+  })
+  .catch(async (err) => {
+    if (err instanceof Moonbase.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -100,7 +114,7 @@ const client = new Moonbase({
 });
 
 // Or, configure per-request:
-await client.programTemplates.list({
+await client.programMessages.create({ person: { email: 'user@example.com' }, program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID', custom_variables: {} }, {
   maxRetries: 5,
 });
 ```
@@ -117,7 +131,7 @@ const client = new Moonbase({
 });
 
 // Override per-request:
-await client.programTemplates.list({
+await client.programMessages.create({ person: { email: 'user@example.com' }, program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID', custom_variables: {} }, {
   timeout: 5 * 1000,
 });
 ```
@@ -171,15 +185,25 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Moonbase();
 
-const response = await client.programTemplates.list().asResponse();
+const response = await client.programMessages
+  .create({
+    person: { email: 'user@example.com' },
+    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+    custom_variables: {},
+  })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: page, response: raw } = await client.programTemplates.list().withResponse();
+const { data: programMessage, response: raw } = await client.programMessages
+  .create({
+    person: { email: 'user@example.com' },
+    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+    custom_variables: {},
+  })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-for await (const programTemplate of page) {
-  console.log(programTemplate.id);
-}
+console.log(programMessage.id);
 ```
 
 ### Logging
@@ -259,7 +283,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.programTemplates.list({
+client.programMessages.create({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
