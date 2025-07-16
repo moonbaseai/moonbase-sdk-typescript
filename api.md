@@ -115,6 +115,7 @@ Types:
 - <code><a href="./src/resources/items.ts">GeoValue</a></code>
 - <code><a href="./src/resources/items.ts">IntegerValue</a></code>
 - <code><a href="./src/resources/items.ts">Item</a></code>
+- <code><a href="./src/resources/items.ts">ItemCreateParams</a></code>
 - <code><a href="./src/resources/items.ts">MonetaryValue</a></code>
 - <code><a href="./src/resources/items.ts">MultiLineTextValue</a></code>
 - <code><a href="./src/resources/items.ts">PercentageValue</a></code>
