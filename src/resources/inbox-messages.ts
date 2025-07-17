@@ -49,11 +49,6 @@ export interface Address {
   email: string;
 
   /**
-   * A hash of related links.
-   */
-  links: Address.Links;
-
-  /**
    * String representing the object’s type. Always `address` for this object.
    */
   type: 'address';
@@ -62,6 +57,11 @@ export interface Address {
    * Time at which the object was created, as an RFC 3339 timestamp.
    */
   created_at?: string;
+
+  /**
+   * A hash of related links.
+   */
+  links?: Address.Links;
 
   /**
    * The role of the address in the message. Can be `from`, `reply_to`, `to`, `cc`,
