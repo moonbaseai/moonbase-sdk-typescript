@@ -17,16 +17,16 @@ export class Calls extends APIResource {
    *     { phone: '+16505551212', role: 'callee' },
    *   ],
    *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000002',
-   *   start_at: '2025-07-15T08:23:09.649Z',
+   *   provider_id: 'openphone_id_000000000001',
+   *   start_at: '2025-07-17T17:50:23.140Z',
    *   status: 'completed',
-   *   answered_at: '2025-07-15T08:24:09Z',
-   *   end_at: '2025-07-15T08:53:09.649Z',
+   *   answered_at: '2025-07-17T17:51:23Z',
+   *   end_at: '2025-07-17T18:20:23.140Z',
    *   provider_metadata: {
    *     answered_by: 'UShjUatqtF',
    *     user_id: 'UShjUatqtF',
    *     phone_number_id: 'PN72zMikBJ',
-   *     conversation_id: 'CNdc514e5aaa841eef2aa25b1e897f4647',
+   *     conversation_id: 'CN172b51cda7829ff192e5ed5ecf194591',
    *   },
    * });
    * ```

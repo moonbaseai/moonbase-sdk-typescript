@@ -47,6 +47,11 @@ export interface InboxConversation {
   links: InboxConversation.Links;
 
   /**
+   * The current state, which can be `unassigned`, `active`, `closed`, or `waiting`.
+   */
+  state: 'unassigned' | 'active' | 'closed' | 'waiting';
+
+  /**
    * String representing the object’s type. Always `inbox_conversation` for this
    * object.
    */
@@ -63,11 +68,6 @@ export interface InboxConversation {
   bulk?: boolean;
 
   /**
-   * `true` if the conversation is currently closed.
-   */
-  closed?: boolean;
-
-  /**
    * Time at which the object was created, as an RFC 3339 timestamp.
    */
   created_at?: string;
@@ -81,11 +81,6 @@ export interface InboxConversation {
    * `true` if a new draft reply to this conversation has been started.
    */
   new_draft_conversation?: boolean;
-
-  /**
-   * `true` if the conversation is currently open.
-   */
-  open?: boolean;
 
   /**
    * `true` if the conversation is marked as spam.

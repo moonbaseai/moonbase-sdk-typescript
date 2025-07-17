@@ -16,8 +16,8 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000002',
-      start_at: '2025-07-15T08:23:09.649Z',
+      provider_id: 'openphone_id_000000000001',
+      start_at: '2025-07-17T17:50:23.140Z',
       status: 'completed',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -37,11 +37,11 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000002',
-      start_at: '2025-07-15T08:23:09.649Z',
+      provider_id: 'openphone_id_000000000001',
+      start_at: '2025-07-17T17:50:23.140Z',
       status: 'completed',
-      answered_at: '2025-07-15T08:24:09Z',
-      end_at: '2025-07-15T08:53:09.649Z',
+      answered_at: '2025-07-17T17:51:23Z',
+      end_at: '2025-07-17T18:20:23.140Z',
       provider_metadata: {
         answered_by: 'bar',
         user_id: 'bar',
