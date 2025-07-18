@@ -1,4 +1,4 @@
-import { createPathTagFunction, encodeURIPath } from '@moonbase/sdk/internal/utils/path';
+import { createPathTagFunction, encodeURIPath } from '@moonbaseai/sdk/internal/utils/path';
 import { inspect } from 'node:util';
 import { runInNewContext } from 'node:vm';
 
