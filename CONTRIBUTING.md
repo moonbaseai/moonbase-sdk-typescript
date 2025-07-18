@@ -55,12 +55,12 @@ $ cd moonbase-sdk-typescript
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link @moonbase/sdk
+$ yarn link @moonbaseai/sdk
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @moonbase/sdk
+$ pnpm link -—global @moonbaseai/sdk
 ```
 
 ## Running tests

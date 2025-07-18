@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { Moonbase } from '@moonbase/sdk';
+import { Moonbase } from '@moonbaseai/sdk';
 
 const { stringifyQuery } = Moonbase.prototype as any;
 

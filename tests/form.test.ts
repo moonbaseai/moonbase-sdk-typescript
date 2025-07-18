@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from '@moonbase/sdk/internal/uploads';
-import { toFile } from '@moonbase/sdk/core/uploads';
+import { multipartFormRequestOptions, createForm } from '@moonbaseai/sdk/internal/uploads';
+import { toFile } from '@moonbaseai/sdk/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

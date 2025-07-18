@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIPromise } from '@moonbase/sdk/core/api-promise';
+import { APIPromise } from '@moonbaseai/sdk/core/api-promise';
 
 import util from 'node:util';
-import Moonbase from '@moonbase/sdk';
-import { APIUserAbortError } from '@moonbase/sdk';
+import Moonbase from '@moonbaseai/sdk';
+import { APIUserAbortError } from '@moonbaseai/sdk';
 const defaultFetch = fetch;
 
 describe('instantiate client', () => {
