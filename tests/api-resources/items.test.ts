@@ -10,10 +10,10 @@ const client = new Moonbase({
 describe('resource items', () => {
   test('create: only required params', async () => {
     const responsePromise = client.items.create({
-      collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
+      collection_id: '1CRDSE9ttnSYmcV3rF2hEt',
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
-        ceo: { item: { id: '1CR2QLtx9doK4wFiFB7VAS', type: 'item' }, type: 'value/relation' },
+        ceo: { item: { id: '1CRDSEB9orv8FpBhJPFPk1', type: 'item' }, type: 'value/relation' },
       },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -27,13 +27,14 @@ describe('resource items', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.items.create({
-      collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
+      collection_id: '1CRDSE9ttnSYmcV3rF2hEt',
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
         ceo: {
           item: {
-            id: '1CR2QLtx9doK4wFiFB7VAS',
+            id: '1CRDSEB9orv8FpBhJPFPk1',
             type: 'item',
+            links: { collection: 'https://example.com', self: 'https://example.com' },
             values: { foo: { text: 'text', type: 'value/text/single_line' } },
           },
           type: 'value/relation',
@@ -55,7 +56,7 @@ describe('resource items', () => {
 
   test('update: only required params', async () => {
     const responsePromise = client.items.update('id', {
-      values: { foo: { text: 'text', type: 'value/text/single_line' } },
+      values: { name: { text: 'Jony Appleseed', type: 'value/text/single_line' } },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -68,7 +69,7 @@ describe('resource items', () => {
 
   test('update: required and optional params', async () => {
     const response = await client.items.update('id', {
-      values: { foo: { text: 'text', type: 'value/text/single_line' } },
+      values: { name: { text: 'Jony Appleseed', type: 'value/text/single_line' } },
       'update-many-strategy': 'replace',
       'update-one-strategy': 'replace',
     });
@@ -87,7 +88,7 @@ describe('resource items', () => {
 
   test('upsert: only required params', async () => {
     const responsePromise = client.items.upsert({
-      collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
+      collection_id: '1CRDSEa8usAnarLXLT12ev',
       identifiers: { domain: [] },
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
@@ -106,7 +107,7 @@ describe('resource items', () => {
 
   test('upsert: required and optional params', async () => {
     const response = await client.items.upsert({
-      collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
+      collection_id: '1CRDSEa8usAnarLXLT12ev',
       identifiers: { domain: [] },
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },

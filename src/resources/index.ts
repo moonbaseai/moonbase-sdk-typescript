@@ -82,8 +82,8 @@ export {
 export { Notes, type Note, type NoteListParams, type NotesCursorPage } from './notes';
 export {
   ProgramMessages,
-  type ProgramMessageSendResponse,
-  type ProgramMessageSendParams,
+  type ProgramMessageCreateResponse,
+  type ProgramMessageCreateParams,
 } from './program-messages';
 export {
   ProgramTemplates,
@@ -100,4 +100,4 @@ export {
   type ProgramsCursorPage,
 } from './programs';
 export { Tagsets, type Tagset, type TagsetListParams, type TagsetsCursorPage } from './tagsets';
-export { Views, type View, type ViewRetrieveParams, type ViewListItemsParams } from './views';
+export { Views, type View, type ViewRetrieveParams } from './views/views';

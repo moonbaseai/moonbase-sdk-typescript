@@ -78,8 +78,8 @@ import {
 } from './resources/meetings';
 import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
 import {
-  ProgramMessageSendParams,
-  ProgramMessageSendResponse,
+  ProgramMessageCreateParams,
+  ProgramMessageCreateResponse,
   ProgramMessages,
 } from './resources/program-messages';
 import {
@@ -97,7 +97,6 @@ import {
   ProgramsCursorPage,
 } from './resources/programs';
 import { Tagset, TagsetListParams, Tagsets, TagsetsCursorPage } from './resources/tagsets';
-import { View, ViewListItemsParams, ViewRetrieveParams, Views } from './resources/views';
 import {
   Collection,
   CollectionListParams,
@@ -106,6 +105,7 @@ import {
   CollectionsCursorPage,
   Field,
 } from './resources/collections/collections';
+import { View, ViewRetrieveParams, Views } from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
 import { isRunningInBrowser } from './internal/detect-platform';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -958,8 +958,8 @@ export declare namespace Moonbase {
 
   export {
     ProgramMessages as ProgramMessages,
-    type ProgramMessageSendResponse as ProgramMessageSendResponse,
-    type ProgramMessageSendParams as ProgramMessageSendParams,
+    type ProgramMessageCreateResponse as ProgramMessageCreateResponse,
+    type ProgramMessageCreateParams as ProgramMessageCreateParams,
   };
 
   export {
@@ -985,12 +985,7 @@ export declare namespace Moonbase {
     type TagsetListParams as TagsetListParams,
   };
 
-  export {
-    Views as Views,
-    type View as View,
-    type ViewRetrieveParams as ViewRetrieveParams,
-    type ViewListItemsParams as ViewListItemsParams,
-  };
+  export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
 
   export type Error = API.Error;
 }

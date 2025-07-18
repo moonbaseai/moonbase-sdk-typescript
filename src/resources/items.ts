@@ -14,7 +14,7 @@ export class Items extends APIResource {
    * @example
    * ```ts
    * const item = await client.items.create({
-   *   collection_id: '1CR2QLsnhwrJX7Z33jnyGV',
+   *   collection_id: '1CRDSE9ttnSYmcV3rF2hEt',
    *   values: {
    *     name: {
    *       type: 'value/text/single_line',
@@ -22,7 +22,7 @@ export class Items extends APIResource {
    *     },
    *     ceo: {
    *       type: 'value/relation',
-   *       item: { type: 'item', id: '1CR2QLtx9doK4wFiFB7VAS' },
+   *       item: { type: 'item', id: '1CRDSEB9orv8FpBhJPFPk1' },
    *     },
    *   },
    * });
@@ -51,7 +51,10 @@ export class Items extends APIResource {
    * ```ts
    * const item = await client.items.update('id', {
    *   values: {
-   *     foo: { text: 'text', type: 'value/text/single_line' },
+   *     name: {
+   *       type: 'value/text/single_line',
+   *       text: 'Jony Appleseed',
+   *     },
    *   },
    * });
    * ```
@@ -97,7 +100,7 @@ export class Items extends APIResource {
    * @example
    * ```ts
    * const item = await client.items.upsert({
-   *   collection_id: '1CR2QLbeMAqKQ6PvQu39pZ',
+   *   collection_id: '1CRDSEa8usAnarLXLT12ev',
    *   identifiers: {
    *     domain: [
    *       {
@@ -303,11 +306,27 @@ export interface Item {
    */
   type: 'item';
 
+  links?: Item.Links;
+
   /**
    * A hash where keys are the `ref` of a `Field` and values are the data stored for
    * that field.
    */
   values?: { [key: string]: FieldValue | null };
+}
+
+export namespace Item {
+  export interface Links {
+    /**
+     * A link to the `Collection` the item belongs to.
+     */
+    collection?: string;
+
+    /**
+     * The canonical URL for this object.
+     */
+    self?: string;
+  }
 }
 
 /**

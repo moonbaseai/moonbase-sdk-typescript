@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as ViewsAPI from '../views';
 import * as FieldsAPI from './fields';
 import { FieldRetrieveParams, Fields } from './fields';
+import * as ViewsAPI from '../views/views';
 import { APIPromise } from '../../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';

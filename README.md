@@ -4,18 +4,15 @@
 
 This library provides convenient access to the Moonbase REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.moonbase.ai](https://docs.moonbase.ai/api-reference/introduction). The full API of this library can be found in [api.md](api.md).
+The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:stainless-sdks/moonbase-sdk-typescript.git
+npm install @moonbase/sdk
 ```
-
-> [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install @moonbase/sdk`
 
 ## Usage
 
@@ -29,10 +26,13 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const page = await client.collections.list();
-const collection = page.data[0];
+const programMessage = await client.programMessages.create({
+  person: { email: 'user@example.com' },
+  program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+  custom_variables: {},
+});
 
-console.log(collection.id);
+console.log(programMessage.id);
 ```
 
 ### Request & Response types
@@ -47,7 +47,12 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const [collection]: [Moonbase.Collection] = await client.collections.list();
+const params: Moonbase.ProgramMessageCreateParams = {
+  person: { email: 'user@example.com' },
+  program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+  custom_variables: {},
+};
+const programMessage: Moonbase.ProgramMessageCreateResponse = await client.programMessages.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -60,15 +65,21 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const page = await client.collections.list().catch(async (err) => {
-  if (err instanceof Moonbase.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const programMessage = await client.programMessages
+  .create({
+    person: { email: 'user@example.com' },
+    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+    custom_variables: {},
+  })
+  .catch(async (err) => {
+    if (err instanceof Moonbase.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -100,7 +111,7 @@ const client = new Moonbase({
 });
 
 // Or, configure per-request:
-await client.collections.list({
+await client.programMessages.create({ person: { email: 'user@example.com' }, program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID', custom_variables: {} }, {
   maxRetries: 5,
 });
 ```
@@ -117,7 +128,7 @@ const client = new Moonbase({
 });
 
 // Override per-request:
-await client.collections.list({
+await client.programMessages.create({ person: { email: 'user@example.com' }, program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID', custom_variables: {} }, {
   timeout: 5 * 1000,
 });
 ```
@@ -132,22 +143,22 @@ List methods in the Moonbase API are paginated.
 You can use the `for await … of` syntax to iterate through items across all pages:
 
 ```ts
-async function fetchAllCollections(params) {
-  const allCollections = [];
+async function fetchAllProgramTemplates(params) {
+  const allProgramTemplates = [];
   // Automatically fetches more pages as needed.
-  for await (const collection of client.collections.list({ limit: 20 })) {
-    allCollections.push(collection);
+  for await (const programTemplate of client.programTemplates.list({ limit: 20 })) {
+    allProgramTemplates.push(programTemplate);
   }
-  return allCollections;
+  return allProgramTemplates;
 }
 ```
 
 Alternatively, you can request a single page at a time:
 
 ```ts
-let page = await client.collections.list({ limit: 20 });
-for (const collection of page.data) {
-  console.log(collection);
+let page = await client.programTemplates.list({ limit: 20 });
+for (const programTemplate of page.data) {
+  console.log(programTemplate);
 }
 
 // Convenience methods are provided for manually paginating:
@@ -171,15 +182,25 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Moonbase();
 
-const response = await client.collections.list().asResponse();
+const response = await client.programMessages
+  .create({
+    person: { email: 'user@example.com' },
+    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+    custom_variables: {},
+  })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: page, response: raw } = await client.collections.list().withResponse();
+const { data: programMessage, response: raw } = await client.programMessages
+  .create({
+    person: { email: 'user@example.com' },
+    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
+    custom_variables: {},
+  })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-for await (const collection of page) {
-  console.log(collection.id);
-}
+console.log(programMessage.id);
 ```
 
 ### Logging
@@ -259,7 +280,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.collections.list({
+client.programMessages.create({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
@@ -369,7 +390,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/moonbase-sdk-typescript/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/moonbaseai/moonbase-sdk-typescript/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 

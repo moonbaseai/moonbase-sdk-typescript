@@ -25,26 +25,4 @@ describe('resource views', () => {
       client.views.retrieve('id', { include: ['collection'] }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Moonbase.NotFoundError);
   });
-
-  test('listItems', async () => {
-    const responsePromise = client.views.listItems('id');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('listItems: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.views.listItems(
-        'id',
-        { after: 'after', before: 'before', limit: 1 },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Moonbase.NotFoundError);
-  });
 });

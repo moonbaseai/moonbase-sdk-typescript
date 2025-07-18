@@ -18,15 +18,15 @@ export class Calls extends APIResource {
    *   ],
    *   provider: 'openphone',
    *   provider_id: 'openphone_id_000000000002',
-   *   start_at: '2025-07-12T02:19:39.553Z',
+   *   start_at: '2025-07-17T22:11:01.781Z',
    *   status: 'completed',
-   *   answered_at: '2025-07-12T02:20:39Z',
-   *   end_at: '2025-07-12T02:49:39.553Z',
+   *   answered_at: '2025-07-17T22:12:01Z',
+   *   end_at: '2025-07-17T22:41:01.781Z',
    *   provider_metadata: {
    *     answered_by: 'UShjUatqtF',
    *     user_id: 'UShjUatqtF',
    *     phone_number_id: 'PN72zMikBJ',
-   *     conversation_id: 'CNddadaffe2745828f5739f9310fd05dbc',
+   *     conversation_id: 'CNc8b37fb37fa88a12759c4e64a849f6ab',
    *   },
    * });
    * ```

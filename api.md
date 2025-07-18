@@ -162,11 +162,11 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/program-messages.ts">ProgramMessageSendResponse</a></code>
+- <code><a href="./src/resources/program-messages.ts">ProgramMessageCreateResponse</a></code>
 
 Methods:
 
-- <code title="post /program_messages">client.programMessages.<a href="./src/resources/program-messages.ts">send</a>({ ...params }) -> ProgramMessageSendResponse</code>
+- <code title="post /program_messages">client.programMessages.<a href="./src/resources/program-messages.ts">create</a>({ ...params }) -> ProgramMessageCreateResponse</code>
 
 # ProgramTemplates
 
@@ -205,9 +205,14 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/views.ts">View</a></code>
+- <code><a href="./src/resources/views/views.ts">View</a></code>
 
 Methods:
 
-- <code title="get /views/{id}">client.views.<a href="./src/resources/views.ts">retrieve</a>(id, { ...params }) -> View</code>
-- <code title="get /views/{id}/items">client.views.<a href="./src/resources/views.ts">listItems</a>(id, { ...params }) -> ItemsCursorPage</code>
+- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id, { ...params }) -> View</code>
+
+## Items
+
+Methods:
+
+- <code title="get /views/{id}/items">client.views.items.<a href="./src/resources/views/items.ts">list</a>(id, { ...params }) -> ItemsCursorPage</code>
