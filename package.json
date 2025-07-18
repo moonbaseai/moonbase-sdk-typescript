@@ -1,6 +1,6 @@
 {
-  "name": "@moonbase/sdk",
-  "version": "0.1.0-alpha.1",
+  "name": "@moonbaseai/sdk",
+  "version": "0.1.0-alpha.2",
   "description": "The official TypeScript library for the Moonbase API",
   "author": "Moonbase <support@moonbase.ai>",
   "types": "dist/index.d.ts",
@@ -47,8 +47,8 @@
     "typescript-eslint": "8.31.1"
   },
   "imports": {
-    "@moonbase/sdk": ".",
-    "@moonbase/sdk/*": "./src/*"
+    "@moonbaseai/sdk": ".",
+    "@moonbaseai/sdk/*": "./src/*"
   },
   "exports": {
     ".": {

@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "@moonbase/sdk/*": ["dist/src/*"],
-      "@moonbase/sdk": ["dist/src/index.ts"]
+      "@moonbaseai/sdk/*": ["dist/src/*"],
+      "@moonbaseai/sdk": ["dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
