@@ -116,11 +116,11 @@ export interface CursorPageResponse<Item> {
 
 export namespace CursorPageResponse {
   export interface Meta {
-    cursor?: StainlessPageResourceAPI.Meta.Cursor;
+    cursors?: StainlessPageResourceAPI.Meta.Cursors;
   }
 
   export namespace Meta {
-    export interface Cursor {
+    export interface Cursors {
       next?: string;
     }
   }
@@ -152,7 +152,7 @@ export class CursorPage<Item> extends AbstractPage<Item> implements CursorPageRe
   }
 
   nextPageRequestOptions(): PageRequestOptions | null {
-    const cursor = this.meta?.cursor?.next;
+    const cursor = this.meta?.cursors?.next;
     if (!cursor) {
       return null;
     }
