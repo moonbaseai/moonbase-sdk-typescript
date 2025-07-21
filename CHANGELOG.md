@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2025-07-20)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Bug Fixes
+
+* pagination ([2bf3eb6](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/2bf3eb65a0499427856826fd87fc81439bf3cbf1))
+
 ## 0.1.0-alpha.2 (2025-07-18)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
