@@ -17,7 +17,7 @@ describe('resource calls', () => {
       ],
       provider: 'openphone',
       provider_id: 'openphone_id_000000000002',
-      start_at: '2025-07-17T22:11:01.781Z',
+      start_at: '2025-07-22T02:56:27.836Z',
       status: 'completed',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -38,10 +38,10 @@ describe('resource calls', () => {
       ],
       provider: 'openphone',
       provider_id: 'openphone_id_000000000002',
-      start_at: '2025-07-17T22:11:01.781Z',
+      start_at: '2025-07-22T02:56:27.836Z',
       status: 'completed',
-      answered_at: '2025-07-17T22:12:01Z',
-      end_at: '2025-07-17T22:41:01.781Z',
+      answered_at: '2025-07-22T02:57:27Z',
+      end_at: '2025-07-22T03:26:27.836Z',
       provider_metadata: {
         answered_by: 'bar',
         user_id: 'bar',
