@@ -17,16 +17,16 @@ export class Calls extends APIResource {
    *     { phone: '+16505551212', role: 'callee' },
    *   ],
    *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000002',
-   *   start_at: '2025-07-22T02:56:27.836Z',
+   *   provider_id: 'openphone_id_000000000006',
+   *   start_at: '2025-08-11T21:11:10.467Z',
    *   status: 'completed',
-   *   answered_at: '2025-07-22T02:57:27Z',
-   *   end_at: '2025-07-22T03:26:27.836Z',
+   *   answered_at: '2025-08-11T21:12:10Z',
+   *   end_at: '2025-08-11T21:41:10.467Z',
    *   provider_metadata: {
    *     answered_by: 'UShjUatqtF',
    *     user_id: 'UShjUatqtF',
    *     phone_number_id: 'PN72zMikBJ',
-   *     conversation_id: 'CN2b0d613944c3f1af9a20ad0a15562ce6',
+   *     conversation_id: 'CN7f81abbb6717a238375aa88b71409b0c',
    *   },
    * });
    * ```
@@ -215,6 +215,16 @@ export interface CallCreateParams {
    * A hash of additional metadata from the provider.
    */
   provider_metadata?: { [key: string]: unknown };
+
+  /**
+   * Any recordings associated with the call.
+   */
+  recordings?: Array<CallCreateParams.Recording>;
+
+  /**
+   * A transcript of the call.
+   */
+  transcript?: CallCreateParams.Transcript;
 }
 
 export namespace CallCreateParams {
@@ -231,6 +241,66 @@ export namespace CallCreateParams {
      * The role of the participant in the call. Can be `caller`, `callee`, or `other`.
      */
     role: 'caller' | 'callee' | 'other';
+  }
+
+  /**
+   * Parameters for creating a `CallRecording` object.
+   */
+  export interface Recording {
+    /**
+     * The content type of the recording. Note that only `audio/mpeg` is supported at
+     * this time.
+     */
+    content_type: string;
+
+    /**
+     * The unique identifier for the recording from the provider's system.
+     */
+    provider_id: string;
+
+    /**
+     * The URL pointing to the recording.
+     */
+    url: string;
+  }
+
+  /**
+   * A transcript of the call.
+   */
+  export interface Transcript {
+    /**
+     * A list of cues that identify the text spoken in specific time slices of the
+     * call.
+     */
+    cues: Array<Transcript.Cue>;
+  }
+
+  export namespace Transcript {
+    /**
+     * Parameters for creating a `CallTranscriptCue` object to capture the text spoken
+     * in a specific time slice.
+     */
+    export interface Cue {
+      /**
+       * The start time of the slice, in fractional seconds from the start of the call.
+       */
+      from: number;
+
+      /**
+       * The E.164 formatted phone number of the speaker.
+       */
+      speaker: string;
+
+      /**
+       * The text spoken during the slice.
+       */
+      text: string;
+
+      /**
+       * The end time of the slice, in fractional seconds from the start of the call.
+       */
+      to: number;
+    }
   }
 }
 

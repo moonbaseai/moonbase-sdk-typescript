@@ -12,8 +12,8 @@ export class ProgramMessages extends APIResource {
    * @example
    * ```ts
    * const programMessage = await client.programMessages.create({
-   *   person: { email: 'person-12@example-12.com' },
-   *   program_template_id: '1CRMPDbi5U9joyZVuMZo78',
+   *   person: { email: 'person-53@example-53.com' },
+   *   program_template_id: '1CS2gt91vf74NCQpAnnfW1',
    *   custom_variables: { coupon_code: 'HOWDY' },
    * });
    * ```
