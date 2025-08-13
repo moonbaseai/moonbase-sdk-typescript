@@ -52,4 +52,49 @@ describe('resource calls', () => {
       transcript: { cues: [{ from: 0, speaker: 'speaker', text: 'text', to: 0 }] },
     });
   });
+
+  test('upsert: only required params', async () => {
+    const responsePromise = client.calls.upsert({
+      direction: 'incoming',
+      participants: [
+        { phone: '+14155551212', role: 'caller' },
+        { phone: '+16505551212', role: 'callee' },
+      ],
+      provider: 'openphone',
+      provider_id: 'openphone_id_000000000001',
+      start_at: '2025-08-11T21:10:54.916Z',
+      status: 'completed',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('upsert: required and optional params', async () => {
+    const response = await client.calls.upsert({
+      direction: 'incoming',
+      participants: [
+        { phone: '+14155551212', role: 'caller' },
+        { phone: '+16505551212', role: 'callee' },
+      ],
+      provider: 'openphone',
+      provider_id: 'openphone_id_000000000001',
+      start_at: '2025-08-11T21:10:54.916Z',
+      status: 'completed',
+      answered_at: '2025-08-11T21:11:54Z',
+      end_at: '2025-08-11T21:40:54.916Z',
+      provider_metadata: {
+        answered_by: 'bar',
+        user_id: 'bar',
+        phone_number_id: 'bar',
+        conversation_id: 'bar',
+      },
+      recordings: [{ content_type: 'content_type', provider_id: 'provider_id', url: 'https://example.com' }],
+      transcript: { cues: [{ from: 0, speaker: 'speaker', text: 'text', to: 0 }] },
+    });
+  });
 });

@@ -2,7 +2,7 @@
 
 export * from './shared';
 export { Activities, type Activity, type ActivityListParams, type ActivitiesCursorPage } from './activities';
-export { Calls, type Call, type CallCreateParams } from './calls';
+export { Calls, type Call, type CallCreateParams, type CallUpsertParams } from './calls';
 export {
   Collections,
   type Collection,

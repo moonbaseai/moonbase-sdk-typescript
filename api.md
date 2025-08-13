@@ -24,6 +24,7 @@ Types:
 Methods:
 
 - <code title="post /calls">client.calls.<a href="./src/resources/calls.ts">create</a>({ ...params }) -> Call</code>
+- <code title="post /calls/upsert">client.calls.<a href="./src/resources/calls.ts">upsert</a>({ ...params }) -> Call</code>
 
 # Collections
 
