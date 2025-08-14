@@ -1,5 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+/**
+ * The Error object represents a single error that occurred during API request
+ * processing. It provides detailed information about what went wrong, including a
+ * unique identifier, status code, and human-readable descriptions to help
+ * developers understand and resolve the issue.
+ */
 export interface Error {
   type: 'error';
 

@@ -1,12 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as CallsAPI from './calls';
-import * as InboxMessagesAPI from './inbox-messages';
-import * as ItemsAPI from './items';
-import * as MeetingsAPI from './meetings';
-import * as NotesAPI from './notes';
-import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -48,6 +42,7 @@ export type Activity =
   | Activity.InboxMessageSentActivity
   | Activity.ItemCreatedActivity
   | Activity.ItemMentionedActivity
+  | Activity.ItemMergedActivity
   | Activity.MeetingHeldActivity
   | Activity.MeetingScheduledActivity
   | Activity.NoteCreatedActivity
@@ -85,7 +80,7 @@ export namespace Activity {
     /**
      * The `Call` object associated with this event.
      */
-    call?: CallsAPI.Call;
+    call?: CallOccurredActivity.Call;
   }
 
   export namespace CallOccurredActivity {
@@ -94,6 +89,15 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+    }
+
+    /**
+     * The `Call` object associated with this event.
+     */
+    export interface Call {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -121,12 +125,9 @@ export namespace Activity {
     /**
      * The `Collection` the new item was added to.
      */
-    collection?: CollectionsAPI.Collection;
+    collection?: FormSubmittedActivity.Collection;
 
-    /**
-     * The `Item` that was created by the form submission.
-     */
-    item?: ItemsAPI.Item;
+    related_item?: FormSubmittedActivity.RelatedItem;
   }
 
   export namespace FormSubmittedActivity {
@@ -145,6 +146,21 @@ export namespace Activity {
        * A link to the `Item` created by the form submission.
        */
       item?: string;
+    }
+
+    /**
+     * The `Collection` the new item was added to.
+     */
+    export interface Collection {
+      id: string;
+
+      type: string;
+    }
+
+    export interface RelatedItem {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -172,17 +188,7 @@ export namespace Activity {
     /**
      * The `EmailMessage` that was sent.
      */
-    message?: InboxMessagesAPI.EmailMessage;
-
-    /**
-     * A list of `Address` objects for the recipients.
-     */
-    recipients?: Array<InboxMessagesAPI.Address>;
-
-    /**
-     * The `Address` of the sender.
-     */
-    sender?: InboxMessagesAPI.Address;
+    message?: InboxMessageSentActivity.Message;
   }
 
   export namespace InboxMessageSentActivity {
@@ -196,6 +202,15 @@ export namespace Activity {
        * A link to the `EmailMessage` that was sent.
        */
       message?: string;
+    }
+
+    /**
+     * The `EmailMessage` that was sent.
+     */
+    export interface Message {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -223,12 +238,9 @@ export namespace Activity {
     /**
      * The `Collection` the item was added to.
      */
-    collection?: CollectionsAPI.Collection;
+    collection?: ItemCreatedActivity.Collection;
 
-    /**
-     * The `Item` that was created.
-     */
-    item?: ItemsAPI.Item;
+    created_item?: ItemCreatedActivity.CreatedItem;
   }
 
   export namespace ItemCreatedActivity {
@@ -247,6 +259,21 @@ export namespace Activity {
        * A link to the `Item` that was created.
        */
       item?: string;
+    }
+
+    /**
+     * The `Collection` the item was added to.
+     */
+    export interface Collection {
+      id: string;
+
+      type: string;
+    }
+
+    export interface CreatedItem {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -271,15 +298,11 @@ export namespace Activity {
      */
     type: 'activity/item_mentioned';
 
-    /**
-     * The `Collection` the item belongs to.
-     */
-    collection?: CollectionsAPI.Collection;
+    author?: ItemMentionedActivity.Author;
 
-    /**
-     * The `Item` that was mentioned.
-     */
-    item?: ItemsAPI.Item;
+    mentioned_item?: ItemMentionedActivity.MentionedItem;
+
+    note?: ItemMentionedActivity.Note;
   }
 
   export namespace ItemMentionedActivity {
@@ -290,14 +313,120 @@ export namespace Activity {
       self: string;
 
       /**
-       * A link to the `Collection` the item belongs to.
+       * A link to the `Person` who mentioned the item.
        */
-      collection?: string;
+      author?: string;
 
       /**
        * A link to the `Item` that was mentioned.
        */
       item?: string;
+
+      /**
+       * A link to the `Note` where the item was mentioned.
+       */
+      note?: string;
+    }
+
+    export interface Author {
+      id: string;
+
+      type: string;
+    }
+
+    export interface MentionedItem {
+      id: string;
+
+      type: string;
+    }
+
+    export interface Note {
+      id: string;
+
+      type: string;
+    }
+  }
+
+  /**
+   * Represents an event that occurs when an `Item` is merged into another item.
+   */
+  export interface ItemMergedActivity {
+    /**
+     * Unique identifier for the object.
+     */
+    id: string;
+
+    links: ItemMergedActivity.Links;
+
+    /**
+     * The time at which the event occurred, as an RFC 3339 timestamp.
+     */
+    occurred_at: string;
+
+    /**
+     * The type of activity. Always `activity/item_merged`.
+     */
+    type: 'activity/item_merged';
+
+    /**
+     * A pointer to the `Item` that the data was merged into.
+     */
+    destination?: ItemMergedActivity.Destination;
+
+    /**
+     * The person that performed the merge.
+     */
+    initiator?: ItemMergedActivity.Initiator;
+
+    /**
+     * A pointer to the source `Item`.
+     */
+    source?: ItemMergedActivity.Source;
+  }
+
+  export namespace ItemMergedActivity {
+    export interface Links {
+      /**
+       * The canonical URL for this object.
+       */
+      self: string;
+
+      /**
+       * A link to the `Item` that received the data from the source.
+       */
+      destination?: string;
+
+      /**
+       * A link to the person that performed the merge.
+       */
+      initiator?: string;
+    }
+
+    /**
+     * A pointer to the `Item` that the data was merged into.
+     */
+    export interface Destination {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * The person that performed the merge.
+     */
+    export interface Initiator {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A pointer to the source `Item`.
+     */
+    export interface Source {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -323,14 +452,9 @@ export namespace Activity {
     type: 'activity/meeting_held';
 
     /**
-     * A list of `Attendee` objects who were part of the meeting.
-     */
-    attendees?: Array<MeetingsAPI.Attendee>;
-
-    /**
      * The `Meeting` object associated with this event.
      */
-    meeting?: MeetingsAPI.Meeting;
+    meeting?: MeetingHeldActivity.Meeting;
   }
 
   export namespace MeetingHeldActivity {
@@ -344,6 +468,15 @@ export namespace Activity {
        * A link to the `Meeting` that was held.
        */
       meeting?: string;
+    }
+
+    /**
+     * The `Meeting` object associated with this event.
+     */
+    export interface Meeting {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -369,19 +502,9 @@ export namespace Activity {
     type: 'activity/meeting_scheduled';
 
     /**
-     * The list of `Attendee` objects invited to the meeting.
-     */
-    attendees?: Array<MeetingsAPI.Attendee>;
-
-    /**
      * The `Meeting` object associated with this event.
      */
-    meeting?: MeetingsAPI.Meeting;
-
-    /**
-     * The `Organizer` of the meeting.
-     */
-    organizer?: MeetingsAPI.Organizer;
+    meeting?: MeetingScheduledActivity.Meeting;
   }
 
   export namespace MeetingScheduledActivity {
@@ -395,6 +518,15 @@ export namespace Activity {
        * A link to the `Meeting` that was scheduled.
        */
       meeting?: string;
+    }
+
+    /**
+     * The `Meeting` object associated with this event.
+     */
+    export interface Meeting {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -422,17 +554,17 @@ export namespace Activity {
     /**
      * The `Note` object that was created.
      */
-    note?: NotesAPI.Note;
+    note?: NoteCreatedActivity.Note;
 
     /**
      * The `Item` this note is related to, if any.
      */
-    related_item?: ItemsAPI.Item;
+    related_item?: NoteCreatedActivity.RelatedItem;
 
     /**
      * The `Meeting` this note is related to, if any.
      */
-    related_meeting?: MeetingsAPI.Meeting;
+    related_meeting?: NoteCreatedActivity.RelatedMeeting;
   }
 
   export namespace NoteCreatedActivity {
@@ -457,6 +589,33 @@ export namespace Activity {
        */
       related_meeting?: string;
     }
+
+    /**
+     * The `Note` object that was created.
+     */
+    export interface Note {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * The `Item` this note is related to, if any.
+     */
+    export interface RelatedItem {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * The `Meeting` this note is related to, if any.
+     */
+    export interface RelatedMeeting {
+      id: string;
+
+      type: string;
+    }
   }
 
   /**
@@ -480,10 +639,16 @@ export namespace Activity {
      */
     type: 'activity/program_message_bounced';
 
+    bounce_type?: string;
+
+    bounced_recipient_emails?: Array<string>;
+
+    program_message?: ProgramMessageBouncedActivity.ProgramMessage;
+
     /**
-     * The `Address` of the recipient whose message bounced.
+     * A link to the `Address` of the recipient whose message bounced.
      */
-    recipient?: InboxMessagesAPI.Address;
+    recipient?: ProgramMessageBouncedActivity.Recipient;
   }
 
   export namespace ProgramMessageBouncedActivity {
@@ -492,6 +657,26 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+
+      /**
+       * A link to the `Address` of the recipient whose message bounced.
+       */
+      recipient?: string;
+    }
+
+    export interface ProgramMessage {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A link to the `Address` of the recipient whose message bounced.
+     */
+    export interface Recipient {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -527,10 +712,12 @@ export namespace Activity {
      */
     link_url_unsafe?: string;
 
+    program_message?: ProgramMessageClickedActivity.ProgramMessage;
+
     /**
-     * The `Address` of the recipient who clicked the link.
+     * A link to the `Address` of the recipient who clicked the link.
      */
-    recipient?: InboxMessagesAPI.Address;
+    recipient?: ProgramMessageClickedActivity.Recipient;
   }
 
   export namespace ProgramMessageClickedActivity {
@@ -539,6 +726,26 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+
+      /**
+       * A link to the `Address` of the recipient who clicked the link.
+       */
+      recipient?: string;
+    }
+
+    export interface ProgramMessage {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A link to the `Address` of the recipient who clicked the link.
+     */
+    export interface Recipient {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -564,10 +771,12 @@ export namespace Activity {
      */
     type: 'activity/program_message_complained';
 
+    program_message?: ProgramMessageComplainedActivity.ProgramMessage;
+
     /**
-     * The `Address` of the recipient who complained.
+     * A link to the `Address` of the recipient who complained.
      */
-    recipient?: InboxMessagesAPI.Address;
+    recipient?: ProgramMessageComplainedActivity.Recipient;
   }
 
   export namespace ProgramMessageComplainedActivity {
@@ -576,6 +785,26 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+
+      /**
+       * A link to the `Address` of the recipient who complained.
+       */
+      recipient?: string;
+    }
+
+    export interface ProgramMessage {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A link to the `Address` of the recipient who complained.
+     */
+    export interface Recipient {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -601,10 +830,14 @@ export namespace Activity {
      */
     type: 'activity/program_message_failed';
 
+    program_message?: ProgramMessageFailedActivity.ProgramMessage;
+
+    reason_code?: string;
+
     /**
-     * The `Address` of the recipient whose message failed.
+     * A link to the `Address` of the recipient whose message failed.
      */
-    recipient?: InboxMessagesAPI.Address;
+    recipient?: ProgramMessageFailedActivity.Recipient;
   }
 
   export namespace ProgramMessageFailedActivity {
@@ -613,6 +846,26 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+
+      /**
+       * A link to the `Address` of the recipient whose message failed.
+       */
+      recipient?: string;
+    }
+
+    export interface ProgramMessage {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A link to the `Address` of the recipient whose message failed.
+     */
+    export interface Recipient {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -637,10 +890,12 @@ export namespace Activity {
      */
     type: 'activity/program_message_opened';
 
+    program_message?: ProgramMessageOpenedActivity.ProgramMessage;
+
     /**
-     * The `Address` of the recipient who opened the message.
+     * A link to the `Address` of the recipient who opened the message.
      */
-    recipient?: InboxMessagesAPI.Address;
+    recipient?: ProgramMessageOpenedActivity.Recipient;
   }
 
   export namespace ProgramMessageOpenedActivity {
@@ -649,6 +904,26 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+
+      /**
+       * A link to the `Address` of the recipient who opened the message.
+       */
+      recipient?: string;
+    }
+
+    export interface ProgramMessage {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A link to the `Address` of the recipient who opened the message.
+     */
+    export interface Recipient {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -673,10 +948,14 @@ export namespace Activity {
      */
     type: 'activity/program_message_sent';
 
+    program_message?: ProgramMessageSentActivity.ProgramMessage;
+
     /**
-     * The `Address` of the recipient the message was sent to.
+     * A link to the `Address` of the recipient the message was sent to.
      */
-    recipient?: InboxMessagesAPI.Address;
+    recipient?: ProgramMessageSentActivity.Recipient;
+
+    recipient_emails?: Array<string>;
   }
 
   export namespace ProgramMessageSentActivity {
@@ -685,6 +964,26 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+
+      /**
+       * A link to the `Address` of the recipient the message was sent to.
+       */
+      recipient?: string;
+    }
+
+    export interface ProgramMessage {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A link to the `Address` of the recipient the message was sent to.
+     */
+    export interface Recipient {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -710,10 +1009,14 @@ export namespace Activity {
      */
     type: 'activity/program_message_shielded';
 
+    program_message?: ProgramMessageShieldedActivity.ProgramMessage;
+
+    reason_code?: string;
+
     /**
-     * The `Address` of the recipient whose message was shielded.
+     * A link to the `Address` of the recipient whose message was shielded.
      */
-    recipient?: InboxMessagesAPI.Address;
+    recipient?: ProgramMessageShieldedActivity.Recipient;
   }
 
   export namespace ProgramMessageShieldedActivity {
@@ -722,6 +1025,26 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+
+      /**
+       * A link to the `Address` of the recipient whose message was shielded.
+       */
+      recipient?: string;
+    }
+
+    export interface ProgramMessage {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A link to the `Address` of the recipient whose message was shielded.
+     */
+    export interface Recipient {
+      id: string;
+
+      type: string;
     }
   }
 
@@ -747,10 +1070,14 @@ export namespace Activity {
      */
     type: 'activity/program_message_unsubscribed';
 
+    email?: string;
+
+    program_message?: ProgramMessageUnsubscribedActivity.ProgramMessage;
+
     /**
-     * The `Address` of the recipient who unsubscribed.
+     * A link to the `Address` of the recipient who unsubscribed.
      */
-    recipient?: InboxMessagesAPI.Address;
+    recipient?: ProgramMessageUnsubscribedActivity.Recipient;
   }
 
   export namespace ProgramMessageUnsubscribedActivity {
@@ -759,6 +1086,26 @@ export namespace Activity {
        * The canonical URL for this object.
        */
       self: string;
+
+      /**
+       * A link to the `Address` of the recipient who unsubscribed.
+       */
+      recipient?: string;
+    }
+
+    export interface ProgramMessage {
+      id: string;
+
+      type: string;
+    }
+
+    /**
+     * A link to the `Address` of the recipient who unsubscribed.
+     */
+    export interface Recipient {
+      id: string;
+
+      type: string;
     }
   }
 }
