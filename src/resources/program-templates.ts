@@ -84,7 +84,7 @@ export namespace ProgramTemplate {
     self: string;
 
     /**
-     * A link to the `Program` using this template.
+     * The `Program` using this template.
      */
     program?: string;
   }

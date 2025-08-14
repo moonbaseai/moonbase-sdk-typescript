@@ -16,8 +16,8 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000006',
-      start_at: '2025-08-11T21:11:10.467Z',
+      provider_id: 'openphone_id_000000000008',
+      start_at: '2025-08-14T17:30:13.526Z',
       status: 'completed',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -37,11 +37,11 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000006',
-      start_at: '2025-08-11T21:11:10.467Z',
+      provider_id: 'openphone_id_000000000008',
+      start_at: '2025-08-14T17:30:13.526Z',
       status: 'completed',
-      answered_at: '2025-08-11T21:12:10Z',
-      end_at: '2025-08-11T21:41:10.467Z',
+      answered_at: '2025-08-14T17:31:13Z',
+      end_at: '2025-08-14T18:00:13.526Z',
       provider_metadata: {
         answered_by: 'bar',
         user_id: 'bar',
@@ -61,8 +61,8 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000001',
-      start_at: '2025-08-11T21:10:54.916Z',
+      provider_id: 'openphone_id_000000000004',
+      start_at: '2025-08-14T17:30:08.920Z',
       status: 'completed',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -82,11 +82,11 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000001',
-      start_at: '2025-08-11T21:10:54.916Z',
+      provider_id: 'openphone_id_000000000004',
+      start_at: '2025-08-14T17:30:08.920Z',
       status: 'completed',
-      answered_at: '2025-08-11T21:11:54Z',
-      end_at: '2025-08-11T21:40:54.916Z',
+      answered_at: '2025-08-14T17:31:08Z',
+      end_at: '2025-08-14T18:00:08.920Z',
       provider_metadata: {
         answered_by: 'bar',
         user_id: 'bar',
