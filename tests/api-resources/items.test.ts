@@ -35,7 +35,7 @@ describe('resource items', () => {
             id: '1CS2gt4AVHhvgfNcrZFHD5',
             type: 'item',
             links: { collection: 'https://example.com', self: 'https://example.com' },
-            values: { foo: { text: 'text', type: 'value/text/single_line' } },
+            values: { foo: null },
           },
           type: 'value/relation',
         },
