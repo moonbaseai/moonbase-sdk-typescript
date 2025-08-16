@@ -830,6 +830,7 @@ export class Moonbase {
   tagsets: API.Tagsets = new API.Tagsets(this);
   views: API.Views = new API.Views(this);
 }
+
 Moonbase.Activities = Activities;
 Moonbase.Calls = Calls;
 Moonbase.Collections = Collections;
@@ -846,6 +847,7 @@ Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.Programs = Programs;
 Moonbase.Tagsets = Tagsets;
 Moonbase.Views = Views;
+
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
 
