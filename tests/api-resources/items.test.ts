@@ -10,10 +10,10 @@ const client = new Moonbase({
 describe('resource items', () => {
   test('create: only required params', async () => {
     const responsePromise = client.items.create({
-      collection_id: '1CS85UQugzqzvaQKUzWd5i',
+      collection_id: '1CSFjSZ8CFA7HEEL1qjG5F',
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
-        ceo: { item: { id: '1CS85USCpnJbZ45XuXh6ht', type: 'item' }, type: 'value/relation' },
+        ceo: { item: { id: '1CSFjSaP5wygg3JJ8mS8qQ', type: 'item' }, type: 'value/relation' },
       },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -27,12 +27,12 @@ describe('resource items', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.items.create({
-      collection_id: '1CS85UQugzqzvaQKUzWd5i',
+      collection_id: '1CSFjSZ8CFA7HEEL1qjG5F',
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
         ceo: {
           item: {
-            id: '1CS85USCpnJbZ45XuXh6ht',
+            id: '1CSFjSaP5wygg3JJ8mS8qQ',
             type: 'item',
             links: { collection: 'https://example.com', self: 'https://example.com' },
             values: { foo: null },
@@ -88,7 +88,7 @@ describe('resource items', () => {
 
   test('upsert: only required params', async () => {
     const responsePromise = client.items.upsert({
-      collection_id: '1CS85TFQuQZAyB8Q4jTrJq',
+      collection_id: '1CSFjSEx3koQkGQebZLTZa',
       identifiers: { domain: [] },
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
@@ -107,7 +107,7 @@ describe('resource items', () => {
 
   test('upsert: required and optional params', async () => {
     const response = await client.items.upsert({
-      collection_id: '1CS85TFQuQZAyB8Q4jTrJq',
+      collection_id: '1CSFjSEx3koQkGQebZLTZa',
       identifiers: { domain: [] },
       values: {
         name: { text: 'Aperture Science', type: 'value/text/single_line' },
