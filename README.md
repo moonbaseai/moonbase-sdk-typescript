@@ -26,8 +26,7 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const page = await client.collections.list({ limit: 10 });
-const collection = page.data[0];
+const collection = await client.collections.retrieve('organizations');
 
 console.log(collection.id);
 ```
@@ -44,8 +43,7 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const params: Moonbase.CollectionListParams = { limit: 10 };
-const [collection]: [Moonbase.Collection] = await client.collections.list(params);
+const collection: Moonbase.Collection = await client.collections.retrieve('organizations');
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -58,7 +56,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const page = await client.collections.list({ limit: 10 }).catch(async (err) => {
+const collection = await client.collections.retrieve('organizations').catch(async (err) => {
   if (err instanceof Moonbase.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -98,7 +96,7 @@ const client = new Moonbase({
 });
 
 // Or, configure per-request:
-await client.collections.list({ limit: 10 }, {
+await client.collections.retrieve('organizations', {
   maxRetries: 5,
 });
 ```
@@ -115,7 +113,7 @@ const client = new Moonbase({
 });
 
 // Override per-request:
-await client.collections.list({ limit: 10 }, {
+await client.collections.retrieve('organizations', {
   timeout: 5 * 1000,
 });
 ```
@@ -169,15 +167,13 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Moonbase();
 
-const response = await client.collections.list({ limit: 10 }).asResponse();
+const response = await client.collections.retrieve('organizations').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: page, response: raw } = await client.collections.list({ limit: 10 }).withResponse();
+const { data: collection, response: raw } = await client.collections.retrieve('organizations').withResponse();
 console.log(raw.headers.get('X-My-Header'));
-for await (const collection of page) {
-  console.log(collection.id);
-}
+console.log(collection.id);
 ```
 
 ### Logging
@@ -257,7 +253,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.collections.list({
+client.collections.retrieve({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
