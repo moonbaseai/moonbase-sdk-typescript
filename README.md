@@ -26,13 +26,10 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const programMessage = await client.programMessages.create({
-  person: { email: 'user@example.com' },
-  program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
-  custom_variables: {},
-});
+const page = await client.collections.list({ limit: 10 });
+const collection = page.data[0];
 
-console.log(programMessage.id);
+console.log(collection.id);
 ```
 
 ### Request & Response types
@@ -47,12 +44,8 @@ const client = new Moonbase({
   apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted
 });
 
-const params: Moonbase.ProgramMessageCreateParams = {
-  person: { email: 'user@example.com' },
-  program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
-  custom_variables: {},
-};
-const programMessage: Moonbase.ProgramMessageCreateResponse = await client.programMessages.create(params);
+const params: Moonbase.CollectionListParams = { limit: 10 };
+const [collection]: [Moonbase.Collection] = await client.collections.list(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -65,21 +58,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const programMessage = await client.programMessages
-  .create({
-    person: { email: 'user@example.com' },
-    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
-    custom_variables: {},
-  })
-  .catch(async (err) => {
-    if (err instanceof Moonbase.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
+const page = await client.collections.list({ limit: 10 }).catch(async (err) => {
+  if (err instanceof Moonbase.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
@@ -111,7 +98,7 @@ const client = new Moonbase({
 });
 
 // Or, configure per-request:
-await client.programMessages.create({ person: { email: 'user@example.com' }, program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID', custom_variables: {} }, {
+await client.collections.list({ limit: 10 }, {
   maxRetries: 5,
 });
 ```
@@ -128,7 +115,7 @@ const client = new Moonbase({
 });
 
 // Override per-request:
-await client.programMessages.create({ person: { email: 'user@example.com' }, program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID', custom_variables: {} }, {
+await client.collections.list({ limit: 10 }, {
   timeout: 5 * 1000,
 });
 ```
@@ -143,22 +130,22 @@ List methods in the Moonbase API are paginated.
 You can use the `for await … of` syntax to iterate through items across all pages:
 
 ```ts
-async function fetchAllProgramTemplates(params) {
-  const allProgramTemplates = [];
+async function fetchAllCollections(params) {
+  const allCollections = [];
   // Automatically fetches more pages as needed.
-  for await (const programTemplate of client.programTemplates.list({ limit: 20 })) {
-    allProgramTemplates.push(programTemplate);
+  for await (const collection of client.collections.list({ limit: 10 })) {
+    allCollections.push(collection);
   }
-  return allProgramTemplates;
+  return allCollections;
 }
 ```
 
 Alternatively, you can request a single page at a time:
 
 ```ts
-let page = await client.programTemplates.list({ limit: 20 });
-for (const programTemplate of page.data) {
-  console.log(programTemplate);
+let page = await client.collections.list({ limit: 10 });
+for (const collection of page.data) {
+  console.log(collection);
 }
 
 // Convenience methods are provided for manually paginating:
@@ -182,25 +169,15 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Moonbase();
 
-const response = await client.programMessages
-  .create({
-    person: { email: 'user@example.com' },
-    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
-    custom_variables: {},
-  })
-  .asResponse();
+const response = await client.collections.list({ limit: 10 }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: programMessage, response: raw } = await client.programMessages
-  .create({
-    person: { email: 'user@example.com' },
-    program_template_id: 'MOONBASE_PROGRAM_TEMPLATE_ID',
-    custom_variables: {},
-  })
-  .withResponse();
+const { data: page, response: raw } = await client.collections.list({ limit: 10 }).withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(programMessage.id);
+for await (const collection of page) {
+  console.log(collection.id);
+}
 ```
 
 ### Logging
@@ -280,7 +257,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.programMessages.create({
+client.collections.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
