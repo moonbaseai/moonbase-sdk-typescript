@@ -16,9 +16,9 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000001',
-      start_at: '2025-08-18T18:32:13.332Z',
-      status: 'completed',
+      provider_id: 'openphone_id_000000000007',
+      provider_status: 'completed',
+      start_at: '2025-02-17T15:00:00.000Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -37,11 +37,11 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000001',
-      start_at: '2025-08-18T18:32:13.332Z',
-      status: 'completed',
-      answered_at: '2025-08-18T18:33:13Z',
-      end_at: '2025-08-18T19:02:13.332Z',
+      provider_id: 'openphone_id_000000000007',
+      provider_status: 'completed',
+      start_at: '2025-02-17T15:00:00.000Z',
+      answered_at: '2025-02-17T15:01:00Z',
+      end_at: '2025-02-17T15:30:00.000Z',
       provider_metadata: {
         answered_by: 'bar',
         user_id: 'bar',
@@ -61,9 +61,9 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000002',
-      start_at: '2025-08-18T18:32:24.545Z',
-      status: 'completed',
+      provider_id: 'openphone_id_000000000006',
+      provider_status: 'completed',
+      start_at: '2025-02-17T15:00:00.000Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -82,11 +82,11 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000002',
-      start_at: '2025-08-18T18:32:24.545Z',
-      status: 'completed',
-      answered_at: '2025-08-18T18:33:24Z',
-      end_at: '2025-08-18T19:02:24.545Z',
+      provider_id: 'openphone_id_000000000006',
+      provider_status: 'completed',
+      start_at: '2025-02-17T15:00:00.000Z',
+      answered_at: '2025-02-17T15:01:00Z',
+      end_at: '2025-02-17T15:30:00.000Z',
       provider_metadata: {
         answered_by: 'bar',
         user_id: 'bar',

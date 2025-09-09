@@ -44,8 +44,7 @@ describe('resource inboxMessages', () => {
         {
           after: 'after',
           before: 'before',
-          conversation: ['string'],
-          inbox: ['string'],
+          filter: { conversation_id: { eq: 'eq' }, inbox_id: { eq: 'eq' } },
           include: ['addresses'],
           limit: 1,
         },

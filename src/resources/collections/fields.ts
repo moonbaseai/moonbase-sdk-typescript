@@ -9,6 +9,14 @@ import { path } from '../../internal/utils/path';
 export class Fields extends APIResource {
   /**
    * Retrieves the details of a field in a collection.
+   *
+   * @example
+   * ```ts
+   * const field = await client.collections.fields.retrieve(
+   *   'id',
+   *   { collection_id: 'collection_id' },
+   * );
+   * ```
    */
   retrieve(
     id: string,

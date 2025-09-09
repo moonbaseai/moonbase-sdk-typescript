@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -37,7 +38,15 @@ export interface Note {
    */
   id: string;
 
-  links: Note.Links;
+  /**
+   * The main content of the note.
+   */
+  body: Shared.FormattedText;
+
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
 
   /**
    * String representing the object’s type. Always `note` for this object.
@@ -45,14 +54,9 @@ export interface Note {
   type: 'note';
 
   /**
-   * The main content of the note.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  body?: string;
-
-  /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
-   */
-  created_at?: string;
+  updated_at: string;
 
   /**
    * A short, system-generated summary of the note's content.
@@ -63,20 +67,6 @@ export interface Note {
    * An optional title for the note.
    */
   title?: string;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
-}
-
-export namespace Note {
-  export interface Links {
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-  }
 }
 
 export interface NoteListParams extends CursorPageParams {

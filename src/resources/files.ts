@@ -37,11 +37,20 @@ export interface MoonbaseFile {
   id: string;
 
   /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
+
+  /**
+   * A temporary, signed URL to download the file content. The URL expires after one
+   * hour.
+   */
+  download_url: string;
+
+  /**
    * The original filename of the uploaded file.
    */
   filename: string;
-
-  links: MoonbaseFile.Links;
 
   /**
    * The display name of the file.
@@ -59,29 +68,9 @@ export interface MoonbaseFile {
   type: 'file';
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  created_at?: string;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
-}
-
-export namespace MoonbaseFile {
-  export interface Links {
-    /**
-     * A temporary, signed URL to download the file content. The URL expires after one
-     * hour.
-     */
-    download_url: string;
-
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-  }
+  updated_at: string;
 }
 
 export interface FileListParams extends CursorPageParams {

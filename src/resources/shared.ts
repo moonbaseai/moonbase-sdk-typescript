@@ -58,3 +58,29 @@ export namespace Error {
     pointer?: string;
   }
 }
+
+/**
+ * Structured content that can be rendered in multiple formats, currently
+ * supporting Markdown.
+ */
+export interface FormattedText {
+  /**
+   * The content formatted as Markdown text.
+   */
+  markdown?: string;
+}
+
+/**
+ * A lightweight reference to another resource.
+ */
+export interface Pointer {
+  /**
+   * Unique identifier for the referenced object.
+   */
+  id: string;
+
+  /**
+   * String indicating the type of the referenced object.
+   */
+  type: string;
+}
