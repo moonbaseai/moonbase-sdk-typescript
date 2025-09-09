@@ -25,7 +25,7 @@ export class Items extends APIResource {
    *       },
    *       ceo: {
    *         type: 'value/relation',
-   *         item: {
+   *         data: {
    *           type: 'item',
    *           id: '1CLJt2v2rARKGD4MLziBCw',
    *         },

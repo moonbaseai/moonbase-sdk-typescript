@@ -1382,10 +1382,9 @@ export interface RelationField {
  */
 export interface RelationValue {
   /**
-   * A reference to an `Item` within a specific `Collection`, providing the context
-   * needed to locate the item.
+   * A reference to another Moonbase item.
    */
-  item: ItemPointer;
+  data: ItemPointer;
 
   type: 'value/relation';
 }
@@ -1395,10 +1394,9 @@ export interface RelationValue {
  */
 export interface RelationValueParam {
   /**
-   * A reference to an `Item` within a specific `Collection`, providing the context
-   * needed to locate the item.
+   * A reference to another Moonbase item.
    */
-  item: ItemPointer | Shared.Pointer;
+  data: ItemPointer | Shared.Pointer;
 
   type: 'value/relation';
 }
