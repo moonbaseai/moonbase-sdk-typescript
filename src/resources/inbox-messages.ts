@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import * as InboxConversationsAPI from './inbox-conversations';
+import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -49,47 +50,25 @@ export interface Address {
   email: string;
 
   /**
-   * String representing the object’s type. Always `address` for this object.
-   */
-  type: 'address';
-
-  /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
-   */
-  created_at?: string;
-
-  /**
-   * A hash of related links.
-   */
-  links?: Address.Links;
-
-  /**
    * The role of the address in the message. Can be `from`, `reply_to`, `to`, `cc`,
    * or `bcc`.
    */
-  role?: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc';
+  role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc';
 
   /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
+   * String representing the object’s type. Always `message_address` for this object.
    */
-  updated_at?: string;
-}
+  type: 'message_address';
 
-export namespace Address {
   /**
-   * A hash of related links.
+   * A lightweight reference to another resource.
    */
-  export interface Links {
-    /**
-     * A link to the associated `Organization` item.
-     */
-    organization?: string;
+  organization?: Shared.Pointer;
 
-    /**
-     * A link to the associated `Person` item.
-     */
-    person?: string;
-  }
+  /**
+   * A lightweight reference to another resource.
+   */
+  person?: Shared.Pointer;
 }
 
 /**
@@ -101,12 +80,31 @@ export interface EmailMessage {
    */
   id: string;
 
-  links: EmailMessage.Links;
+  /**
+   * Structured content that can be rendered in multiple formats, currently
+   * supporting Markdown.
+   */
+  body: Shared.FormattedText;
 
   /**
-   * The globally unique `Message-ID` header of the email.
+   * `true` if the message appears to be part of a bulk mailing.
    */
-  rfc822_message_id: string;
+  bulk: boolean;
+
+  /**
+   * The time the message was received, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
+
+  /**
+   * `true` if the message is a draft that has not been sent.
+   */
+  draft: boolean;
+
+  /**
+   * `true` if the message is classified as spam.
+   */
+  spam: boolean;
 
   /**
    * The subject line of the email.
@@ -114,89 +112,48 @@ export interface EmailMessage {
   subject: string;
 
   /**
+   * `true` if the message is in the trash.
+   */
+  trash: boolean;
+
+  /**
    * String representing the object’s type. Always `email_message` for this object.
    */
   type: 'email_message';
 
   /**
+   * `true` if the message has not been read.
+   */
+  unread: boolean;
+
+  /**
    * A list of `Address` objects associated with the message (sender and recipients).
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
   addresses?: Array<Address>;
 
   /**
    * A list of `Attachment` objects on the message.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
   attachments?: Array<EmailMessage.Attachment>;
 
   /**
-   * The HTML content of the email body.
-   */
-  body_html?: string;
-
-  /**
-   * The plain text content of the email body.
-   */
-  body_plain?: string;
-
-  /**
-   * `true` if the message appears to be part of a bulk mailing.
-   */
-  bulk?: boolean;
-
-  /**
    * The `Conversation` thread this message is part of.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
   conversation?: InboxConversationsAPI.InboxConversation;
-
-  /**
-   * The time the message was received, as an RFC 3339 timestamp.
-   */
-  created_at?: string;
-
-  /**
-   * `true` if the message is a draft that has not been sent.
-   */
-  draft?: boolean;
-
-  /**
-   * The `Message-ID` of the email this message is a reply to.
-   */
-  in_reply_to_rfc822_message_id?: string;
-
-  /**
-   * `true` if the message is classified as spam.
-   */
-  spam?: boolean;
 
   /**
    * A concise, system-generated summary of the email content.
    */
   summary?: string;
-
-  /**
-   * `true` if the message is in the trash.
-   */
-  trash?: boolean;
-
-  /**
-   * `true` if the message has not been read.
-   */
-  unread?: boolean;
 }
 
 export namespace EmailMessage {
-  export interface Links {
-    /**
-     * A link to the `Conversation` this message belongs to.
-     */
-    conversation: string;
-
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-  }
-
   /**
    * The Attachment object represents a file attached to a message. You can download
    * the file content via the `download_url`.
@@ -208,14 +165,20 @@ export namespace EmailMessage {
     id: string;
 
     /**
+     * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+     */
+    created_at: string;
+
+    /**
+     * A temporary, signed URL to download the file content. The URL expires after one
+     * hour.
+     */
+    download_url: string;
+
+    /**
      * The original name of the uploaded file, including its extension.
      */
     filename: string;
-
-    /**
-     * A hash of related links.
-     */
-    links: Attachment.Links;
 
     /**
      * The size of the file in bytes.
@@ -223,42 +186,10 @@ export namespace EmailMessage {
     size: number;
 
     /**
-     * String representing the object’s type. Always `attachment` for this object.
+     * String representing the object’s type. Always `message_attachment` for this
+     * object.
      */
-    type: 'attachment';
-
-    /**
-     * Time at which the object was created, as an RFC 3339 timestamp.
-     */
-    created_at?: string;
-
-    /**
-     * Time at which the object was last updated, as an RFC 3339 timestamp.
-     */
-    updated_at?: string;
-  }
-
-  export namespace Attachment {
-    /**
-     * A hash of related links.
-     */
-    export interface Links {
-      /**
-       * A link to the `Conversation` this attachment belongs to.
-       */
-      conversation: string;
-
-      /**
-       * A temporary, signed URL to download the file content. The URL expires after one
-       * hour.
-       */
-      download_url: string;
-
-      /**
-       * A link to the `Message` this attachment belongs to.
-       */
-      message: string;
-    }
+    type: 'message_attachment';
   }
 }
 
@@ -278,15 +209,7 @@ export interface InboxMessageListParams extends CursorPageParams {
    */
   before?: string;
 
-  /**
-   * Filter messages by one or more conversation IDs.
-   */
-  conversation?: Array<string>;
-
-  /**
-   * Filter messages by one or more inbox IDs.
-   */
-  inbox?: Array<string>;
+  filter?: InboxMessageListParams.Filter;
 
   /**
    * Specifies which related objects to include in the response. Valid options are
@@ -299,6 +222,24 @@ export interface InboxMessageListParams extends CursorPageParams {
    * to 20 if not specified.
    */
   limit?: number;
+}
+
+export namespace InboxMessageListParams {
+  export interface Filter {
+    conversation_id?: Filter.ConversationID;
+
+    inbox_id?: Filter.InboxID;
+  }
+
+  export namespace Filter {
+    export interface ConversationID {
+      eq?: string;
+    }
+
+    export interface InboxID {
+      eq?: string;
+    }
+  }
 }
 
 export declare namespace InboxMessages {

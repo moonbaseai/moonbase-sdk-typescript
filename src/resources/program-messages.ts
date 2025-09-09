@@ -11,17 +11,14 @@ export class ProgramMessages extends APIResource {
    *
    * @example
    * ```ts
-   * const programMessage = await client.programMessages.create({
-   *   person: { email: 'person-60@example-60.com' },
-   *   program_template_id: '1CRDSENp2MzMSfBMCbyEJd',
+   * const programMessage = await client.programMessages.send({
+   *   person: { email: 'person-18@example-18.com' },
+   *   program_template_id: '1CLJt2v1MsDbov8DBEEeWH',
    *   custom_variables: { coupon_code: 'HOWDY' },
    * });
    * ```
    */
-  create(
-    body: ProgramMessageCreateParams,
-    options?: RequestOptions,
-  ): APIPromise<ProgramMessageCreateResponse> {
+  send(body: ProgramMessageSendParams, options?: RequestOptions): APIPromise<ProgramMessage> {
     return this._client.post('/program_messages', { body, ...options });
   }
 }
@@ -29,19 +26,17 @@ export class ProgramMessages extends APIResource {
 /**
  * Represents a single message sent as part of a `Program`.
  */
-export interface ProgramMessageCreateResponse {
+export interface ProgramMessage {
   /**
    * Unique identifier for the object.
    */
   id: string;
 
   /**
-   * Time at which the message was created and enqueued for sending, as an RFC 3339
-   * timestamp.
+   * Time at which the message was created and enqueued for sending, as an ISO 8601
+   * timestamp in UTC.
    */
   created_at: string;
-
-  links: ProgramMessageCreateResponse.Links;
 
   /**
    * The `ProgramTemplate` used to generate this message.
@@ -54,25 +49,16 @@ export interface ProgramMessageCreateResponse {
   type: 'program_message';
 
   /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
   updated_at: string;
 }
 
-export namespace ProgramMessageCreateResponse {
-  export interface Links {
-    /**
-     * A link to the `ProgramTemplate` used.
-     */
-    program_template: string;
-  }
-}
-
-export interface ProgramMessageCreateParams {
+export interface ProgramMessageSendParams {
   /**
    * The person to send the message to.
    */
-  person: ProgramMessageCreateParams.Person;
+  person: ProgramMessageSendParams.Person;
 
   /**
    * The ID of the `ProgramTemplate` to use for sending the message.
@@ -85,7 +71,7 @@ export interface ProgramMessageCreateParams {
   custom_variables?: { [key: string]: unknown };
 }
 
-export namespace ProgramMessageCreateParams {
+export namespace ProgramMessageSendParams {
   /**
    * The person to send the message to.
    */
@@ -95,8 +81,5 @@ export namespace ProgramMessageCreateParams {
 }
 
 export declare namespace ProgramMessages {
-  export {
-    type ProgramMessageCreateResponse as ProgramMessageCreateResponse,
-    type ProgramMessageCreateParams as ProgramMessageCreateParams,
-  };
+  export { type ProgramMessage as ProgramMessage, type ProgramMessageSendParams as ProgramMessageSendParams };
 }

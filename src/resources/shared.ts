@@ -1,5 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+/**
+ * The Error object represents a single error that occurred during API request
+ * processing. It provides detailed information about what went wrong, including a
+ * unique identifier, status code, and human-readable descriptions to help
+ * developers understand and resolve the issue.
+ */
 export interface Error {
   type: 'error';
 
@@ -51,4 +57,30 @@ export namespace Error {
      */
     pointer?: string;
   }
+}
+
+/**
+ * Structured content that can be rendered in multiple formats, currently
+ * supporting Markdown.
+ */
+export interface FormattedText {
+  /**
+   * The content formatted as Markdown text.
+   */
+  markdown?: string;
+}
+
+/**
+ * A lightweight reference to another resource.
+ */
+export interface Pointer {
+  /**
+   * Unique identifier for the referenced object.
+   */
+  id: string;
+
+  /**
+   * String indicating the type of the referenced object.
+   */
+  type: string;
 }

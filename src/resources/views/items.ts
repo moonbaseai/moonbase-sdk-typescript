@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as ItemsAPI from '../items';
-import { ItemsCursorPage } from '../items';
+import * as CollectionsAPI from '../collections/collections';
+import { ItemsCursorPage } from '../collections/collections';
 import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -15,8 +15,8 @@ export class Items extends APIResource {
     id: string,
     query: ItemListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<ItemsCursorPage, ItemsAPI.Item> {
-    return this._client.getAPIList(path`/views/${id}/items`, CursorPage<ItemsAPI.Item>, {
+  ): PagePromise<ItemsCursorPage, CollectionsAPI.Item> {
+    return this._client.getAPIList(path`/views/${id}/items`, CursorPage<CollectionsAPI.Item>, {
       query,
       ...options,
     });

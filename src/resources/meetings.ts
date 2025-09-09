@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -48,41 +49,20 @@ export interface Attendee {
   email: string;
 
   /**
-   * A hash of related links.
+   * String representing the object’s type. Always `meeting_attendee` for this
+   * object.
    */
-  links: Attendee.Links;
+  type: 'meeting_attendee';
 
   /**
-   * String representing the object’s type. Always `attendee` for this object.
+   * A lightweight reference to another resource.
    */
-  type: 'attendee';
+  organization?: Shared.Pointer;
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * A lightweight reference to another resource.
    */
-  created_at?: string;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
-}
-
-export namespace Attendee {
-  /**
-   * A hash of related links.
-   */
-  export interface Links {
-    /**
-     * A link to the associated `Organization` item.
-     */
-    organization: string;
-
-    /**
-     * A link to the associated `Person` item.
-     */
-    person: string;
-  }
+  person?: Shared.Pointer;
 }
 
 /**
@@ -96,7 +76,12 @@ export interface Meeting {
   id: string;
 
   /**
-   * The end time of the meeting, as an RFC 3339 timestamp.
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
+
+  /**
+   * The end time of the meeting, as an ISO 8601 timestamp in UTC.
    */
   end_at: string;
 
@@ -105,8 +90,6 @@ export interface Meeting {
    */
   i_cal_uid: string;
 
-  links: Meeting.Links;
-
   /**
    * The unique identifier for the meeting from the external calendar provider (e.g.,
    * Google Calendar).
@@ -114,7 +97,7 @@ export interface Meeting {
   provider_id: string;
 
   /**
-   * The start time of the meeting, as an RFC 3339 timestamp.
+   * The start time of the meeting, as an ISO 8601 timestamp in UTC.
    */
   start_at: string;
 
@@ -130,14 +113,16 @@ export interface Meeting {
   type: 'meeting';
 
   /**
-   * A list of `Attendee` objects for the meeting.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  attendees?: Array<Attendee>;
+  updated_at: string;
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * A list of `Attendee` objects for the meeting.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
-  created_at?: string;
+  attendees?: Array<Attendee>;
 
   /**
    * A detailed description or agenda for the meeting.
@@ -156,6 +141,8 @@ export interface Meeting {
 
   /**
    * The `Organizer` of the meeting.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
   organizer?: Organizer;
 
@@ -163,6 +150,12 @@ export interface Meeting {
    * A URL to access the meeting in the external provider's system.
    */
   provider_uri?: string;
+
+  /**
+   * A temporary, signed URL to download the meeting recording. The URL expires after
+   * one hour.
+   */
+  recording_url?: string;
 
   /**
    * A summary or notes generated before the meeting.
@@ -180,40 +173,10 @@ export interface Meeting {
   title?: string;
 
   /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
+   * A temporary, signed URL to download the meeting transcript. The URL expires
+   * after one hour.
    */
-  updated_at?: string;
-}
-
-export namespace Meeting {
-  export interface Links {
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-
-    /**
-     * A link to an associated `Note` object.
-     */
-    note?: string;
-
-    /**
-     * A temporary, signed URL to download the meeting recording. The URL expires after
-     * one hour.
-     */
-    recording_url?: string;
-
-    /**
-     * A link to a long-form summary of the meeting.
-     */
-    summary?: string;
-
-    /**
-     * A temporary, signed URL to download the meeting transcript. The URL expires
-     * after one hour.
-     */
-    transcript_url?: string;
-  }
+  transcript_url?: string;
 }
 
 /**
@@ -230,36 +193,21 @@ export interface Organizer {
    */
   email: string;
 
-  links: Organizer.Links;
+  /**
+   * String representing the object’s type. Always `meeting_organizer` for this
+   * object.
+   */
+  type: 'meeting_organizer';
 
   /**
-   * String representing the object’s type. Always `organizer` for this object.
+   * A lightweight reference to another resource.
    */
-  type: 'organizer';
+  organization?: Shared.Pointer;
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * A lightweight reference to another resource.
    */
-  created_at?: string;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
-}
-
-export namespace Organizer {
-  export interface Links {
-    /**
-     * A link to the associated `Organization` item.
-     */
-    organization: string;
-
-    /**
-     * A link to the associated `Person` item.
-     */
-    person: string;
-  }
+  person?: Shared.Pointer;
 }
 
 export interface MeetingRetrieveParams {

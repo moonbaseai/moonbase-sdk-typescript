@@ -115,7 +115,7 @@ export interface CursorPageResponse<Item> {
 
 export namespace CursorPageResponse {
   export interface Meta {
-    cursors?: CursorPageResponse.Meta.Cursors;
+    cursors?: Meta.Cursors;
   }
 
   export namespace Meta {

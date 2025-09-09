@@ -41,7 +41,10 @@ export interface Inbox {
    */
   id: string;
 
-  links: Inbox.Links;
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
 
   /**
    * The display name of the inbox.
@@ -54,34 +57,17 @@ export interface Inbox {
   type: 'inbox';
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  created_at?: string;
+  updated_at: string;
 
   /**
    * The `Tagset` associated with this inbox, which defines the tags available for
    * its conversations.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
   tagset?: TagsetsAPI.Tagset;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
-}
-
-export namespace Inbox {
-  export interface Links {
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-
-    /**
-     * A link to the `Tagset` for this inbox.
-     */
-    tagset?: string;
-  }
 }
 
 export interface InboxRetrieveParams {
@@ -99,6 +85,8 @@ export interface InboxListParams extends CursorPageParams {
    * previous page of results.
    */
   before?: string;
+
+  'include[]'?: 'tagset';
 
   /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults

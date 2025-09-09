@@ -11,12 +11,8 @@ export class Forms extends APIResource {
   /**
    * Retrieves the details of an existing form.
    */
-  retrieve(
-    id: string,
-    query: FormRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<Form> {
-    return this._client.get(path`/forms/${id}`, { query, ...options });
+  retrieve(id: string, options?: RequestOptions): APIPromise<Form> {
+    return this._client.get(path`/forms/${id}`, options);
   }
 
   /**
@@ -47,7 +43,10 @@ export interface Form {
    */
   collection: CollectionsAPI.Collection;
 
-  links: Form.Links;
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
 
   /**
    * The name of the form, used as the title on its public page.
@@ -55,19 +54,19 @@ export interface Form {
   name: string;
 
   /**
+   * `true` if the form is available at a public URL.
+   */
+  pages_enabled: boolean;
+
+  /**
    * String representing the object’s type. Always `form` for this object.
    */
   type: 'form';
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  created_at?: string;
-
-  /**
-   * `true` if the form is available at a public URL.
-   */
-  pages_enabled?: boolean;
+  updated_at: string;
 
   /**
    * The public URL for the form, if `pages_enabled` is `true`.
@@ -78,33 +77,6 @@ export interface Form {
    * An optional URL to redirect users to after a successful submission.
    */
   redirect_url?: string;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
-}
-
-export namespace Form {
-  export interface Links {
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-
-    /**
-     * A link to the `Collection` where form submissions are saved.
-     */
-    collection?: string;
-  }
-}
-
-export interface FormRetrieveParams {
-  /**
-   * Specifies which related objects to include in the response. Valid option is
-   * `collection.fields`.
-   */
-  include?: Array<'collection.fields'>;
 }
 
 export interface FormListParams extends CursorPageParams {
@@ -114,12 +86,6 @@ export interface FormListParams extends CursorPageParams {
    * previous page of results.
    */
   before?: string;
-
-  /**
-   * Specifies which related objects to include in the response. Valid option is
-   * `collection.fields`.
-   */
-  include?: Array<'collection.fields'>;
 
   /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
@@ -132,7 +98,6 @@ export declare namespace Forms {
   export {
     type Form as Form,
     type FormsCursorPage as FormsCursorPage,
-    type FormRetrieveParams as FormRetrieveParams,
     type FormListParams as FormListParams,
   };
 }

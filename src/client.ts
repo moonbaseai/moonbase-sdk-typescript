@@ -19,10 +19,33 @@ import { AbstractPage, type CursorPageParams, CursorPageResponse } from './core/
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Activities, ActivitiesCursorPage, Activity, ActivityListParams } from './resources/activities';
-import { Call, CallCreateParams, Calls } from './resources/calls';
+import {
+  Activities,
+  ActivitiesCursorPage,
+  Activity,
+  ActivityCallOccurred,
+  ActivityFormSubmitted,
+  ActivityInboxMessageSent,
+  ActivityItemCreated,
+  ActivityItemMentioned,
+  ActivityItemMerged,
+  ActivityListParams,
+  ActivityMeetingHeld,
+  ActivityMeetingScheduled,
+  ActivityNoteCreated,
+  ActivityProgramMessageBounced,
+  ActivityProgramMessageClicked,
+  ActivityProgramMessageComplained,
+  ActivityProgramMessageFailed,
+  ActivityProgramMessageOpened,
+  ActivityProgramMessageSent,
+  ActivityProgramMessageShielded,
+  ActivityProgramMessageUnsubscribed,
+} from './resources/activities';
+import { Call, CallCreateParams, CallUpsertParams, Calls } from './resources/calls';
 import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
-import { Form, FormListParams, FormRetrieveParams, Forms, FormsCursorPage } from './resources/forms';
+import { Form, FormListParams, Forms, FormsCursorPage } from './resources/forms';
+import { Funnel, FunnelStep, Funnels } from './resources/funnels';
 import {
   InboxConversation,
   InboxConversationListParams,
@@ -40,34 +63,6 @@ import {
 } from './resources/inbox-messages';
 import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
 import {
-  BooleanValue,
-  Choice,
-  DateValue,
-  DatetimeValue,
-  DomainValue,
-  EmailValue,
-  FieldValue,
-  FloatValue,
-  FunnelStep,
-  GeoValue,
-  IntegerValue,
-  Item,
-  ItemCreateParams,
-  ItemUpdateParams,
-  ItemUpsertParams,
-  Items,
-  MonetaryValue,
-  MultiLineTextValue,
-  PercentageValue,
-  RelationValue,
-  SingleLineTextValue,
-  SocialLinkedInValue,
-  SocialXValue,
-  TelephoneNumber,
-  URLValue,
-  Value,
-} from './resources/items';
-import {
   Attendee,
   Meeting,
   MeetingListParams,
@@ -77,11 +72,7 @@ import {
   Organizer,
 } from './resources/meetings';
 import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
-import {
-  ProgramMessageCreateParams,
-  ProgramMessageCreateResponse,
-  ProgramMessages,
-} from './resources/program-messages';
+import { ProgramMessage, ProgramMessageSendParams, ProgramMessages } from './resources/program-messages';
 import {
   ProgramTemplate,
   ProgramTemplateListParams,
@@ -98,12 +89,70 @@ import {
 } from './resources/programs';
 import { Tagset, TagsetListParams, Tagsets, TagsetsCursorPage } from './resources/tagsets';
 import {
+  Endpoint,
+  EndpointsCursorPage,
+  Subscription,
+  WebhookEndpointCreateParams,
+  WebhookEndpointListParams,
+  WebhookEndpointUpdateParams,
+  WebhookEndpoints,
+} from './resources/webhook-endpoints';
+import {
+  BooleanField,
+  BooleanValue,
+  ChoiceField,
+  ChoiceFieldOption,
+  ChoiceValue,
+  ChoiceValueParam,
   Collection,
   CollectionListParams,
+  CollectionPointer,
   CollectionRetrieveParams,
   Collections,
   CollectionsCursorPage,
+  DateField,
+  DateValue,
+  DatetimeField,
+  DatetimeValue,
+  DomainField,
+  DomainValue,
+  EmailField,
+  EmailValue,
   Field,
+  FieldValue,
+  FieldValueParam,
+  FloatField,
+  FloatValue,
+  FunnelStepValue,
+  FunnelStepValueParam,
+  GeoField,
+  GeoValue,
+  IntegerField,
+  IntegerValue,
+  Item,
+  ItemPointer,
+  MonetaryField,
+  MonetaryValue,
+  MultiLineTextField,
+  MultiLineTextValue,
+  PercentageField,
+  PercentageValue,
+  RelationField,
+  RelationValue,
+  RelationValueParam,
+  SingleLineTextField,
+  SingleLineTextValue,
+  SocialLinkedInField,
+  SocialLinkedInValue,
+  SocialXField,
+  SocialXValue,
+  StageField,
+  TelephoneNumber,
+  TelephoneNumberField,
+  URLField,
+  URLValue,
+  Value,
+  ValueParam,
 } from './resources/collections/collections';
 import { View, ViewRetrieveParams, Views } from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
@@ -448,7 +497,7 @@ export class Moonbase {
     const response = await this.fetchWithTimeout(url, req, timeout, controller).catch(castToError);
     const headersTime = Date.now();
 
-    if (response instanceof Error) {
+    if (response instanceof globalThis.Error) {
       const retryMessage = `retrying, ${retriesRemaining} attempts remaining`;
       if (options.signal?.aborted) {
         throw new Errors.APIUserAbortError();
@@ -774,7 +823,7 @@ export class Moonbase {
         // Preserve legacy string encoding behavior for now
         headers.values.has('content-type')) ||
       // `Blob` is superset of `File`
-      body instanceof Blob ||
+      ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
       body instanceof FormData ||
       // `URLSearchParams` -> `application/x-www-form-urlencoded`
@@ -813,76 +862,117 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
-  activities: API.Activities = new API.Activities(this);
-  calls: API.Calls = new API.Calls(this);
+  funnels: API.Funnels = new API.Funnels(this);
   collections: API.Collections = new API.Collections(this);
-  files: API.Files = new API.Files(this);
-  forms: API.Forms = new API.Forms(this);
+  views: API.Views = new API.Views(this);
+  inboxes: API.Inboxes = new API.Inboxes(this);
   inboxConversations: API.InboxConversations = new API.InboxConversations(this);
   inboxMessages: API.InboxMessages = new API.InboxMessages(this);
-  inboxes: API.Inboxes = new API.Inboxes(this);
-  items: API.Items = new API.Items(this);
+  tagsets: API.Tagsets = new API.Tagsets(this);
+  programs: API.Programs = new API.Programs(this);
+  programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
+  programMessages: API.ProgramMessages = new API.ProgramMessages(this);
+  forms: API.Forms = new API.Forms(this);
+  activities: API.Activities = new API.Activities(this);
+  calls: API.Calls = new API.Calls(this);
+  files: API.Files = new API.Files(this);
   meetings: API.Meetings = new API.Meetings(this);
   notes: API.Notes = new API.Notes(this);
-  programMessages: API.ProgramMessages = new API.ProgramMessages(this);
-  programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
-  programs: API.Programs = new API.Programs(this);
-  tagsets: API.Tagsets = new API.Tagsets(this);
-  views: API.Views = new API.Views(this);
+  webhookEndpoints: API.WebhookEndpoints = new API.WebhookEndpoints(this);
 }
-Moonbase.Activities = Activities;
-Moonbase.Calls = Calls;
+
+Moonbase.Funnels = Funnels;
 Moonbase.Collections = Collections;
-Moonbase.Files = Files;
-Moonbase.Forms = Forms;
+Moonbase.Views = Views;
+Moonbase.Inboxes = Inboxes;
 Moonbase.InboxConversations = InboxConversations;
 Moonbase.InboxMessages = InboxMessages;
-Moonbase.Inboxes = Inboxes;
-Moonbase.Items = Items;
+Moonbase.Tagsets = Tagsets;
+Moonbase.Programs = Programs;
+Moonbase.ProgramTemplates = ProgramTemplates;
+Moonbase.ProgramMessages = ProgramMessages;
+Moonbase.Forms = Forms;
+Moonbase.Activities = Activities;
+Moonbase.Calls = Calls;
+Moonbase.Files = Files;
 Moonbase.Meetings = Meetings;
 Moonbase.Notes = Notes;
-Moonbase.ProgramMessages = ProgramMessages;
-Moonbase.ProgramTemplates = ProgramTemplates;
-Moonbase.Programs = Programs;
-Moonbase.Tagsets = Tagsets;
-Moonbase.Views = Views;
+Moonbase.WebhookEndpoints = WebhookEndpoints;
+
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
 
   export import CursorPage = Pagination.CursorPage;
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
 
-  export {
-    Activities as Activities,
-    type Activity as Activity,
-    type ActivitiesCursorPage as ActivitiesCursorPage,
-    type ActivityListParams as ActivityListParams,
-  };
-
-  export { Calls as Calls, type Call as Call, type CallCreateParams as CallCreateParams };
+  export { Funnels as Funnels, type Funnel as Funnel, type FunnelStep as FunnelStep };
 
   export {
     Collections as Collections,
+    type BooleanField as BooleanField,
+    type BooleanValue as BooleanValue,
+    type ChoiceField as ChoiceField,
+    type ChoiceFieldOption as ChoiceFieldOption,
+    type ChoiceValue as ChoiceValue,
+    type ChoiceValueParam as ChoiceValueParam,
     type Collection as Collection,
+    type CollectionPointer as CollectionPointer,
+    type DateField as DateField,
+    type DateValue as DateValue,
+    type DatetimeField as DatetimeField,
+    type DatetimeValue as DatetimeValue,
+    type DomainField as DomainField,
+    type DomainValue as DomainValue,
+    type EmailField as EmailField,
+    type EmailValue as EmailValue,
     type Field as Field,
+    type FieldValue as FieldValue,
+    type FieldValueParam as FieldValueParam,
+    type FloatField as FloatField,
+    type FloatValue as FloatValue,
+    type FunnelStepValue as FunnelStepValue,
+    type FunnelStepValueParam as FunnelStepValueParam,
+    type GeoField as GeoField,
+    type GeoValue as GeoValue,
+    type IntegerField as IntegerField,
+    type IntegerValue as IntegerValue,
+    type Item as Item,
+    type ItemPointer as ItemPointer,
+    type MonetaryField as MonetaryField,
+    type MonetaryValue as MonetaryValue,
+    type MultiLineTextField as MultiLineTextField,
+    type MultiLineTextValue as MultiLineTextValue,
+    type PercentageField as PercentageField,
+    type PercentageValue as PercentageValue,
+    type RelationField as RelationField,
+    type RelationValue as RelationValue,
+    type RelationValueParam as RelationValueParam,
+    type SingleLineTextField as SingleLineTextField,
+    type SingleLineTextValue as SingleLineTextValue,
+    type SocialLinkedInField as SocialLinkedInField,
+    type SocialLinkedInValue as SocialLinkedInValue,
+    type SocialXField as SocialXField,
+    type SocialXValue as SocialXValue,
+    type StageField as StageField,
+    type TelephoneNumber as TelephoneNumber,
+    type TelephoneNumberField as TelephoneNumberField,
+    type URLField as URLField,
+    type URLValue as URLValue,
+    type Value as Value,
+    type ValueParam as ValueParam,
     type CollectionsCursorPage as CollectionsCursorPage,
     type CollectionRetrieveParams as CollectionRetrieveParams,
     type CollectionListParams as CollectionListParams,
   };
 
-  export {
-    Files as Files,
-    type MoonbaseFile as MoonbaseFile,
-    type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
-    type FileListParams as FileListParams,
-  };
+  export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
 
   export {
-    Forms as Forms,
-    type Form as Form,
-    type FormsCursorPage as FormsCursorPage,
-    type FormRetrieveParams as FormRetrieveParams,
-    type FormListParams as FormListParams,
+    Inboxes as Inboxes,
+    type Inbox as Inbox,
+    type InboxesCursorPage as InboxesCursorPage,
+    type InboxRetrieveParams as InboxRetrieveParams,
+    type InboxListParams as InboxListParams,
   };
 
   export {
@@ -903,40 +993,77 @@ export declare namespace Moonbase {
   };
 
   export {
-    Inboxes as Inboxes,
-    type Inbox as Inbox,
-    type InboxesCursorPage as InboxesCursorPage,
-    type InboxRetrieveParams as InboxRetrieveParams,
-    type InboxListParams as InboxListParams,
+    Tagsets as Tagsets,
+    type Tagset as Tagset,
+    type TagsetsCursorPage as TagsetsCursorPage,
+    type TagsetListParams as TagsetListParams,
   };
 
   export {
-    Items as Items,
-    type BooleanValue as BooleanValue,
-    type Choice as Choice,
-    type DateValue as DateValue,
-    type DatetimeValue as DatetimeValue,
-    type DomainValue as DomainValue,
-    type EmailValue as EmailValue,
-    type FieldValue as FieldValue,
-    type FloatValue as FloatValue,
-    type FunnelStep as FunnelStep,
-    type GeoValue as GeoValue,
-    type IntegerValue as IntegerValue,
-    type Item as Item,
-    type MonetaryValue as MonetaryValue,
-    type MultiLineTextValue as MultiLineTextValue,
-    type PercentageValue as PercentageValue,
-    type RelationValue as RelationValue,
-    type SingleLineTextValue as SingleLineTextValue,
-    type SocialLinkedInValue as SocialLinkedInValue,
-    type SocialXValue as SocialXValue,
-    type TelephoneNumber as TelephoneNumber,
-    type URLValue as URLValue,
-    type Value as Value,
-    type ItemCreateParams as ItemCreateParams,
-    type ItemUpdateParams as ItemUpdateParams,
-    type ItemUpsertParams as ItemUpsertParams,
+    Programs as Programs,
+    type Program as Program,
+    type ProgramsCursorPage as ProgramsCursorPage,
+    type ProgramRetrieveParams as ProgramRetrieveParams,
+    type ProgramListParams as ProgramListParams,
+  };
+
+  export {
+    ProgramTemplates as ProgramTemplates,
+    type ProgramTemplate as ProgramTemplate,
+    type ProgramTemplatesCursorPage as ProgramTemplatesCursorPage,
+    type ProgramTemplateRetrieveParams as ProgramTemplateRetrieveParams,
+    type ProgramTemplateListParams as ProgramTemplateListParams,
+  };
+
+  export {
+    ProgramMessages as ProgramMessages,
+    type ProgramMessage as ProgramMessage,
+    type ProgramMessageSendParams as ProgramMessageSendParams,
+  };
+
+  export {
+    Forms as Forms,
+    type Form as Form,
+    type FormsCursorPage as FormsCursorPage,
+    type FormListParams as FormListParams,
+  };
+
+  export {
+    Activities as Activities,
+    type Activity as Activity,
+    type ActivityCallOccurred as ActivityCallOccurred,
+    type ActivityFormSubmitted as ActivityFormSubmitted,
+    type ActivityInboxMessageSent as ActivityInboxMessageSent,
+    type ActivityItemCreated as ActivityItemCreated,
+    type ActivityItemMentioned as ActivityItemMentioned,
+    type ActivityItemMerged as ActivityItemMerged,
+    type ActivityMeetingHeld as ActivityMeetingHeld,
+    type ActivityMeetingScheduled as ActivityMeetingScheduled,
+    type ActivityNoteCreated as ActivityNoteCreated,
+    type ActivityProgramMessageBounced as ActivityProgramMessageBounced,
+    type ActivityProgramMessageClicked as ActivityProgramMessageClicked,
+    type ActivityProgramMessageComplained as ActivityProgramMessageComplained,
+    type ActivityProgramMessageFailed as ActivityProgramMessageFailed,
+    type ActivityProgramMessageOpened as ActivityProgramMessageOpened,
+    type ActivityProgramMessageSent as ActivityProgramMessageSent,
+    type ActivityProgramMessageShielded as ActivityProgramMessageShielded,
+    type ActivityProgramMessageUnsubscribed as ActivityProgramMessageUnsubscribed,
+    type ActivitiesCursorPage as ActivitiesCursorPage,
+    type ActivityListParams as ActivityListParams,
+  };
+
+  export {
+    Calls as Calls,
+    type Call as Call,
+    type CallCreateParams as CallCreateParams,
+    type CallUpsertParams as CallUpsertParams,
+  };
+
+  export {
+    Files as Files,
+    type MoonbaseFile as MoonbaseFile,
+    type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
+    type FileListParams as FileListParams,
   };
 
   export {
@@ -957,35 +1084,16 @@ export declare namespace Moonbase {
   };
 
   export {
-    ProgramMessages as ProgramMessages,
-    type ProgramMessageCreateResponse as ProgramMessageCreateResponse,
-    type ProgramMessageCreateParams as ProgramMessageCreateParams,
+    WebhookEndpoints as WebhookEndpoints,
+    type Endpoint as Endpoint,
+    type Subscription as Subscription,
+    type EndpointsCursorPage as EndpointsCursorPage,
+    type WebhookEndpointCreateParams as WebhookEndpointCreateParams,
+    type WebhookEndpointUpdateParams as WebhookEndpointUpdateParams,
+    type WebhookEndpointListParams as WebhookEndpointListParams,
   };
-
-  export {
-    ProgramTemplates as ProgramTemplates,
-    type ProgramTemplate as ProgramTemplate,
-    type ProgramTemplatesCursorPage as ProgramTemplatesCursorPage,
-    type ProgramTemplateRetrieveParams as ProgramTemplateRetrieveParams,
-    type ProgramTemplateListParams as ProgramTemplateListParams,
-  };
-
-  export {
-    Programs as Programs,
-    type Program as Program,
-    type ProgramsCursorPage as ProgramsCursorPage,
-    type ProgramRetrieveParams as ProgramRetrieveParams,
-    type ProgramListParams as ProgramListParams,
-  };
-
-  export {
-    Tagsets as Tagsets,
-    type Tagset as Tagset,
-    type TagsetsCursorPage as TagsetsCursorPage,
-    type TagsetListParams as TagsetListParams,
-  };
-
-  export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
 
   export type Error = API.Error;
+  export type FormattedText = API.FormattedText;
+  export type Pointer = API.Pointer;
 }

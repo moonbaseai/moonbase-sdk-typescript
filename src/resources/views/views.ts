@@ -33,7 +33,10 @@ export interface View {
    */
   id: string;
 
-  links: View.Links;
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
 
   /**
    * The name of the view.
@@ -46,33 +49,21 @@ export interface View {
   type: 'view';
 
   /**
-   * The `Collection` this view belongs to.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  collection?: CollectionsAPI.Collection;
+  updated_at: string;
 
   /**
    * The type of view, such as `table` or `board`.
    */
-  view_type?: 'table' | 'board';
-}
+  view_type: 'table' | 'board';
 
-export namespace View {
-  export interface Links {
-    /**
-     * A link to the `Collection` this view belongs to.
-     */
-    collection: string;
-
-    /**
-     * A link to the list of `Item` objects that are visible in this view.
-     */
-    items: string;
-
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-  }
+  /**
+   * The `Collection` this view belongs to.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
+   */
+  collection?: CollectionsAPI.Collection;
 }
 
 export interface ViewRetrieveParams {

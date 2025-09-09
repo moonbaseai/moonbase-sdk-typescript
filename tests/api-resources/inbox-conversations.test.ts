@@ -22,11 +22,7 @@ describe('resource inboxConversations', () => {
   test('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.inboxConversations.retrieve(
-        'id',
-        { include: ['addresses'] },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.inboxConversations.retrieve('id', { include: ['inbox'] }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Moonbase.NotFoundError);
   });
 
@@ -45,7 +41,13 @@ describe('resource inboxConversations', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.inboxConversations.list(
-        { after: 'after', before: 'before', inbox: ['string'], include: ['addresses'], limit: 1 },
+        {
+          after: 'after',
+          before: 'before',
+          filter: { conversation_id: { eq: 'eq' }, inbox_id: { eq: 'eq' } },
+          include: ['inbox'],
+          limit: 1,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Moonbase.NotFoundError);
