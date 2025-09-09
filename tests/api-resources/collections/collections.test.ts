@@ -22,7 +22,7 @@ describe('resource collections', () => {
   test('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.collections.retrieve('id', { include: ['fields'] }, { path: '/_stainless_unknown_path' }),
+      client.collections.retrieve('id', { include: ['views'] }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Moonbase.NotFoundError);
   });
 

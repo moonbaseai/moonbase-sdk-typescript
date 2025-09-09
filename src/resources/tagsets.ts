@@ -37,7 +37,10 @@ export interface Tagset {
    */
   id: string;
 
-  links: Tagset.Links;
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
 
   /**
    * The name of the tagset.
@@ -45,39 +48,27 @@ export interface Tagset {
   name: string;
 
   /**
+   * A list of `Tag` objects belonging to this tagset.
+   */
+  tags: Array<Tagset.Tag>;
+
+  /**
    * String representing the object’s type. Always `tagset` for this object.
    */
   type: 'tagset';
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  created_at?: string;
+  updated_at: string;
 
   /**
    * An optional description of the tagset's purpose.
    */
   description?: string;
-
-  /**
-   * A list of `Tag` objects belonging to this tagset.
-   */
-  tags?: Array<Tagset.Tag>;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
 }
 
 export namespace Tagset {
-  export interface Links {
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-  }
-
   /**
    * A Tag is a label that can be applied to `Conversation` objects for organization
    * and filtering.

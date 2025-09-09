@@ -42,13 +42,26 @@ export interface Program {
    */
   id: string;
 
-  links: Program.Links;
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
 
   /**
    * The current status of the program. Can be `draft`, `published`, `paused`, or
    * `archived`.
    */
   status: 'draft' | 'published' | 'paused' | 'archived';
+
+  /**
+   * `true` if link clicks are tracked for this program.
+   */
+  track_clicks: boolean;
+
+  /**
+   * `true` if email opens are tracked for this program.
+   */
+  track_opens: boolean;
 
   /**
    * The sending trigger for the program. Can be `api` for transactional sends or
@@ -62,14 +75,16 @@ export interface Program {
   type: 'program';
 
   /**
-   * A `ProgramActivityMetrics` object summarizing engagement for this program.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  activity_metrics?: Program.ActivityMetrics;
+  updated_at: string;
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * A `ProgramActivityMetrics` object summarizing engagement for this program.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
-  created_at?: string;
+  activity_metrics?: Program.ActivityMetrics;
 
   /**
    * The user-facing name of the program.
@@ -78,87 +93,64 @@ export interface Program {
 
   /**
    * The `ProgramTemplate` used for messages in this program.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
   program_template?: ProgramTemplatesAPI.ProgramTemplate;
 
   /**
-   * For `broadcast` programs, the time the program is scheduled to send, as an RFC
-   * 3339 timestamp.
+   * For `broadcast` programs, the time the program is scheduled to send, as an ISO
+   * 8601 timestamp in UTC.
    */
   scheduled_at?: string;
-
-  /**
-   * `true` if link clicks are tracked for this program.
-   */
-  track_clicks?: boolean;
-
-  /**
-   * `true` if email opens are tracked for this program.
-   */
-  track_opens?: boolean;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
 }
 
 export namespace Program {
-  export interface Links {
-    /**
-     * A link to the `ProgramTemplate` for this program.
-     */
-    program_template: string;
-
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-  }
-
   /**
    * A `ProgramActivityMetrics` object summarizing engagement for this program.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
   export interface ActivityMetrics {
     /**
      * The number of emails that could not be delivered.
      */
-    bounced?: number;
+    bounced: number;
 
     /**
      * The number of recipients who clicked at least one link.
      */
-    clicked?: number;
+    clicked: number;
 
     /**
      * The number of recipients who marked the email as spam.
      */
-    complained?: number;
+    complained: number;
 
     /**
      * The number of emails that failed to send due to a technical issue.
      */
-    failed?: number;
+    failed: number;
 
     /**
      * The number of recipients who opened the email.
      */
-    opened?: number;
+    opened: number;
 
     /**
      * The total number of emails successfully sent.
      */
-    sent?: number;
+    sent: number;
 
     /**
      * The number of emails blocked by delivery protection rules.
      */
-    shielded?: number;
+    shielded: number;
 
     /**
      * The number of recipients who unsubscribed.
      */
-    unsubscribed?: number;
+    unsubscribed: number;
   }
 }
 

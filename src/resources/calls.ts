@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
@@ -17,16 +18,16 @@ export class Calls extends APIResource {
    *     { phone: '+16505551212', role: 'callee' },
    *   ],
    *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000001',
-   *   start_at: '2025-08-18T18:32:13.332Z',
-   *   status: 'completed',
-   *   answered_at: '2025-08-18T18:33:13Z',
-   *   end_at: '2025-08-18T19:02:13.332Z',
+   *   provider_id: 'openphone_id_000000000007',
+   *   provider_status: 'completed',
+   *   start_at: '2025-02-17T15:00:00.000Z',
+   *   answered_at: '2025-02-17T15:01:00Z',
+   *   end_at: '2025-02-17T15:30:00.000Z',
    *   provider_metadata: {
    *     answered_by: 'UShjUatqtF',
    *     user_id: 'UShjUatqtF',
    *     phone_number_id: 'PN72zMikBJ',
-   *     conversation_id: 'CNa34abaf20f54eb8239d44a63d1f078f2',
+   *     conversation_id: 'CN3b48bcc423e772aeba377414a4fa6a06',
    *   },
    * });
    * ```
@@ -47,16 +48,16 @@ export class Calls extends APIResource {
    *     { phone: '+16505551212', role: 'callee' },
    *   ],
    *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000002',
-   *   start_at: '2025-08-18T18:32:24.545Z',
-   *   status: 'completed',
-   *   answered_at: '2025-08-18T18:33:24Z',
-   *   end_at: '2025-08-18T19:02:24.545Z',
+   *   provider_id: 'openphone_id_000000000006',
+   *   provider_status: 'completed',
+   *   start_at: '2025-02-17T15:00:00.000Z',
+   *   answered_at: '2025-02-17T15:01:00Z',
+   *   end_at: '2025-02-17T15:30:00.000Z',
    *   provider_metadata: {
    *     answered_by: 'UShjUatqtF',
    *     user_id: 'UShjUatqtF',
    *     phone_number_id: 'PN72zMikBJ',
-   *     conversation_id: 'CNc9a8dd82621139f1566c8481214a1cf0',
+   *     conversation_id: 'CN3b48bcc423e772aeba377414a4fa6a06',
    *   },
    * });
    * ```
@@ -75,6 +76,11 @@ export interface Call {
    * Unique identifier for the object.
    */
   id: string;
+
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
 
   /**
    * The direction of the call, either `incoming` or `outgoing`.
@@ -97,27 +103,14 @@ export interface Call {
   provider_id: string;
 
   /**
-   * The time the call started, as an RFC 3339 timestamp.
-   */
-  start_at: string;
-
-  /**
    * The current status of the call.
    */
-  status:
-    | 'queued'
-    | 'initiated'
-    | 'ringing'
-    | 'in_progress'
-    | 'completed'
-    | 'busy'
-    | 'failed'
-    | 'no_answer'
-    | 'canceled'
-    | 'missed'
-    | 'answered'
-    | 'forwarded'
-    | 'abandoned';
+  provider_status: string;
+
+  /**
+   * The time the call started, as an ISO 8601 timestamp in UTC.
+   */
+  start_at: string;
 
   /**
    * String representing the object’s type. Always `call` for this object.
@@ -125,17 +118,17 @@ export interface Call {
   type: 'call';
 
   /**
-   * The time the call was answered, if available, as an RFC 3339 timestamp.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
+   */
+  updated_at: string;
+
+  /**
+   * The time the call was answered, if available, as an ISO 8601 timestamp in UTC.
    */
   answered_at?: string;
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
-   */
-  created_at?: string;
-
-  /**
-   * The time the call ended, if available, as an RFC 3339 timestamp.
+   * The time the call ended, if available, as an ISO 8601 timestamp in UTC.
    */
   end_at?: string;
 
@@ -143,11 +136,6 @@ export interface Call {
    * A hash of additional metadata from the provider.
    */
   provider_metadata?: { [key: string]: unknown };
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
 }
 
 export namespace Call {
@@ -171,19 +159,20 @@ export namespace Call {
     role: 'caller' | 'callee' | 'other';
 
     /**
-     * String representing the object’s type. Always `participant` for this object.
+     * String representing the object’s type. Always `call_participant` for this
+     * object.
      */
-    type: 'participant';
+    type: 'call_participant';
 
     /**
-     * Time at which the object was created, as an RFC 3339 timestamp.
+     * A lightweight reference to another resource.
      */
-    created_at?: string;
+    organization?: Shared.Pointer;
 
     /**
-     * Time at which the object was last updated, as an RFC 3339 timestamp.
+     * A lightweight reference to another resource.
      */
-    updated_at?: string;
+    person?: Shared.Pointer;
   }
 }
 
@@ -209,35 +198,22 @@ export interface CallCreateParams {
   provider_id: string;
 
   /**
-   * The time the call started, as an RFC 3339 timestamp.
+   * The status of the call.
+   */
+  provider_status: string;
+
+  /**
+   * The time the call started, as an ISO 8601 timestamp in UTC.
    */
   start_at: string;
 
   /**
-   * The status of the call.
-   */
-  status:
-    | 'queued'
-    | 'initiated'
-    | 'ringing'
-    | 'in_progress'
-    | 'completed'
-    | 'busy'
-    | 'failed'
-    | 'no_answer'
-    | 'canceled'
-    | 'missed'
-    | 'answered'
-    | 'forwarded'
-    | 'abandoned';
-
-  /**
-   * The time the call was answered, as an RFC 3339 timestamp.
+   * The time the call was answered, as an ISO 8601 timestamp in UTC.
    */
   answered_at?: string;
 
   /**
-   * The time the call ended, as an RFC 3339 timestamp.
+   * The time the call ended, as an ISO 8601 timestamp in UTC.
    */
   end_at?: string;
 
@@ -356,35 +332,22 @@ export interface CallUpsertParams {
   provider_id: string;
 
   /**
-   * The time the call started, as an RFC 3339 timestamp.
+   * The status of the call.
+   */
+  provider_status: string;
+
+  /**
+   * The time the call started, as an ISO 8601 timestamp in UTC.
    */
   start_at: string;
 
   /**
-   * The status of the call.
-   */
-  status:
-    | 'queued'
-    | 'initiated'
-    | 'ringing'
-    | 'in_progress'
-    | 'completed'
-    | 'busy'
-    | 'failed'
-    | 'no_answer'
-    | 'canceled'
-    | 'missed'
-    | 'answered'
-    | 'forwarded'
-    | 'abandoned';
-
-  /**
-   * The time the call was answered, as an RFC 3339 timestamp.
+   * The time the call was answered, as an ISO 8601 timestamp in UTC.
    */
   answered_at?: string;
 
   /**
-   * The time the call ended, as an RFC 3339 timestamp.
+   * The time the call ended, as an ISO 8601 timestamp in UTC.
    */
   end_at?: string;
 

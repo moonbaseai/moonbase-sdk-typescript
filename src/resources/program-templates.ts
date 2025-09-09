@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import * as ProgramsAPI from './programs';
+import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -45,9 +46,12 @@ export interface ProgramTemplate {
   /**
    * The body content of the email, which can include Liquid variables.
    */
-  body: string;
+  body: Shared.FormattedText;
 
-  links: ProgramTemplate.Links;
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
 
   /**
    * The subject line of the email, which can include Liquid variables.
@@ -61,33 +65,16 @@ export interface ProgramTemplate {
   type: 'program_template';
 
   /**
-   * Time at which the object was created, as an RFC 3339 timestamp.
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
-  created_at?: string;
+  updated_at: string;
 
   /**
    * The `Program` that uses this template.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
   program?: ProgramsAPI.Program;
-
-  /**
-   * Time at which the object was last updated, as an RFC 3339 timestamp.
-   */
-  updated_at?: string;
-}
-
-export namespace ProgramTemplate {
-  export interface Links {
-    /**
-     * The canonical URL for this object.
-     */
-    self: string;
-
-    /**
-     * The `Program` using this template.
-     */
-    program?: string;
-  }
 }
 
 export interface ProgramTemplateRetrieveParams {
