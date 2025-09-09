@@ -1,5 +1,45 @@
 # Changelog
 
+## 0.1.0-alpha.4 (2025-09-09)
+
+Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
+
+### Features
+
+* **api:** add upsert endpoint for Calls ([f9b8955](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/f9b8955e67dd1671cdc10be0b2cb87bce1d4414e))
+* **api:** example updates ([90cd01f](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/90cd01f206d667b63edeb89089fd546404acb996))
+* **api:** manual updates ([4fea656](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/4fea656dee37f6183c2c5424bd7149fdf0977bbb))
+* **api:** manual updates ([b55e2ed](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b55e2ed9a42839034c8cb0be9f4370b9129497b6))
+* **api:** update api ([83a57ef](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/83a57ef43aa36b2644dcf88ce80c7153ff113810))
+* **api:** update api ([7d8eee8](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/7d8eee8c4adf3e9ef529bf53e2b6f3a425be06b7))
+* **api:** update api ([4046808](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/4046808d9018c3b3aa84c0ef461cd9b85feb1b83))
+* **api:** update api ([7e660ed](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/7e660edd3e28a22cb42145d9795a311b7dc9a83f))
+* **api:** update api ([ec35812](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ec3581234bd095a9a54720974467fd799881f419))
+* **api:** update examples ([da2f742](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/da2f74249edd4c1a228dbd8dc4c92377ebd36813))
+* **mcp:** add code execution tool ([537d00c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/537d00cb4bbff9c57f44f9d252ce3f159d266fa3))
+
+
+### Bug Fixes
+
+* coerce nullable values to undefined ([0404c72](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/0404c720848a351b75ff12ec9c25a4129bd471cf))
+* **types:** reference pagination type properly ([54244fe](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/54244fe32dc7e18cf7c30fd65918fc7ca2ee1ee1))
+
+
+### Chores
+
+* add package to package.json ([ae35f34](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ae35f34bedf3645db8639921e8025312afae8eda))
+* ci build action ([8517fed](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/8517fed35853898d0fc242244922b45598d3fbc9))
+* **client:** qualify global Blob ([5e33057](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/5e33057a5c57cb3d8ae6f0ad0e05e11d2a410c32))
+* **deps:** update dependency @types/node to v20.17.58 ([1f79a7a](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/1f79a7a0b8ab2bd9c6eb67154277467ac461cbd4))
+* **internal:** codegen related update ([a3c02dc](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/a3c02dcbe49d6b9bfc165f349680692a1436a880))
+* **internal:** formatting change ([e517080](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/e517080dc9a46e200d03a61a614769eb3bc1be16))
+* **internal:** move publish config ([6a653e6](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/6a653e64f4bc13c533ab5b3c959aa2be3f529eb9))
+* **internal:** remove redundant imports config ([c80f311](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c80f311cb7df5c3b872c7c941d3c1b01af64dc4a))
+* **internal:** update comment in script ([3d5f00a](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/3d5f00ab8767e344b0318fb65b8b718127d119f2))
+* **internal:** update global Error reference ([b83de58](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b83de58a4b8ff9b24e9226802f2205b025c2f6d1))
+* update @stainless-api/prism-cli to v5.15.0 ([d95d1ae](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/d95d1ae1ad2488864bda2bc264738d4f2ae05639))
+* update CI script ([2551169](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/25511692511fc6389b98a362031c6512f30c3271))
+
 ## 0.1.0-alpha.3 (2025-07-20)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
