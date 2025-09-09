@@ -3,6 +3,7 @@
 import { MoonbaseError } from './error';
 import { FinalRequestOptions } from '../internal/request-options';
 import { defaultParseResponse } from '../internal/parse';
+import * as StainlessPageResourceAPI from '../resources/stainless-page-resource';
 import { type Moonbase } from '../client';
 import { APIPromise } from './api-promise';
 import { type APIResponseProps } from '../internal/parse';
@@ -115,7 +116,7 @@ export interface CursorPageResponse<Item> {
 
 export namespace CursorPageResponse {
   export interface Meta {
-    cursors?: CursorPageResponse.Meta.Cursors;
+    cursors?: Meta.Cursors;
   }
 
   export namespace Meta {
