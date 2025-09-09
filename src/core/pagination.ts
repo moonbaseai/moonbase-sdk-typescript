@@ -3,7 +3,6 @@
 import { MoonbaseError } from './error';
 import { FinalRequestOptions } from '../internal/request-options';
 import { defaultParseResponse } from '../internal/parse';
-import * as StainlessPageResourceAPI from '../resources/stainless-page-resource';
 import { type Moonbase } from '../client';
 import { APIPromise } from './api-promise';
 import { type APIResponseProps } from '../internal/parse';
