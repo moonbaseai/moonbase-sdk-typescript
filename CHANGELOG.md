@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.6 (2025-09-12)
+
+Full Changelog: [v0.1.0-alpha.5...v0.1.0-alpha.6](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.5...v0.1.0-alpha.6)
+
+### Chores
+
+* **api:** manual updates ([e33d03b](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/e33d03b61bda92e5d3a4d3dfeb58fec0f1ed59af))
+
 ## 0.1.0-alpha.5 (2025-09-11)
 
 Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
