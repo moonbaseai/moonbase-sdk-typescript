@@ -219,7 +219,7 @@ export interface ChoiceFieldOption {
   /**
    * The human-readable text displayed for this option.
    */
-  label: string;
+  name: string;
 
   /**
    * String representing the object’s type. Always `choice_field_option` for this
