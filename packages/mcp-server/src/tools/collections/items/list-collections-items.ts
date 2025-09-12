@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { maybeFilter } from '@moonbaseai/sdk-mcp/filtering';
-import { Metadata, asTextContentResult } from '@moonbaseai/sdk-mcp/tools/types';
+import { maybeFilter } from '@moonbaseai/mcp/filtering';
+import { Metadata, asTextContentResult } from '@moonbaseai/mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import Moonbase from '@moonbaseai/sdk';

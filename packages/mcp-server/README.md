@@ -10,7 +10,7 @@ You can run the MCP Server directly via `npx`:
 
 ```sh
 export MOONBASE_API_KEY="My API Key"
-npx -y @moonbaseai/sdk-mcp@latest
+npx -y @moonbaseai/mcp@latest
 ```
 
 ### Via MCP Client
@@ -25,7 +25,7 @@ For clients with a configuration JSON, it might look something like this:
   "mcpServers": {
     "moonbaseai_sdk_api": {
       "command": "npx",
-      "args": ["-y", "@moonbaseai/sdk-mcp", "--client=claude", "--tools=dynamic"],
+      "args": ["-y", "@moonbaseai/mcp", "--client=claude", "--tools=dynamic"],
       "env": {
         "MOONBASE_API_KEY": "My API Key"
       }
@@ -169,10 +169,10 @@ http://localhost:3000?client=cursor&capability=tool-name-length%3D40
 
 ```js
 // Import the server, generated endpoints, or the init function
-import { server, endpoints, init } from "@moonbaseai/sdk-mcp/server";
+import { server, endpoints, init } from "@moonbaseai/mcp/server";
 
 // import a specific tool
-import retrieveCollections from "@moonbaseai/sdk-mcp/tools/collections/retrieve-collections";
+import retrieveCollections from "@moonbaseai/mcp/tools/collections/retrieve-collections";
 
 // initialize the server and all endpoints
 init({ server, endpoints });

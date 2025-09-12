@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^@moonbaseai/sdk-mcp$': '<rootDir>/src/index.ts',
-    '^@moonbaseai/sdk-mcp/(.*)$': '<rootDir>/src/$1',
+    '^@moonbaseai/mcp$': '<rootDir>/src/index.ts',
+    '^@moonbaseai/mcp/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   testPathIgnorePatterns: ['scripts'],
