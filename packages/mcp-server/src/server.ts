@@ -33,7 +33,7 @@ export const newMcpServer = () =>
   new McpServer(
     {
       name: 'moonbaseai_sdk_api',
-      version: '0.1.0-alpha.4',
+      version: '0.1.0-alpha.5',
     },
     { capabilities: { tools: {}, logging: {} } },
   );
