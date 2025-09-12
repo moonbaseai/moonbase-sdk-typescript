@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.0-alpha.7 (2025-09-12)
+
+Full Changelog: [v0.1.0-alpha.6...v0.1.0-alpha.7](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.6...v0.1.0-alpha.7)
+
+### Bug Fixes
+
+* **mcp:** fix uploading dxt release assets ([992a139](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/992a13941cc8ab9bc0a305d51f2351fa9a9df127))
+
+
+### Documentation
+
+* improve webhook endpoints examples ([2e7cb68](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/2e7cb68384aa5086667f9e91476aec6b5cc57358))
+
+
+### Refactors
+
+* rename ChoiceFieldOption label to name for consistency ([3838504](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/38385048d6ce684638496c4dce2a4af5371085eb))
+
 ## 0.1.0-alpha.6 (2025-09-12)
 
 Full Changelog: [v0.1.0-alpha.5...v0.1.0-alpha.6](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.5...v0.1.0-alpha.6)
