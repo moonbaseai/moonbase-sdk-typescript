@@ -256,6 +256,7 @@ Types:
 Methods:
 
 - <code title="get /meetings/{id}">client.meetings.<a href="./src/resources/meetings.ts">retrieve</a>(id, { ...params }) -> Meeting</code>
+- <code title="patch /meetings/{id}">client.meetings.<a href="./src/resources/meetings.ts">update</a>(id, { ...params }) -> Meeting</code>
 - <code title="get /meetings">client.meetings.<a href="./src/resources/meetings.ts">list</a>({ ...params }) -> MeetingsCursorPage</code>
 
 # Notes

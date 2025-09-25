@@ -67,6 +67,7 @@ import {
   Meeting,
   MeetingListParams,
   MeetingRetrieveParams,
+  MeetingUpdateParams,
   Meetings,
   MeetingsCursorPage,
   Organizer,
@@ -1073,6 +1074,7 @@ export declare namespace Moonbase {
     type Organizer as Organizer,
     type MeetingsCursorPage as MeetingsCursorPage,
     type MeetingRetrieveParams as MeetingRetrieveParams,
+    type MeetingUpdateParams as MeetingUpdateParams,
     type MeetingListParams as MeetingListParams,
   };
 

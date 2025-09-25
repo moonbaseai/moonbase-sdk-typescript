@@ -114,6 +114,7 @@ export {
   type Meeting,
   type Organizer,
   type MeetingRetrieveParams,
+  type MeetingUpdateParams,
   type MeetingListParams,
   type MeetingsCursorPage,
 } from './meetings';

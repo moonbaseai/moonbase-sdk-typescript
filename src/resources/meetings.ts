@@ -10,6 +10,11 @@ import { path } from '../internal/utils/path';
 export class Meetings extends APIResource {
   /**
    * Retrieves the details of an existing meeting.
+   *
+   * @example
+   * ```ts
+   * const meeting = await client.meetings.retrieve('id');
+   * ```
    */
   retrieve(
     id: string,
@@ -20,7 +25,50 @@ export class Meetings extends APIResource {
   }
 
   /**
+   * @example
+   * ```ts
+   * const meeting = await client.meetings.update('id', {
+   *   recording: {
+   *     provider: 'example',
+   *     provider_id: 'abc123',
+   *     content_type: 'video/mp4',
+   *     url: 'https://example.com/recording.mp4',
+   *   },
+   *   transcript: {
+   *     provider: 'example',
+   *     provider_id: 'def456',
+   *     cues: [
+   *       {
+   *         from: 0.71999997,
+   *         to: 1.22,
+   *         text: 'Hello.',
+   *         speaker: 'Jony Appleseed',
+   *       },
+   *       {
+   *         from: 1.52,
+   *         to: 3.22,
+   *         text: "Hey! It's been too long.",
+   *         speaker: 'Jane Doe',
+   *       },
+   *     ],
+   *   },
+   * });
+   * ```
+   */
+  update(id: string, body: MeetingUpdateParams, options?: RequestOptions): APIPromise<Meeting> {
+    return this._client.patch(path`/meetings/${id}`, { body, ...options });
+  }
+
+  /**
    * Returns a list of meetings.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const meeting of client.meetings.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     query: MeetingListParams | null | undefined = {},
@@ -172,11 +220,33 @@ export interface Meeting {
    */
   title?: string;
 
-  /**
-   * A temporary, signed URL to download the meeting transcript. The URL expires
-   * after one hour.
-   */
-  transcript_url?: string;
+  transcript?: Meeting.Transcript | null;
+}
+
+export namespace Meeting {
+  export interface Transcript {
+    cues: Array<Transcript.Cue>;
+  }
+
+  export namespace Transcript {
+    export interface Cue {
+      from: number;
+
+      speaker: Cue.Speaker;
+
+      text: string;
+
+      to: number;
+    }
+
+    export namespace Cue {
+      export interface Speaker {
+        attendee_id?: string;
+
+        label?: string;
+      }
+    }
+  }
 }
 
 /**
@@ -215,7 +285,43 @@ export interface MeetingRetrieveParams {
    * Specifies which related objects to include in the response. Valid options are
    * `organizer` and `attendees`.
    */
-  include?: Array<'organizer' | 'attendees'>;
+  include?: Array<'organizer' | 'attendees' | 'transcript'>;
+}
+
+export interface MeetingUpdateParams {
+  recording?: MeetingUpdateParams.Recording;
+
+  transcript?: MeetingUpdateParams.Transcript;
+}
+
+export namespace MeetingUpdateParams {
+  export interface Recording {
+    content_type: string;
+
+    provider_id: string;
+
+    url: string;
+  }
+
+  export interface Transcript {
+    cues: Array<Transcript.Cue>;
+
+    provider: string;
+
+    provider_id: string;
+  }
+
+  export namespace Transcript {
+    export interface Cue {
+      from: number;
+
+      speaker: string;
+
+      text: string;
+
+      to: number;
+    }
+  }
 }
 
 export interface MeetingListParams extends CursorPageParams {
@@ -226,11 +332,25 @@ export interface MeetingListParams extends CursorPageParams {
    */
   before?: string;
 
+  filter?: MeetingListParams.Filter;
+
   /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
    * to 20 if not specified.
    */
   limit?: number;
+}
+
+export namespace MeetingListParams {
+  export interface Filter {
+    i_cal_uid?: Filter.ICalUid;
+  }
+
+  export namespace Filter {
+    export interface ICalUid {
+      eq?: string;
+    }
+  }
 }
 
 export declare namespace Meetings {
@@ -240,6 +360,7 @@ export declare namespace Meetings {
     type Organizer as Organizer,
     type MeetingsCursorPage as MeetingsCursorPage,
     type MeetingRetrieveParams as MeetingRetrieveParams,
+    type MeetingUpdateParams as MeetingUpdateParams,
     type MeetingListParams as MeetingListParams,
   };
 }
