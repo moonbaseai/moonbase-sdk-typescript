@@ -22,7 +22,7 @@ describe('resource inboxes', () => {
   test('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.inboxes.retrieve('id', { 'include[]': 'tagset' }, { path: '/_stainless_unknown_path' }),
+      client.inboxes.retrieve('id', { 'include[]': 'tagsets' }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Moonbase.NotFoundError);
   });
 
@@ -41,7 +41,7 @@ describe('resource inboxes', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.inboxes.list(
-        { after: 'after', before: 'before', 'include[]': 'tagset', limit: 1 },
+        { after: 'after', before: 'before', 'include[]': 'tagsets', limit: 1 },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Moonbase.NotFoundError);
