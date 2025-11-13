@@ -324,7 +324,7 @@ The following tools are available in this MCP server.
 ### Resource `meetings`:
 
 - `retrieve_meetings` (`read`): Retrieves the details of an existing meeting.
-- `update_meetings` (`write`):
+- `update_meetings` (`write`): Adds a transcript or recording to an existing meeting.
 - `list_meetings` (`read`): Returns a list of meetings.
 
 ### Resource `notes`:
