@@ -43,7 +43,13 @@ import {
   ActivityProgramMessageUnsubscribed,
 } from './resources/activities';
 import { Call, CallCreateParams, CallUpsertParams, Calls } from './resources/calls';
-import { FileListParams, Files, MoonbaseFile, MoonbaseFilesCursorPage } from './resources/files';
+import {
+  FileListParams,
+  FileUploadParams,
+  Files,
+  MoonbaseFile,
+  MoonbaseFilesCursorPage,
+} from './resources/files';
 import { Form, FormListParams, Forms, FormsCursorPage } from './resources/forms';
 import { Funnel, FunnelStep, Funnels } from './resources/funnels';
 import {
@@ -1065,6 +1071,7 @@ export declare namespace Moonbase {
     type MoonbaseFile as MoonbaseFile,
     type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
     type FileListParams as FileListParams,
+    type FileUploadParams as FileUploadParams,
   };
 
   export {

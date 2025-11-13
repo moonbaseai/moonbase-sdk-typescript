@@ -74,6 +74,7 @@ const fuse = new Fuse(
     'client.calls.upsert',
     'client.files.list',
     'client.files.retrieve',
+    'client.files.upload',
     'client.meetings.list',
     'client.meetings.retrieve',
     'client.meetings.update',
