@@ -83,7 +83,13 @@ export {
   type ItemsCursorPage,
   type CollectionsCursorPage,
 } from './collections/collections';
-export { Files, type MoonbaseFile, type FileListParams, type MoonbaseFilesCursorPage } from './files';
+export {
+  Files,
+  type MoonbaseFile,
+  type FileListParams,
+  type FileUploadParams,
+  type MoonbaseFilesCursorPage,
+} from './files';
 export { Forms, type Form, type FormListParams, type FormsCursorPage } from './forms';
 export { Funnels, type Funnel, type FunnelStep } from './funnels';
 export {

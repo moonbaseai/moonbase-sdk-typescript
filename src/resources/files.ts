@@ -1,9 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as Shared from './shared';
+import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
+import { type Uploadable } from '../core/uploads';
 import { RequestOptions } from '../internal/request-options';
+import { multipartFormRequestOptions } from '../internal/uploads';
 import { path } from '../internal/utils/path';
 
 export class Files extends APIResource {
@@ -23,6 +27,13 @@ export class Files extends APIResource {
   ): PagePromise<MoonbaseFilesCursorPage, MoonbaseFile> {
     return this._client.getAPIList('/files', CursorPage<MoonbaseFile>, { query, ...options });
   }
+
+  /**
+   * Upload a file
+   */
+  upload(body: FileUploadParams, options?: RequestOptions): APIPromise<MoonbaseFile> {
+    return this._client.post('/files', multipartFormRequestOptions({ body, ...options }, this._client));
+  }
 }
 
 export type MoonbaseFilesCursorPage = CursorPage<MoonbaseFile>;
@@ -35,6 +46,11 @@ export interface MoonbaseFile {
    * Unique identifier for the object.
    */
   id: string;
+
+  /**
+   * A list of items this file is associated with.
+   */
+  associations: Array<CollectionsAPI.ItemPointer>;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
@@ -88,10 +104,29 @@ export interface FileListParams extends CursorPageParams {
   limit?: number;
 }
 
+export interface FileUploadParams {
+  /**
+   * The File object to be uploaded.
+   */
+  file: Uploadable;
+
+  /**
+   * Link the File to Moonbase items like a person, organization, deal, task, or an
+   * item in a custom collection.
+   */
+  associations?: Array<Shared.Pointer>;
+
+  /**
+   * The display name of the file.
+   */
+  name?: string;
+}
+
 export declare namespace Files {
   export {
     type MoonbaseFile as MoonbaseFile,
     type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
     type FileListParams as FileListParams,
+    type FileUploadParams as FileUploadParams,
   };
 }

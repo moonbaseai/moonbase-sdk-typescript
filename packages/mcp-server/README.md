@@ -319,6 +319,7 @@ The following tools are available in this MCP server.
 
 - `retrieve_files` (`read`): Retrieves the details of an existing file.
 - `list_files` (`read`): Returns a list of files that you have uploaded.
+- `upload_files` (`write`): Upload a file
 
 ### Resource `meetings`:
 
