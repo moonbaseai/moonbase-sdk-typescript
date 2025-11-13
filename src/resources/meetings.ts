@@ -25,6 +25,8 @@ export class Meetings extends APIResource {
   }
 
   /**
+   * Adds a transcript or recording to an existing meeting.
+   *
    * @example
    * ```ts
    * const meeting = await client.meetings.update('id', {
@@ -289,36 +291,85 @@ export interface MeetingRetrieveParams {
 }
 
 export interface MeetingUpdateParams {
+  /**
+   * A video recording of the meeting.
+   */
   recording?: MeetingUpdateParams.Recording;
 
+  /**
+   * The meeting transcript.
+   */
   transcript?: MeetingUpdateParams.Transcript;
 }
 
 export namespace MeetingUpdateParams {
+  /**
+   * A video recording of the meeting.
+   */
   export interface Recording {
+    /**
+     * The content type of the recording. Note that only `video/mp4` is supported at
+     * this time.
+     */
     content_type: string;
 
+    /**
+     * The unique identifier for the recording from the provider's system.
+     */
     provider_id: string;
 
+    /**
+     * The URL pointing to the recording.
+     */
     url: string;
   }
 
+  /**
+   * The meeting transcript.
+   */
   export interface Transcript {
+    /**
+     * A list of cues that identify the text spoken in specific time slices of the
+     * meeting.
+     */
     cues: Array<Transcript.Cue>;
 
+    /**
+     * Identifies the source of the transcript.
+     */
     provider: string;
 
+    /**
+     * The unique identifier for the transcript from the provider's system.
+     */
     provider_id: string;
   }
 
   export namespace Transcript {
+    /**
+     * Parameters for creating a `MeetingTranscriptCue` object to capture the text
+     * spoken in a specific time slice.
+     */
     export interface Cue {
+      /**
+       * The start time of the slice, in fractional seconds from the start of the
+       * meeting.
+       */
       from: number;
 
+      /**
+       * The name of the person speaking.
+       */
       speaker: string;
 
+      /**
+       * The text spoken during the slice.
+       */
       text: string;
 
+      /**
+       * The end time of the slice, in fractional seconds from the start of the meeting.
+       */
       to: number;
     }
   }

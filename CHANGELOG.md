@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.0-alpha.9 (2025-11-13)
+
+Full Changelog: [v0.1.0-alpha.8...v0.1.0-alpha.9](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.8...v0.1.0-alpha.9)
+
+### Bug Fixes
+
+* **mcp:** return tool execution error on jq failure ([102383a](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/102383a8e873c029b7f972ad7169a03629f22351))
+
+
+### Chores
+
+* **mcp:** upgrade jq-web ([15193fa](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/15193fa58c127a7ccd574c9869343b16c5caa364))
+
+
+### Documentation
+
+* **api:** update meeting params ([4d93f57](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/4d93f57cf5668284184d2b0bcd1cf8e6e02af43b))
+
 ## 0.1.0-alpha.8 (2025-11-13)
 
 Full Changelog: [v0.1.0-alpha.7...v0.1.0-alpha.8](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.7...v0.1.0-alpha.8)

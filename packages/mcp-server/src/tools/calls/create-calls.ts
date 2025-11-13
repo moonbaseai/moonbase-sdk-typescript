@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { maybeFilter } from '@moonbaseai/mcp/filtering';
-import { Metadata, asTextContentResult } from '@moonbaseai/mcp/tools/types';
+import { isJqError, maybeFilter } from '@moonbaseai/mcp/filtering';
+import { Metadata, asErrorResult, asTextContentResult } from '@moonbaseai/mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import Moonbase from '@moonbaseai/sdk';
@@ -156,7 +156,14 @@ export const tool: Tool = {
 
 export const handler = async (client: Moonbase, args: Record<string, unknown> | undefined) => {
   const { jq_filter, ...body } = args as any;
-  return asTextContentResult(await maybeFilter(jq_filter, await client.calls.create(body)));
+  try {
+    return asTextContentResult(await maybeFilter(jq_filter, await client.calls.create(body)));
+  } catch (error) {
+    if (isJqError(error)) {
+      return asErrorResult(error.message);
+    }
+    throw error;
+  }
 };
 
 export default { metadata, tool, handler };
