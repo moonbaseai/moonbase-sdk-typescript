@@ -244,6 +244,7 @@ Methods:
 
 - <code title="get /files/{id}">client.files.<a href="./src/resources/files.ts">retrieve</a>(id) -> MoonbaseFile</code>
 - <code title="get /files">client.files.<a href="./src/resources/files.ts">list</a>({ ...params }) -> MoonbaseFilesCursorPage</code>
+- <code title="post /files">client.files.<a href="./src/resources/files.ts">upload</a>({ ...params }) -> MoonbaseFile</code>
 
 # Meetings
 
@@ -256,6 +257,7 @@ Types:
 Methods:
 
 - <code title="get /meetings/{id}">client.meetings.<a href="./src/resources/meetings.ts">retrieve</a>(id, { ...params }) -> Meeting</code>
+- <code title="patch /meetings/{id}">client.meetings.<a href="./src/resources/meetings.ts">update</a>(id, { ...params }) -> Meeting</code>
 - <code title="get /meetings">client.meetings.<a href="./src/resources/meetings.ts">list</a>({ ...params }) -> MeetingsCursorPage</code>
 
 # Notes

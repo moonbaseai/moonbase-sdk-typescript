@@ -1,5 +1,63 @@
 # Changelog
 
+## 0.1.0-alpha.8 (2025-11-13)
+
+Full Changelog: [v0.1.0-alpha.7...v0.1.0-alpha.8](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.7...v0.1.0-alpha.8)
+
+### Features
+
+* Add PATCH /v0/meetings/{id} ([84bb127](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/84bb127c3f562a27e887d51179a7ae109169ecb3))
+* **api:** manual updates ([305a0a0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/305a0a05312aafa5038ada24c15f17237726f951))
+* **api:** update api ([3a44fff](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/3a44fffbc7c94b47f7a7396bb2d277a4237d0b19))
+* **mcp:** add docs search tool ([b5762d4](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b5762d44d567a6d26b072aacee58beedd2ad03ba))
+* **mcp:** add option for including docs tools ([55e11f1](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/55e11f105e3b4d4a5d265da0603dbc0cfc212a42))
+* **mcp:** enable experimental docs search tool ([8172a4e](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/8172a4e298830ec3fc7024eb9482fb615b96d21a))
+* **mcp:** enable optional code execution tool on http mcp servers ([05b3b0d](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/05b3b0dd619d6a8920356fdd7358f1a8111e86f1))
+
+
+### Bug Fixes
+
+* **ci:** set permissions for DXT publish action ([bc66b9f](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/bc66b9f3cd82a1a1173e67f7868f0f022e47852d))
+* **mcpb:** pin @anthropic-ai/mcpb version ([95ccfba](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/95ccfbae259cf4c355e2babb018b0b4a6fcff18c))
+* **mcp:** fix cli argument parsing logic ([1dda522](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/1dda522f3f2d2a82b289a05ac49dd94cf787261d))
+* **mcp:** resolve a linting issue in server code ([bbeff57](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/bbeff574084710a4255fe619262b82a91e2b75fe))
+
+
+### Performance Improvements
+
+* faster formatting ([42160b1](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/42160b1fc0effd383bbd53c09db208806fff03da))
+
+
+### Chores
+
+* **codegen:** internal codegen update ([51ccf51](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/51ccf5117d3de19d3056322b00d8360fe6317379))
+* do not install brew dependencies in ./scripts/bootstrap by default ([28e0df0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/28e0df0e57e8890a954b4e83164ca4d89653f926))
+* **internal:** codegen related update ([d9b0838](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/d9b0838a8d6fe5c734d2a1c0b38523986a273c5d))
+* **internal:** codegen related update ([c017cd9](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c017cd9f1623080bec06761f56db4f76f9fbd5be))
+* **internal:** codegen related update ([83d8f31](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/83d8f31a8b81ebe8ed60b32d77811e9acd8de3b6))
+* **internal:** fix incremental formatting in some cases ([1369111](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/1369111c6476c9ff64b5baa87aaafaedc13856d2))
+* **internal:** gitignore .mcpb files ([bfad376](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/bfad376177351626bd96f6b5e90c7e4456ab51e0))
+* **internal:** grammar fix (it's -&gt; its) ([2bf33d1](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/2bf33d190e3714b1019e6952ea8cdcf333e2967d))
+* **internal:** ignore .eslintcache ([1b17643](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/1b17643f5459b86dbdd9cb33b2696e086b5ea422))
+* **internal:** remove .eslintcache ([c0aba48](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c0aba480c886910bc4fd5ad7309df2e893187730))
+* **internal:** remove deprecated `compilerOptions.baseUrl` from tsconfig.json ([1113391](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/1113391aa696553c64ea5994032be5d11a18c335))
+* **internal:** use npm pack for build uploads ([9519a1f](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/9519a1f26c4febe081662a7e7f2e5ca6e995369e))
+* **jsdoc:** fix [@link](https://github.com/link) annotations to refer only to parts of the package‘s public interface ([7af7e1c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/7af7e1cdca363e80a27ca0fff1ee05d7d380f2c9))
+* mcp code tool explicit error message when missing a run function ([df73a2d](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/df73a2d578761aea00cf494722b2d54a42f06aa4))
+* **mcp:** add friendlier MCP code tool errors on incorrect method invocations ([fa733a9](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/fa733a9e151ed468beb3326f606c2365aad0037d))
+* **mcp:** add line numbers to code tool errors ([68f45ae](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/68f45aeb1b1df0e34a56becd828bd7ca83728ddb))
+* **mcp:** allow pointing `docs_search` tool at other URLs ([66b2ddb](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/66b2ddb37d32d5b49c9d75d0df04e581d806862a))
+* **mcp:** clarify http auth error ([a0b6eff](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/a0b6eff6f5673af6c1710dce260868e429ab3a86))
+* **mcp:** rename dxt to mcpb ([4c3f978](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/4c3f9782d49fbb463317beeaa831314edeb790b7))
+* update lockfile ([ba63258](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ba63258af361f7d727e4d778bcfe0679ed5a971d))
+* use structured error when code execution tool errors ([91a833c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/91a833c278f2cedcf5e52c010fe5f88f705c2860))
+
+
+### Documentation
+
+* **mcp:** add a README button for one-click add to Cursor ([b60e0da](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b60e0da4ed7c00b845769878759bcd2756096ae8))
+* **mcp:** add a README link to add server to VS Code or Claude Code ([2eca541](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/2eca5416e2e13cbab09c9f01a4aa7720f388dccb))
+
 ## 0.1.0-alpha.7 (2025-09-12)
 
 Full Changelog: [v0.1.0-alpha.6...v0.1.0-alpha.7](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.6...v0.1.0-alpha.7)

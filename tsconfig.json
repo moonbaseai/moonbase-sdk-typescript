@@ -7,10 +7,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "baseUrl": "./",
     "paths": {
-      "@moonbaseai/sdk/*": ["src/*"],
-      "@moonbaseai/sdk": ["src/index.ts"]
+      "@moonbaseai/sdk/*": ["./src/*"],
+      "@moonbaseai/sdk": ["./src/index.ts"]
     },
     "noEmit": true,
 
