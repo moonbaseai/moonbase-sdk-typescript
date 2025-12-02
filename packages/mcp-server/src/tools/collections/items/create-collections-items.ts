@@ -48,7 +48,7 @@ export const handler = async (client: Moonbase, args: Record<string, unknown> | 
       await maybeFilter(jq_filter, await client.collections.items.create(collection_id, body)),
     );
   } catch (error) {
-    if (isJqError(error)) {
+    if (error instanceof Moonbase.APIError || isJqError(error)) {
       return asErrorResult(error.message);
     }
     throw error;
