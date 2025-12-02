@@ -83,7 +83,7 @@ export const handler = async (client: Moonbase, args: Record<string, unknown> | 
   try {
     return asTextContentResult(await maybeFilter(jq_filter, await client.webhookEndpoints.create(body)));
   } catch (error) {
-    if (isJqError(error)) {
+    if (error instanceof Moonbase.APIError || isJqError(error)) {
       return asErrorResult(error.message);
     }
     throw error;
