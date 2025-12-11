@@ -39,6 +39,7 @@ export async function codeTool() {
       },
       body: JSON.stringify({
         project_name: 'moonbase-sdk',
+        client_opts: {},
         code,
       }),
     });
