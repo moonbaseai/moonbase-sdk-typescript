@@ -31,7 +31,6 @@ export class Meetings extends APIResource {
    * ```ts
    * const meeting = await client.meetings.update('id', {
    *   recording: {
-   *     provider: 'example',
    *     provider_id: 'abc123',
    *     content_type: 'video/mp4',
    *     url: 'https://example.com/recording.mp4',
