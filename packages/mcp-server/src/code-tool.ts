@@ -35,7 +35,10 @@ export async function codeTool() {
       headers: {
         ...(stainlessAPIKey && { Authorization: stainlessAPIKey }),
         'Content-Type': 'application/json',
-        client_envs: JSON.stringify({ MOONBASE_API_KEY: readEnv('MOONBASE_API_KEY') }),
+        client_envs: JSON.stringify({
+          MOONBASE_API_KEY: readEnv('MOONBASE_API_KEY'),
+          MOONBASE_BASE_URL: readEnv('MOONBASE_BASE_URL'),
+        }),
       },
       body: JSON.stringify({
         project_name: 'moonbase-sdk',
