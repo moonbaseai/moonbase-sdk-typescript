@@ -103,6 +103,7 @@ export {
   InboxMessages,
   type Address,
   type EmailMessage,
+  type InboxMessageCreateParams,
   type InboxMessageRetrieveParams,
   type InboxMessageListParams,
   type EmailMessagesCursorPage,

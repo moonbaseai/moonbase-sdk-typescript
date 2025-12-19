@@ -10,7 +10,36 @@ import { path } from '../internal/utils/path';
 
 export class InboxMessages extends APIResource {
   /**
+   * Creates a new message draft.
+   *
+   * @example
+   * ```ts
+   * const emailMessage = await client.inboxMessages.create({
+   *   body: 'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+   *   inbox_id: '1CLJt2v1rdcqdM6vZpPpjq',
+   *   bcc: [{ email: 'steve@example.com', name: 'Steve' }],
+   *   cc: [{ email: 'joe@example.com', name: 'Joe' }],
+   *   subject: 'Test Subject',
+   *   to: [
+   *     { email: 'bob@example.com', name: 'Bob' },
+   *     { email: 'jack@example.com' },
+   *   ],
+   * });
+   * ```
+   */
+  create(body: InboxMessageCreateParams, options?: RequestOptions): APIPromise<EmailMessage> {
+    return this._client.post('/inbox_messages', { body, ...options });
+  }
+
+  /**
    * Retrieves the details of an existing message.
+   *
+   * @example
+   * ```ts
+   * const emailMessage = await client.inboxMessages.retrieve(
+   *   'id',
+   * );
+   * ```
    */
   retrieve(
     id: string,
@@ -22,6 +51,14 @@ export class InboxMessages extends APIResource {
 
   /**
    * Returns a list of messages.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const emailMessage of client.inboxMessages.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     query: InboxMessageListParams | null | undefined = {},
@@ -193,6 +230,81 @@ export namespace EmailMessage {
   }
 }
 
+export interface InboxMessageCreateParams {
+  /**
+   * The content of the email body in Markdown format.
+   */
+  body: string;
+
+  /**
+   * The inbox to use for sending the email.
+   */
+  inbox_id: string;
+
+  /**
+   * A list of `Address` objects for the BCC recipients.
+   */
+  bcc?: Array<InboxMessageCreateParams.Bcc>;
+
+  /**
+   * A list of `Address` objects for the CC recipients.
+   */
+  cc?: Array<InboxMessageCreateParams.Cc>;
+
+  /**
+   * The ID of the conversation, if responding to an existing conversation.
+   */
+  conversation_id?: string;
+
+  /**
+   * The subject line of the email.
+   */
+  subject?: string;
+
+  /**
+   * A list of `Address` objects for the recipients.
+   */
+  to?: Array<InboxMessageCreateParams.To>;
+}
+
+export namespace InboxMessageCreateParams {
+  export interface Bcc {
+    /**
+     * The email address.
+     */
+    email: string;
+
+    /**
+     * The recipient's name.
+     */
+    name?: string;
+  }
+
+  export interface Cc {
+    /**
+     * The email address.
+     */
+    email: string;
+
+    /**
+     * The recipient's name.
+     */
+    name?: string;
+  }
+
+  export interface To {
+    /**
+     * The email address.
+     */
+    email: string;
+
+    /**
+     * The recipient's name.
+     */
+    name?: string;
+  }
+}
+
 export interface InboxMessageRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid options are
@@ -247,6 +359,7 @@ export declare namespace InboxMessages {
     type Address as Address,
     type EmailMessage as EmailMessage,
     type EmailMessagesCursorPage as EmailMessagesCursorPage,
+    type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
     type InboxMessageListParams as InboxMessageListParams,
   };

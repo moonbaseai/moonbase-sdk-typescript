@@ -63,6 +63,7 @@ import {
   Address,
   EmailMessage,
   EmailMessagesCursorPage,
+  InboxMessageCreateParams,
   InboxMessageListParams,
   InboxMessageRetrieveParams,
   InboxMessages,
@@ -995,6 +996,7 @@ export declare namespace Moonbase {
     type Address as Address,
     type EmailMessage as EmailMessage,
     type EmailMessagesCursorPage as EmailMessagesCursorPage,
+    type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
     type InboxMessageListParams as InboxMessageListParams,
   };
