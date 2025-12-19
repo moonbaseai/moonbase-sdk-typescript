@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import * as Shared from './shared';
+import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -57,6 +58,12 @@ export interface Note {
    * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
    */
   updated_at: string;
+
+  /**
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
+   */
+  creator?: CollectionsAPI.ItemPointer | null;
 
   /**
    * A short, system-generated summary of the note's content.

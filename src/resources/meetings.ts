@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as NotesAPI from './notes';
 import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
@@ -189,6 +190,14 @@ export interface Meeting {
   location?: string;
 
   /**
+   * Any personal notes taken during the meeting. It also includes the AI-generated
+   * pre-meeting briefing.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
+   */
+  note?: NotesAPI.Note;
+
+  /**
    * The `Organizer` of the meeting.
    *
    * **Note:** Only present when requested using the `include` query parameter.
@@ -207,14 +216,11 @@ export interface Meeting {
   recording_url?: string;
 
   /**
-   * A summary or notes generated before the meeting.
+   * A summary of the meeting.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
-  summary_ante?: string;
-
-  /**
-   * A summary or notes generated after the meeting.
-   */
-  summary_post?: string;
+  summary?: NotesAPI.Note;
 
   /**
    * The title or subject of the meeting.
@@ -284,9 +290,9 @@ export interface Organizer {
 export interface MeetingRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid options are
-   * `organizer` and `attendees`.
+   * `organizer`, `attendees`, `transcript`, `note`, and `summary`.
    */
-  include?: Array<'organizer' | 'attendees' | 'transcript'>;
+  include?: Array<'organizer' | 'attendees' | 'transcript' | 'note' | 'summary'>;
 }
 
 export interface MeetingUpdateParams {

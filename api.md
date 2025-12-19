@@ -138,6 +138,7 @@ Types:
 
 Methods:
 
+- <code title="post /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">create</a>({ ...params }) -> EmailMessage</code>
 - <code title="get /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">retrieve</a>(id, { ...params }) -> EmailMessage</code>
 - <code title="get /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">list</a>({ ...params }) -> EmailMessagesCursorPage</code>
 

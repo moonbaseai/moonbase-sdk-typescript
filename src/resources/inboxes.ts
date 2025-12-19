@@ -75,7 +75,7 @@ export interface InboxRetrieveParams {
    * Specifies which related objects to include in the response. Valid option is
    * `tagsets`.
    */
-  'include[]'?: 'tagsets';
+  include?: Array<'tagsets'>;
 }
 
 export interface InboxListParams extends CursorPageParams {
@@ -86,7 +86,7 @@ export interface InboxListParams extends CursorPageParams {
    */
   before?: string;
 
-  'include[]'?: 'tagsets';
+  include?: Array<'tagsets'>;
 
   /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
