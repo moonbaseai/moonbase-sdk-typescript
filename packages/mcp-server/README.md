@@ -39,7 +39,7 @@ For clients with a configuration JSON, it might look something like this:
 If you use Cursor, you can install the MCP server by using the button below. You will need to set your environment variables
 in Cursor's `mcp.json`, which can be found in Cursor Settings > Tools & MCP > New MCP Server.
 
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=@moonbaseai/mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBtb29uYmFzZWFpL21jcCJdLCJlbnYiOnsiTU9PTkJBU0VfQVBJX0tFWSI6IlNldCB5b3VyIE1PT05CQVNFX0FQSV9LRVkgaGVyZS4ifX0)
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40moonbaseai%2Fmcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBtb29uYmFzZWFpL21jcCJdLCJlbnYiOnsiTU9PTkJBU0VfQVBJX0tFWSI6IlNldCB5b3VyIE1PT05CQVNFX0FQSV9LRVkgaGVyZS4ifX0)
 
 ### VS Code
 
@@ -54,7 +54,7 @@ If you use Claude Code, you can install the MCP server by running the command be
 environment variables in Claude Code's `.claude.json`, which can be found in your home directory.
 
 ```
-claude mcp add --transport stdio moonbaseai_sdk_api --env MOONBASE_API_KEY="Your MOONBASE_API_KEY here." -- npx -y @moonbaseai/mcp
+claude mcp add moonbaseai_mcp_api --env MOONBASE_API_KEY="Your MOONBASE_API_KEY here." -- npx -y @moonbaseai/mcp
 ```
 
 ## Code Mode
