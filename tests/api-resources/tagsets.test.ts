@@ -34,7 +34,11 @@ describe('resource tagsets', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.tagsets.list(
-        { after: 'after', before: 'before', limit: 1 },
+        {
+          after: 'after',
+          before: 'before',
+          limit: 1,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Moonbase.NotFoundError);

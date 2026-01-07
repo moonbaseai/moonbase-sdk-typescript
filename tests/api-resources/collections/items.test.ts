@@ -12,7 +12,10 @@ describe('resource items', () => {
     const responsePromise = client.collections.items.create('collection_id', {
       values: {
         name: { data: 'Aperture Science', type: 'value/text/single_line' },
-        ceo: { data: { id: '1CLJt2v3bK2AzMXRRswwZG', type: 'item' }, type: 'value/relation' },
+        ceo: {
+          data: { id: '1CLJt2v3bK2AzMXRRswwZG', type: 'item' },
+          type: 'value/relation',
+        },
       },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -28,7 +31,10 @@ describe('resource items', () => {
     const response = await client.collections.items.create('collection_id', {
       values: {
         name: { data: 'Aperture Science', type: 'value/text/single_line' },
-        ceo: { data: { id: '1CLJt2v3bK2AzMXRRswwZG', type: 'item' }, type: 'value/relation' },
+        ceo: {
+          data: { id: '1CLJt2v3bK2AzMXRRswwZG', type: 'item' },
+          type: 'value/relation',
+        },
       },
     });
   });
@@ -87,7 +93,11 @@ describe('resource items', () => {
     await expect(
       client.collections.items.list(
         'collection_id',
-        { after: 'after', before: 'before', limit: 1 },
+        {
+          after: 'after',
+          before: 'before',
+          limit: 1,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Moonbase.NotFoundError);
@@ -114,7 +124,10 @@ describe('resource items', () => {
       values: {
         name: { data: 'Aperture Science', type: 'value/text/single_line' },
         domain: [{ data: 'aperturescience.com', type: 'value/uri/domain' }],
-        linked_in: { data: {}, type: 'value/uri/social_linked_in' },
+        linked_in: {
+          data: {},
+          type: 'value/uri/social_linked_in',
+        },
       },
     });
     const rawResponse = await responsePromise.asResponse();
