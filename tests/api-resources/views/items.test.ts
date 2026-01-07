@@ -24,7 +24,11 @@ describe('resource items', () => {
     await expect(
       client.views.items.list(
         'id',
-        { after: 'after', before: 'before', limit: 1 },
+        {
+          after: 'after',
+          before: 'before',
+          limit: 1,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Moonbase.NotFoundError);

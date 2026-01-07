@@ -48,8 +48,23 @@ describe('resource calls', () => {
         phone_number_id: 'bar',
         conversation_id: 'bar',
       },
-      recordings: [{ content_type: 'content_type', provider_id: 'provider_id', url: 'https://example.com' }],
-      transcript: { cues: [{ from: 0, speaker: 'speaker', text: 'text', to: 0 }] },
+      recordings: [
+        {
+          content_type: 'content_type',
+          provider_id: 'provider_id',
+          url: 'https://example.com',
+        },
+      ],
+      transcript: {
+        cues: [
+          {
+            from: 0,
+            speaker: 'speaker',
+            text: 'text',
+            to: 0,
+          },
+        ],
+      },
     });
   });
 
@@ -93,8 +108,23 @@ describe('resource calls', () => {
         phone_number_id: 'bar',
         conversation_id: 'bar',
       },
-      recordings: [{ content_type: 'content_type', provider_id: 'provider_id', url: 'https://example.com' }],
-      transcript: { cues: [{ from: 0, speaker: 'speaker', text: 'text', to: 0 }] },
+      recordings: [
+        {
+          content_type: 'content_type',
+          provider_id: 'provider_id',
+          url: 'https://example.com',
+        },
+      ],
+      transcript: {
+        cues: [
+          {
+            from: 0,
+            speaker: 'speaker',
+            text: 'text',
+            to: 0,
+          },
+        ],
+      },
     });
   });
 });

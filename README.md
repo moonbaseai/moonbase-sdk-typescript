@@ -209,7 +209,9 @@ const response = await client.collections.retrieve('people').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: collection, response: raw } = await client.collections.retrieve('people').withResponse();
+const { data: collection, response: raw } = await client.collections
+  .retrieve('people')
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(collection.id);
 ```
