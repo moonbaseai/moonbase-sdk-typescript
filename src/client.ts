@@ -873,6 +873,7 @@ export class Moonbase {
 
   funnels: API.Funnels = new API.Funnels(this);
   collections: API.Collections = new API.Collections(this);
+  items: API.Items = new API.Items(this);
   views: API.Views = new API.Views(this);
   inboxes: API.Inboxes = new API.Inboxes(this);
   inboxConversations: API.InboxConversations = new API.InboxConversations(this);
@@ -888,11 +889,11 @@ export class Moonbase {
   meetings: API.Meetings = new API.Meetings(this);
   notes: API.Notes = new API.Notes(this);
   webhookEndpoints: API.WebhookEndpoints = new API.WebhookEndpoints(this);
-  items: API.Items = new API.Items(this);
 }
 
 Moonbase.Funnels = Funnels;
 Moonbase.Collections = Collections;
+Moonbase.Items = Items;
 Moonbase.Views = Views;
 Moonbase.Inboxes = Inboxes;
 Moonbase.InboxConversations = InboxConversations;
@@ -908,7 +909,6 @@ Moonbase.Files = Files;
 Moonbase.Meetings = Meetings;
 Moonbase.Notes = Notes;
 Moonbase.WebhookEndpoints = WebhookEndpoints;
-Moonbase.Items = Items;
 
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
@@ -974,6 +974,12 @@ export declare namespace Moonbase {
     type CollectionsCursorPage as CollectionsCursorPage,
     type CollectionRetrieveParams as CollectionRetrieveParams,
     type CollectionListParams as CollectionListParams,
+  };
+
+  export {
+    Items as Items,
+    type ItemSearchResponse as ItemSearchResponse,
+    type ItemSearchParams as ItemSearchParams,
   };
 
   export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
@@ -1105,12 +1111,6 @@ export declare namespace Moonbase {
     type WebhookEndpointCreateParams as WebhookEndpointCreateParams,
     type WebhookEndpointUpdateParams as WebhookEndpointUpdateParams,
     type WebhookEndpointListParams as WebhookEndpointListParams,
-  };
-
-  export {
-    Items as Items,
-    type ItemSearchResponse as ItemSearchResponse,
-    type ItemSearchParams as ItemSearchParams,
   };
 
   export type Error = API.Error;
