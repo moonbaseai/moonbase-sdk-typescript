@@ -37,6 +37,11 @@ describe('resource activities', () => {
         {
           after: 'after',
           before: 'before',
+          filter: {
+            item_id: { eq: 'eq' },
+            occurred_at: { gte: '2019-12-27T18:11:19.117Z', lte: '2019-12-27T18:11:19.117Z' },
+            type: { in: ['activity/call_occurred'] },
+          },
           limit: 1,
         },
         { path: '/_stainless_unknown_path' },
