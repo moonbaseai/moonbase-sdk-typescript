@@ -1024,6 +1024,12 @@ export interface Item {
   id: string;
 
   /**
+   * A lightweight reference to a `Collection`, containing the minimal information
+   * needed to identify it.
+   */
+  collection: CollectionPointer;
+
+  /**
    * String representing the object’s type. Always `item` for this object.
    */
   type: 'item';

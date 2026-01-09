@@ -115,6 +115,7 @@ export {
   type InboxListParams,
   type InboxesCursorPage,
 } from './inboxes';
+export { Items, type ItemSearchResponse, type ItemSearchParams } from './items';
 export {
   Meetings,
   type Attendee,

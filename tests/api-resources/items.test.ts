@@ -7,12 +7,9 @@ const client = new Moonbase({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource programMessages', () => {
-  test('send: only required params', async () => {
-    const responsePromise = client.programMessages.send({
-      person: { email: 'person-62@example-62.com' },
-      program_template_id: '1CLJt2v271pTY4bHG7UQrc',
-    });
+describe('resource items', () => {
+  test('search: only required params', async () => {
+    const responsePromise = client.items.search({ query: 'query' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,11 +19,10 @@ describe('resource programMessages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('send: required and optional params', async () => {
-    const response = await client.programMessages.send({
-      person: { email: 'person-62@example-62.com' },
-      program_template_id: '1CLJt2v271pTY4bHG7UQrc',
-      custom_variables: { coupon_code: 'bar' },
+  test('search: required and optional params', async () => {
+    const response = await client.items.search({
+      query: 'query',
+      filter: { collection_id: { in: ['string'] } },
     });
   });
 });
