@@ -69,6 +69,7 @@ import {
   InboxMessages,
 } from './resources/inbox-messages';
 import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
+import { ItemSearchParams, ItemSearchResponse, Items } from './resources/items';
 import {
   Attendee,
   Meeting,
@@ -887,6 +888,7 @@ export class Moonbase {
   meetings: API.Meetings = new API.Meetings(this);
   notes: API.Notes = new API.Notes(this);
   webhookEndpoints: API.WebhookEndpoints = new API.WebhookEndpoints(this);
+  items: API.Items = new API.Items(this);
 }
 
 Moonbase.Funnels = Funnels;
@@ -906,6 +908,7 @@ Moonbase.Files = Files;
 Moonbase.Meetings = Meetings;
 Moonbase.Notes = Notes;
 Moonbase.WebhookEndpoints = WebhookEndpoints;
+Moonbase.Items = Items;
 
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
@@ -1102,6 +1105,12 @@ export declare namespace Moonbase {
     type WebhookEndpointCreateParams as WebhookEndpointCreateParams,
     type WebhookEndpointUpdateParams as WebhookEndpointUpdateParams,
     type WebhookEndpointListParams as WebhookEndpointListParams,
+  };
+
+  export {
+    Items as Items,
+    type ItemSearchResponse as ItemSearchResponse,
+    type ItemSearchParams as ItemSearchParams,
   };
 
   export type Error = API.Error;

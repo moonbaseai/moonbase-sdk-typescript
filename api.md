@@ -286,3 +286,13 @@ Methods:
 - <code title="patch /webhook_endpoints/{id}">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">update</a>(id, { ...params }) -> Endpoint</code>
 - <code title="get /webhook_endpoints">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">list</a>({ ...params }) -> EndpointsCursorPage</code>
 - <code title="delete /webhook_endpoints/{id}">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">delete</a>(id) -> void</code>
+
+# Items
+
+Types:
+
+- <code><a href="./src/resources/items.ts">ItemSearchResponse</a></code>
+
+Methods:
+
+- <code title="get /items/search">client.items.<a href="./src/resources/items.ts">search</a>({ ...params }) -> ItemSearchResponse</code>
