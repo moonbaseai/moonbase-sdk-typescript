@@ -624,10 +624,62 @@ export interface ActivityListParams extends CursorPageParams {
   before?: string;
 
   /**
+   * Filter activities by type, date, or item.
+   */
+  filter?: ActivityListParams.Filter;
+
+  /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
    * to 20 if not specified.
    */
   limit?: number;
+}
+
+export namespace ActivityListParams {
+  /**
+   * Filter activities by type, date, or item.
+   */
+  export interface Filter {
+    item_id?: Filter.ItemID;
+
+    occurred_at?: Filter.OccurredAt;
+
+    type?: Filter.Type;
+  }
+
+  export namespace Filter {
+    export interface ItemID {
+      eq?: string;
+    }
+
+    export interface OccurredAt {
+      gte?: string;
+
+      lte?: string;
+    }
+
+    export interface Type {
+      in?: Array<
+        | 'activity/call_occurred'
+        | 'activity/form_submitted'
+        | 'activity/inbox_message_sent'
+        | 'activity/item_created'
+        | 'activity/item_mentioned'
+        | 'activity/item_merged'
+        | 'activity/meeting_held'
+        | 'activity/meeting_scheduled'
+        | 'activity/note_created'
+        | 'activity/program_message_bounced'
+        | 'activity/program_message_clicked'
+        | 'activity/program_message_complained'
+        | 'activity/program_message_failed'
+        | 'activity/program_message_opened'
+        | 'activity/program_message_sent'
+        | 'activity/program_message_shielded'
+        | 'activity/program_message_unsubscribed'
+      >;
+    }
+  }
 }
 
 export declare namespace Activities {
