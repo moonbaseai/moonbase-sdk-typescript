@@ -80,6 +80,11 @@ export interface BooleanField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -151,6 +156,11 @@ export interface ChoiceField {
    * (`many`).
    */
   cardinality: 'one' | 'many';
+
+  /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
@@ -264,6 +274,12 @@ export interface Collection {
   id: string;
 
   /**
+   * If `true`, this is one of the foundational collections (People, Organizations,
+   * Deals, or Tasks).
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -344,6 +360,11 @@ export interface DateField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -417,6 +438,11 @@ export interface DatetimeField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -488,6 +514,11 @@ export interface DomainField {
    * (`many`).
    */
   cardinality: 'one' | 'many';
+
+  /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
@@ -564,6 +595,11 @@ export interface EmailField {
    * (`many`).
    */
   cardinality: 'one' | 'many';
+
+  /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
@@ -781,6 +817,11 @@ export interface FloatField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -878,6 +919,11 @@ export interface GeoField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -953,6 +999,11 @@ export interface IntegerField {
    * (`many`).
    */
   cardinality: 'one' | 'many';
+
+  /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
@@ -1078,6 +1129,11 @@ export interface MonetaryField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -1174,6 +1230,11 @@ export interface MultiLineTextField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -1251,6 +1312,11 @@ export interface PercentageField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -1323,10 +1389,20 @@ export interface RelationField {
   id: string;
 
   /**
+   * The set of collections that are valid targets for this relation.
+   */
+  allowed_collections: Array<CollectionPointer>;
+
+  /**
    * Specifies whether the field can hold a single value (`one`) or multiple values
    * (`many`).
    */
   cardinality: 'one' | 'many';
+
+  /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
@@ -1423,6 +1499,11 @@ export interface SingleLineTextField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -1498,6 +1579,11 @@ export interface SocialLinkedInField {
    * (`many`).
    */
   cardinality: 'one' | 'many';
+
+  /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
@@ -1592,6 +1678,11 @@ export interface SocialXField {
    * (`many`).
    */
   cardinality: 'one' | 'many';
+
+  /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
@@ -1691,6 +1782,11 @@ export interface StageField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -1773,6 +1869,11 @@ export interface TelephoneNumberField {
   cardinality: 'one' | 'many';
 
   /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -1835,6 +1936,11 @@ export interface URLField {
    * (`many`).
    */
   cardinality: 'one' | 'many';
+
+  /**
+   * If `true`, this is a built-in field included by default.
+   */
+  core: boolean;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
