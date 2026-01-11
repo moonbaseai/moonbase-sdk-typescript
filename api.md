@@ -296,3 +296,13 @@ Methods:
 - <code title="patch /webhook_endpoints/{id}">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">update</a>(id, { ...params }) -> Endpoint</code>
 - <code title="get /webhook_endpoints">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">list</a>({ ...params }) -> EndpointsCursorPage</code>
 - <code title="delete /webhook_endpoints/{id}">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">delete</a>(id) -> void</code>
+
+# AgentSettings
+
+Types:
+
+- <code><a href="./src/resources/agent-settings.ts">AgentSettingRetrieveResponse</a></code>
+
+Methods:
+
+- <code title="get /agent_settings">client.agentSettings.<a href="./src/resources/agent-settings.ts">retrieve</a>() -> AgentSettingRetrieveResponse</code>

@@ -42,6 +42,7 @@ import {
   ActivityProgramMessageShielded,
   ActivityProgramMessageUnsubscribed,
 } from './resources/activities';
+import { AgentSettingRetrieveResponse, AgentSettings } from './resources/agent-settings';
 import { Call, CallCreateParams, CallUpsertParams, Calls } from './resources/calls';
 import {
   FileListParams,
@@ -889,6 +890,7 @@ export class Moonbase {
   meetings: API.Meetings = new API.Meetings(this);
   notes: API.Notes = new API.Notes(this);
   webhookEndpoints: API.WebhookEndpoints = new API.WebhookEndpoints(this);
+  agentSettings: API.AgentSettings = new API.AgentSettings(this);
 }
 
 Moonbase.Funnels = Funnels;
@@ -909,6 +911,7 @@ Moonbase.Files = Files;
 Moonbase.Meetings = Meetings;
 Moonbase.Notes = Notes;
 Moonbase.WebhookEndpoints = WebhookEndpoints;
+Moonbase.AgentSettings = AgentSettings;
 
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
@@ -1111,6 +1114,11 @@ export declare namespace Moonbase {
     type WebhookEndpointCreateParams as WebhookEndpointCreateParams,
     type WebhookEndpointUpdateParams as WebhookEndpointUpdateParams,
     type WebhookEndpointListParams as WebhookEndpointListParams,
+  };
+
+  export {
+    AgentSettings as AgentSettings,
+    type AgentSettingRetrieveResponse as AgentSettingRetrieveResponse,
   };
 
   export type Error = API.Error;
