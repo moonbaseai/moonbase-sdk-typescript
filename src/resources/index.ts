@@ -24,6 +24,7 @@ export {
   type ActivityListParams,
   type ActivitiesCursorPage,
 } from './activities';
+export { AgentSettings, type AgentSettingRetrieveResponse } from './agent-settings';
 export { Calls, type Call, type CallCreateParams, type CallUpsertParams } from './calls';
 export {
   Collections,
