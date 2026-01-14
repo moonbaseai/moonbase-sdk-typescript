@@ -207,7 +207,7 @@ export interface ItemRetrieveParams {
 
 export interface ItemUpdateParams {
   /**
-   * Path param:
+   * Path param
    */
   collection_id: string;
 
