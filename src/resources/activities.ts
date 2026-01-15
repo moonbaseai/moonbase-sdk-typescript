@@ -45,6 +45,7 @@ export type Activity =
   | ActivityItemCreated
   | ActivityItemMentioned
   | ActivityItemMerged
+  | Activity.FileCreatedActivity
   | ActivityMeetingHeld
   | ActivityMeetingScheduled
   | ActivityNoteCreated
@@ -56,6 +57,39 @@ export type Activity =
   | ActivityProgramMessageSent
   | ActivityProgramMessageShielded
   | ActivityProgramMessageUnsubscribed;
+
+export namespace Activity {
+  /**
+   * Represents an event that occurs when a `File` is created.
+   */
+  export interface FileCreatedActivity {
+    /**
+     * Unique identifier for the object.
+     */
+    id: string;
+
+    /**
+     * A lightweight reference to another resource.
+     */
+    file: Shared.Pointer | null;
+
+    /**
+     * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
+     */
+    occurred_at: string;
+
+    /**
+     * A reference to an `Item` within a specific `Collection`, providing the context
+     * needed to locate the item.
+     */
+    related_item: CollectionsAPI.ItemPointer | null;
+
+    /**
+     * The type of activity. Always `activity/file_created`.
+     */
+    type: 'activity/file_created';
+  }
+}
 
 /**
  * Represents an event that occurs when an incoming or outgoing call is logged.
@@ -666,6 +700,7 @@ export namespace ActivityListParams {
         | 'activity/item_created'
         | 'activity/item_mentioned'
         | 'activity/item_merged'
+        | 'activity/file_created'
         | 'activity/meeting_held'
         | 'activity/meeting_scheduled'
         | 'activity/note_created'
