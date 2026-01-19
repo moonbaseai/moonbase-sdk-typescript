@@ -61,6 +61,8 @@ export interface Inbox {
    */
   updated_at: string;
 
+  can_read?: boolean;
+
   /**
    * The list of `Tagset` objects associated with this inbox, which defines the tags
    * available for its conversations.
