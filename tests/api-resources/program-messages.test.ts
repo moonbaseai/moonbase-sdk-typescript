@@ -10,8 +10,8 @@ const client = new Moonbase({
 describe('resource programMessages', () => {
   test('send: only required params', async () => {
     const responsePromise = client.programMessages.send({
-      person: { email: 'person-160@example-160.com' },
-      program_template_id: '1CLJt2v271pTY4bHG7UQrc',
+      person: { email: 'person-169@example-169.com' },
+      program_template_id: '1CLJt2v6ZuRbtwPhmQtzxa',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -24,8 +24,8 @@ describe('resource programMessages', () => {
 
   test('send: required and optional params', async () => {
     const response = await client.programMessages.send({
-      person: { email: 'person-160@example-160.com' },
-      program_template_id: '1CLJt2v271pTY4bHG7UQrc',
+      person: { email: 'person-169@example-169.com' },
+      program_template_id: '1CLJt2v6ZuRbtwPhmQtzxa',
       custom_variables: { coupon_code: 'bar' },
     });
   });

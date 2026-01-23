@@ -279,7 +279,9 @@ Types:
 
 Methods:
 
+- <code title="post /notes">client.notes.<a href="./src/resources/notes.ts">create</a>({ ...params }) -> Note</code>
 - <code title="get /notes/{id}">client.notes.<a href="./src/resources/notes.ts">retrieve</a>(id) -> Note</code>
+- <code title="patch /notes/{id}">client.notes.<a href="./src/resources/notes.ts">update</a>(id, { ...params }) -> Note</code>
 - <code title="get /notes">client.notes.<a href="./src/resources/notes.ts">list</a>({ ...params }) -> NotesCursorPage</code>
 
 # WebhookEndpoints

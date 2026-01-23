@@ -127,7 +127,14 @@ export {
   type MeetingListParams,
   type MeetingsCursorPage,
 } from './meetings';
-export { Notes, type Note, type NoteListParams, type NotesCursorPage } from './notes';
+export {
+  Notes,
+  type Note,
+  type NoteCreateParams,
+  type NoteUpdateParams,
+  type NoteListParams,
+  type NotesCursorPage,
+} from './notes';
 export { ProgramMessages, type ProgramMessage, type ProgramMessageSendParams } from './program-messages';
 export {
   ProgramTemplates,

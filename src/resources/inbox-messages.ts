@@ -16,7 +16,7 @@ export class InboxMessages extends APIResource {
    * ```ts
    * const emailMessage = await client.inboxMessages.create({
    *   body: 'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
-   *   inbox_id: '1CLJt2v1rdcqdM6vZpPpjq',
+   *   inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
    *   bcc: [{ email: 'steve@example.com', name: 'Steve' }],
    *   cc: [{ email: 'joe@example.com', name: 'Joe' }],
    *   subject: 'Test Subject',

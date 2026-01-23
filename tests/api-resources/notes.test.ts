@@ -8,6 +8,23 @@ const client = new Moonbase({
 });
 
 describe('resource notes', () => {
+  test('create: only required params', async () => {
+    const responsePromise = client.notes.create({ body: {} });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('create: required and optional params', async () => {
+    const response = await client.notes.create({
+      body: { markdown: "# A note title\n\nHere's a note for me! Yay!" },
+    });
+  });
+
   test('retrieve', async () => {
     const responsePromise = client.notes.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
@@ -17,6 +34,27 @@ describe('resource notes', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('update: only required params', async () => {
+    const responsePromise = client.notes.update('id', {
+      body: {},
+      lock_version: 0,
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('update: required and optional params', async () => {
+    const response = await client.notes.update('id', {
+      body: { markdown: "# A note title\n\nHere's a note for me! Yay!" },
+      lock_version: 0,
+    });
   });
 
   test('list', async () => {

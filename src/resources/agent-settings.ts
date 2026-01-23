@@ -21,9 +21,11 @@ export interface AgentSettingRetrieveResponse {
 
   deal_summary_prompt?: string;
 
-  meeting_prebrief_model?: string;
+  meeting_agent_model?: string;
 
   meeting_prebrief_prompt?: string;
+
+  meeting_summary_prompt?: string;
 
   meeting_web_search?: boolean;
 
