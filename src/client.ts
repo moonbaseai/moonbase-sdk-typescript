@@ -81,7 +81,14 @@ import {
   MeetingsCursorPage,
   Organizer,
 } from './resources/meetings';
-import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
+import {
+  Note,
+  NoteCreateParams,
+  NoteListParams,
+  NoteUpdateParams,
+  Notes,
+  NotesCursorPage,
+} from './resources/notes';
 import { ProgramMessage, ProgramMessageSendParams, ProgramMessages } from './resources/program-messages';
 import {
   ProgramTemplate,
@@ -1103,6 +1110,8 @@ export declare namespace Moonbase {
     Notes as Notes,
     type Note as Note,
     type NotesCursorPage as NotesCursorPage,
+    type NoteCreateParams as NoteCreateParams,
+    type NoteUpdateParams as NoteUpdateParams,
     type NoteListParams as NoteListParams,
   };
 

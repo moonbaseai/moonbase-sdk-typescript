@@ -13,7 +13,7 @@ describe('resource items', () => {
       values: {
         name: { data: 'Aperture Science', type: 'value/text/single_line' },
         ceo: {
-          data: { id: '1CLJt2v3bK2AzMXRRswwZG', type: 'item' },
+          data: { id: '1CLJt2v84CdKMEKqwBNXfE', type: 'item' },
           type: 'value/relation',
         },
       },
@@ -32,7 +32,7 @@ describe('resource items', () => {
       values: {
         name: { data: 'Aperture Science', type: 'value/text/single_line' },
         ceo: {
-          data: { id: '1CLJt2v3bK2AzMXRRswwZG', type: 'item' },
+          data: { id: '1CLJt2v84CdKMEKqwBNXfE', type: 'item' },
           type: 'value/relation',
         },
       },
