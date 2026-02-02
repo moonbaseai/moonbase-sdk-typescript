@@ -67,6 +67,7 @@ import {
   InboxMessageCreateParams,
   InboxMessageListParams,
   InboxMessageRetrieveParams,
+  InboxMessageUpdateParams,
   InboxMessages,
 } from './resources/inbox-messages';
 import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
@@ -1017,6 +1018,7 @@ export declare namespace Moonbase {
     type EmailMessagesCursorPage as EmailMessagesCursorPage,
     type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
+    type InboxMessageUpdateParams as InboxMessageUpdateParams,
     type InboxMessageListParams as InboxMessageListParams,
   };
 

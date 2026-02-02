@@ -5,6 +5,7 @@ import * as InboxConversationsAPI from './inbox-conversations';
 import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
+import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -15,7 +16,10 @@ export class InboxMessages extends APIResource {
    * @example
    * ```ts
    * const emailMessage = await client.inboxMessages.create({
-   *   body: 'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+   *   body: {
+   *     markdown:
+   *       'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+   *   },
    *   inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
    *   bcc: [{ email: 'steve@example.com', name: 'Steve' }],
    *   cc: [{ email: 'joe@example.com', name: 'Joe' }],
@@ -50,6 +54,34 @@ export class InboxMessages extends APIResource {
   }
 
   /**
+   * Updates an existing message draft.
+   *
+   * @example
+   * ```ts
+   * const emailMessage = await client.inboxMessages.update(
+   *   'id',
+   *   {
+   *     lock_version: 0,
+   *     bcc: [{ email: 'steve@example.com', name: 'Steve' }],
+   *     body: {
+   *       markdown:
+   *         'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+   *     },
+   *     cc: [{ email: 'joe@example.com', name: 'Joe' }],
+   *     subject: 'Test Subject',
+   *     to: [
+   *       { email: 'bob@example.com', name: 'Bob' },
+   *       { email: 'jack@example.com' },
+   *     ],
+   *   },
+   * );
+   * ```
+   */
+  update(id: string, body: InboxMessageUpdateParams, options?: RequestOptions): APIPromise<EmailMessage> {
+    return this._client.patch(path`/inbox_messages/${id}`, { body, ...options });
+  }
+
+  /**
    * Returns a list of messages.
    *
    * @example
@@ -65,6 +97,21 @@ export class InboxMessages extends APIResource {
     options?: RequestOptions,
   ): PagePromise<EmailMessagesCursorPage, EmailMessage> {
     return this._client.getAPIList('/inbox_messages', CursorPage<EmailMessage>, { query, ...options });
+  }
+
+  /**
+   * Permanently deletes a message draft.
+   *
+   * @example
+   * ```ts
+   * await client.inboxMessages.delete('id');
+   * ```
+   */
+  delete(id: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.delete(path`/inbox_messages/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -137,6 +184,11 @@ export interface EmailMessage {
    * `true` if the message is a draft that has not been sent.
    */
   draft: boolean;
+
+  /**
+   * The current lock version of the message for optimistic concurrency control.
+   */
+  lock_version: number;
 
   /**
    * `true` if the message is classified as spam.
@@ -232,9 +284,9 @@ export namespace EmailMessage {
 
 export interface InboxMessageCreateParams {
   /**
-   * The content of the email body in Markdown format.
+   * The email body.
    */
-  body: string;
+  body: Shared.FormattedText;
 
   /**
    * The inbox to use for sending the email.
@@ -242,12 +294,12 @@ export interface InboxMessageCreateParams {
   inbox_id: string;
 
   /**
-   * A list of `Address` objects for the BCC recipients.
+   * A list of the BCC recipients.
    */
   bcc?: Array<InboxMessageCreateParams.Bcc>;
 
   /**
-   * A list of `Address` objects for the CC recipients.
+   * A list of the CC recipients.
    */
   cc?: Array<InboxMessageCreateParams.Cc>;
 
@@ -262,7 +314,7 @@ export interface InboxMessageCreateParams {
   subject?: string;
 
   /**
-   * A list of `Address` objects for the recipients.
+   * A list of recipients.
    */
   to?: Array<InboxMessageCreateParams.To>;
 }
@@ -313,6 +365,76 @@ export interface InboxMessageRetrieveParams {
   include?: Array<'addresses' | 'attachments' | 'conversation'>;
 }
 
+export interface InboxMessageUpdateParams {
+  /**
+   * The current lock version of the draft for optimistic concurrency control.
+   */
+  lock_version: number;
+
+  /**
+   * A list of the BCC recipients.
+   */
+  bcc?: Array<InboxMessageUpdateParams.Bcc>;
+
+  /**
+   * The email body.
+   */
+  body?: Shared.FormattedText;
+
+  /**
+   * A list of the CC recipients.
+   */
+  cc?: Array<InboxMessageUpdateParams.Cc>;
+
+  /**
+   * The subject line of the email.
+   */
+  subject?: string;
+
+  /**
+   * A list of the recipients.
+   */
+  to?: Array<InboxMessageUpdateParams.To>;
+}
+
+export namespace InboxMessageUpdateParams {
+  export interface Bcc {
+    /**
+     * The email address.
+     */
+    email: string;
+
+    /**
+     * The recipient's name.
+     */
+    name?: string;
+  }
+
+  export interface Cc {
+    /**
+     * The email address.
+     */
+    email: string;
+
+    /**
+     * The recipient's name.
+     */
+    name?: string;
+  }
+
+  export interface To {
+    /**
+     * The email address.
+     */
+    email: string;
+
+    /**
+     * The recipient's name.
+     */
+    name?: string;
+  }
+}
+
 export interface InboxMessageListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
@@ -361,6 +483,7 @@ export declare namespace InboxMessages {
     type EmailMessagesCursorPage as EmailMessagesCursorPage,
     type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
+    type InboxMessageUpdateParams as InboxMessageUpdateParams,
     type InboxMessageListParams as InboxMessageListParams,
   };
 }

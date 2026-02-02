@@ -150,7 +150,9 @@ Methods:
 
 - <code title="post /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">create</a>({ ...params }) -> EmailMessage</code>
 - <code title="get /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">retrieve</a>(id, { ...params }) -> EmailMessage</code>
+- <code title="patch /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">update</a>(id, { ...params }) -> EmailMessage</code>
 - <code title="get /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">list</a>({ ...params }) -> EmailMessagesCursorPage</code>
+- <code title="delete /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">delete</a>(id) -> void</code>
 
 # Tagsets
 
