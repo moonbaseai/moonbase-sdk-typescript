@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import * as Shared from './shared';
+import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -9,14 +10,62 @@ import { path } from '../internal/utils/path';
 
 export class Notes extends APIResource {
   /**
+   * Create a new note.
+   *
+   * @example
+   * ```ts
+   * const note = await client.notes.create({
+   *   body: {
+   *     markdown:
+   *       "# A note title\n\nHere's a note for me! Yay!",
+   *   },
+   * });
+   * ```
+   */
+  create(body: NoteCreateParams, options?: RequestOptions): APIPromise<Note> {
+    return this._client.post('/notes', { body, ...options });
+  }
+
+  /**
    * Retrieves the details of an existing note.
+   *
+   * @example
+   * ```ts
+   * const note = await client.notes.retrieve('id');
+   * ```
    */
   retrieve(id: string, options?: RequestOptions): APIPromise<Note> {
     return this._client.get(path`/notes/${id}`, options);
   }
 
   /**
+   * Update an existing note.
+   *
+   * @example
+   * ```ts
+   * const note = await client.notes.update('id', {
+   *   body: {
+   *     markdown:
+   *       "# A note title\n\nHere's a note for me! Yay!",
+   *   },
+   *   lock_version: 0,
+   * });
+   * ```
+   */
+  update(id: string, body: NoteUpdateParams, options?: RequestOptions): APIPromise<Note> {
+    return this._client.patch(path`/notes/${id}`, { body, ...options });
+  }
+
+  /**
    * Returns a list of your notes.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const note of client.notes.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     query: NoteListParams | null | undefined = {},
@@ -49,6 +98,11 @@ export interface Note {
   created_at: string;
 
   /**
+   * The current lock version of the note for optimistic concurrency control.
+   */
+  lock_version: number;
+
+  /**
    * String representing the object’s type. Always `note` for this object.
    */
   type: 'note';
@@ -59,6 +113,12 @@ export interface Note {
   updated_at: string;
 
   /**
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
+   */
+  creator?: CollectionsAPI.ItemPointer | null;
+
+  /**
    * A short, system-generated summary of the note's content.
    */
   summary?: string;
@@ -67,6 +127,25 @@ export interface Note {
    * An optional title for the note.
    */
   title?: string;
+}
+
+export interface NoteCreateParams {
+  /**
+   * The main content of the note.
+   */
+  body: Shared.FormattedText;
+}
+
+export interface NoteUpdateParams {
+  /**
+   * The main content of the note.
+   */
+  body: Shared.FormattedText;
+
+  /**
+   * The current lock version of the note for optimistic concurrency control.
+   */
+  lock_version: number;
 }
 
 export interface NoteListParams extends CursorPageParams {
@@ -88,6 +167,8 @@ export declare namespace Notes {
   export {
     type Note as Note,
     type NotesCursorPage as NotesCursorPage,
+    type NoteCreateParams as NoteCreateParams,
+    type NoteUpdateParams as NoteUpdateParams,
     type NoteListParams as NoteListParams,
   };
 }

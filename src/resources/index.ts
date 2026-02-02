@@ -24,6 +24,7 @@ export {
   type ActivityListParams,
   type ActivitiesCursorPage,
 } from './activities';
+export { AgentSettings, type AgentSettingRetrieveResponse } from './agent-settings';
 export { Calls, type Call, type CallCreateParams, type CallUpsertParams } from './calls';
 export {
   Collections,
@@ -103,7 +104,9 @@ export {
   InboxMessages,
   type Address,
   type EmailMessage,
+  type InboxMessageCreateParams,
   type InboxMessageRetrieveParams,
+  type InboxMessageUpdateParams,
   type InboxMessageListParams,
   type EmailMessagesCursorPage,
 } from './inbox-messages';
@@ -114,6 +117,7 @@ export {
   type InboxListParams,
   type InboxesCursorPage,
 } from './inboxes';
+export { Items, type ItemSearchResponse, type ItemSearchParams } from './items';
 export {
   Meetings,
   type Attendee,
@@ -124,7 +128,14 @@ export {
   type MeetingListParams,
   type MeetingsCursorPage,
 } from './meetings';
-export { Notes, type Note, type NoteListParams, type NotesCursorPage } from './notes';
+export {
+  Notes,
+  type Note,
+  type NoteCreateParams,
+  type NoteUpdateParams,
+  type NoteListParams,
+  type NotesCursorPage,
+} from './notes';
 export { ProgramMessages, type ProgramMessage, type ProgramMessageSendParams } from './program-messages';
 export {
   ProgramTemplates,

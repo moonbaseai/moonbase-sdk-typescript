@@ -16,7 +16,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000002',
+      provider_id: 'openphone_id_000000000006',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
     });
@@ -37,7 +37,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000002',
+      provider_id: 'openphone_id_000000000006',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
       answered_at: '2025-02-17T15:01:00Z',
@@ -48,8 +48,23 @@ describe('resource calls', () => {
         phone_number_id: 'bar',
         conversation_id: 'bar',
       },
-      recordings: [{ content_type: 'content_type', provider_id: 'provider_id', url: 'https://example.com' }],
-      transcript: { cues: [{ from: 0, speaker: 'speaker', text: 'text', to: 0 }] },
+      recordings: [
+        {
+          content_type: 'content_type',
+          provider_id: 'provider_id',
+          url: 'https://example.com',
+        },
+      ],
+      transcript: {
+        cues: [
+          {
+            from: 0,
+            speaker: 'speaker',
+            text: 'text',
+            to: 0,
+          },
+        ],
+      },
     });
   });
 
@@ -61,7 +76,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000008',
+      provider_id: 'openphone_id_000000000001',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
     });
@@ -82,7 +97,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000008',
+      provider_id: 'openphone_id_000000000001',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
       answered_at: '2025-02-17T15:01:00Z',
@@ -93,8 +108,23 @@ describe('resource calls', () => {
         phone_number_id: 'bar',
         conversation_id: 'bar',
       },
-      recordings: [{ content_type: 'content_type', provider_id: 'provider_id', url: 'https://example.com' }],
-      transcript: { cues: [{ from: 0, speaker: 'speaker', text: 'text', to: 0 }] },
+      recordings: [
+        {
+          content_type: 'content_type',
+          provider_id: 'provider_id',
+          url: 'https://example.com',
+        },
+      ],
+      transcript: {
+        cues: [
+          {
+            from: 0,
+            speaker: 'speaker',
+            text: 'text',
+            to: 0,
+          },
+        ],
+      },
     });
   });
 });

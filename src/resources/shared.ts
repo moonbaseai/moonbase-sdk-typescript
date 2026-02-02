@@ -24,6 +24,8 @@ export interface Error {
    */
   detail?: string;
 
+  meta?: { [key: string]: unknown };
+
   /**
    * An object containing more specific information about the part of the request
    * that caused the error.

@@ -8,8 +8,8 @@ const client = new Moonbase({
 });
 
 describe('resource items', () => {
-  test('list', async () => {
-    const responsePromise = client.views.items.list('id');
+  test('search: only required params', async () => {
+    const responsePromise = client.items.search({ query: 'query' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -19,18 +19,10 @@ describe('resource items', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.views.items.list(
-        'id',
-        {
-          after: 'after',
-          before: 'before',
-          limit: 1,
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Moonbase.NotFoundError);
+  test('search: required and optional params', async () => {
+    const response = await client.items.search({
+      query: 'query',
+      filter: { collection_id: { in: ['string'] } },
+    });
   });
 });

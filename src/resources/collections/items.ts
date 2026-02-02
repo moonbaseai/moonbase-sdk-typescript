@@ -27,7 +27,7 @@ export class Items extends APIResource {
    *         type: 'value/relation',
    *         data: {
    *           type: 'item',
-   *           id: '1CLJt2v2rARKGD4MLziBCw',
+   *           id: '1CLJt2v84CdKMEKqwBNXfE',
    *         },
    *       },
    *     },
@@ -207,7 +207,7 @@ export interface ItemRetrieveParams {
 
 export interface ItemUpdateParams {
   /**
-   * Path param:
+   * Path param
    */
   collection_id: string;
 

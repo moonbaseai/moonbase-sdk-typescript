@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as NotesAPI from './notes';
 import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
@@ -25,11 +26,12 @@ export class Meetings extends APIResource {
   }
 
   /**
+   * Adds a transcript or recording to an existing meeting.
+   *
    * @example
    * ```ts
    * const meeting = await client.meetings.update('id', {
    *   recording: {
-   *     provider: 'example',
    *     provider_id: 'abc123',
    *     content_type: 'video/mp4',
    *     url: 'https://example.com/recording.mp4',
@@ -188,6 +190,14 @@ export interface Meeting {
   location?: string;
 
   /**
+   * Any personal notes taken during the meeting. It also includes the AI-generated
+   * pre-meeting briefing.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
+   */
+  note?: NotesAPI.Note;
+
+  /**
    * The `Organizer` of the meeting.
    *
    * **Note:** Only present when requested using the `include` query parameter.
@@ -206,14 +216,11 @@ export interface Meeting {
   recording_url?: string;
 
   /**
-   * A summary or notes generated before the meeting.
+   * A summary of the meeting.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
    */
-  summary_ante?: string;
-
-  /**
-   * A summary or notes generated after the meeting.
-   */
-  summary_post?: string;
+  summary?: NotesAPI.Note;
 
   /**
    * The title or subject of the meeting.
@@ -283,42 +290,91 @@ export interface Organizer {
 export interface MeetingRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid options are
-   * `organizer` and `attendees`.
+   * `organizer`, `attendees`, `transcript`, `note`, and `summary`.
    */
-  include?: Array<'organizer' | 'attendees' | 'transcript'>;
+  include?: Array<'organizer' | 'attendees' | 'transcript' | 'note' | 'summary'>;
 }
 
 export interface MeetingUpdateParams {
+  /**
+   * A video recording of the meeting.
+   */
   recording?: MeetingUpdateParams.Recording;
 
+  /**
+   * The meeting transcript.
+   */
   transcript?: MeetingUpdateParams.Transcript;
 }
 
 export namespace MeetingUpdateParams {
+  /**
+   * A video recording of the meeting.
+   */
   export interface Recording {
+    /**
+     * The content type of the recording. Note that only `video/mp4` is supported at
+     * this time.
+     */
     content_type: string;
 
+    /**
+     * The unique identifier for the recording from the provider's system.
+     */
     provider_id: string;
 
+    /**
+     * The URL pointing to the recording.
+     */
     url: string;
   }
 
+  /**
+   * The meeting transcript.
+   */
   export interface Transcript {
+    /**
+     * A list of cues that identify the text spoken in specific time slices of the
+     * meeting.
+     */
     cues: Array<Transcript.Cue>;
 
+    /**
+     * Identifies the source of the transcript.
+     */
     provider: string;
 
+    /**
+     * The unique identifier for the transcript from the provider's system.
+     */
     provider_id: string;
   }
 
   export namespace Transcript {
+    /**
+     * Parameters for creating a `MeetingTranscriptCue` object to capture the text
+     * spoken in a specific time slice.
+     */
     export interface Cue {
+      /**
+       * The start time of the slice, in fractional seconds from the start of the
+       * meeting.
+       */
       from: number;
 
+      /**
+       * The name of the person speaking.
+       */
       speaker: string;
 
+      /**
+       * The text spoken during the slice.
+       */
       text: string;
 
+      /**
+       * The end time of the slice, in fractional seconds from the start of the meeting.
+       */
       to: number;
     }
   }

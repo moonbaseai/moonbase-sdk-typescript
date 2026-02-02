@@ -91,6 +91,16 @@ Methods:
 - <code title="delete /collections/{collection_id}/items/{id}">client.collections.items.<a href="./src/resources/collections/items.ts">delete</a>(id, { ...params }) -> void</code>
 - <code title="post /collections/{collection_id}/items/upsert">client.collections.items.<a href="./src/resources/collections/items.ts">upsert</a>(collectionID, { ...params }) -> Item</code>
 
+# Items
+
+Types:
+
+- <code><a href="./src/resources/items.ts">ItemSearchResponse</a></code>
+
+Methods:
+
+- <code title="get /items/search">client.items.<a href="./src/resources/items.ts">search</a>({ ...params }) -> ItemSearchResponse</code>
+
 # Views
 
 Types:
@@ -138,8 +148,11 @@ Types:
 
 Methods:
 
+- <code title="post /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">create</a>({ ...params }) -> EmailMessage</code>
 - <code title="get /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">retrieve</a>(id, { ...params }) -> EmailMessage</code>
+- <code title="patch /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">update</a>(id, { ...params }) -> EmailMessage</code>
 - <code title="get /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">list</a>({ ...params }) -> EmailMessagesCursorPage</code>
+- <code title="delete /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages.ts">delete</a>(id) -> void</code>
 
 # Tagsets
 
@@ -268,7 +281,9 @@ Types:
 
 Methods:
 
+- <code title="post /notes">client.notes.<a href="./src/resources/notes.ts">create</a>({ ...params }) -> Note</code>
 - <code title="get /notes/{id}">client.notes.<a href="./src/resources/notes.ts">retrieve</a>(id) -> Note</code>
+- <code title="patch /notes/{id}">client.notes.<a href="./src/resources/notes.ts">update</a>(id, { ...params }) -> Note</code>
 - <code title="get /notes">client.notes.<a href="./src/resources/notes.ts">list</a>({ ...params }) -> NotesCursorPage</code>
 
 # WebhookEndpoints
@@ -285,3 +300,13 @@ Methods:
 - <code title="patch /webhook_endpoints/{id}">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">update</a>(id, { ...params }) -> Endpoint</code>
 - <code title="get /webhook_endpoints">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">list</a>({ ...params }) -> EndpointsCursorPage</code>
 - <code title="delete /webhook_endpoints/{id}">client.webhookEndpoints.<a href="./src/resources/webhook-endpoints.ts">delete</a>(id) -> void</code>
+
+# AgentSettings
+
+Types:
+
+- <code><a href="./src/resources/agent-settings.ts">AgentSettingRetrieveResponse</a></code>
+
+Methods:
+
+- <code title="get /agent_settings">client.agentSettings.<a href="./src/resources/agent-settings.ts">retrieve</a>() -> AgentSettingRetrieveResponse</code>

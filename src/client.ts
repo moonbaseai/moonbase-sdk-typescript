@@ -42,6 +42,7 @@ import {
   ActivityProgramMessageShielded,
   ActivityProgramMessageUnsubscribed,
 } from './resources/activities';
+import { AgentSettingRetrieveResponse, AgentSettings } from './resources/agent-settings';
 import { Call, CallCreateParams, CallUpsertParams, Calls } from './resources/calls';
 import {
   FileListParams,
@@ -63,11 +64,14 @@ import {
   Address,
   EmailMessage,
   EmailMessagesCursorPage,
+  InboxMessageCreateParams,
   InboxMessageListParams,
   InboxMessageRetrieveParams,
+  InboxMessageUpdateParams,
   InboxMessages,
 } from './resources/inbox-messages';
 import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
+import { ItemSearchParams, ItemSearchResponse, Items } from './resources/items';
 import {
   Attendee,
   Meeting,
@@ -78,7 +82,14 @@ import {
   MeetingsCursorPage,
   Organizer,
 } from './resources/meetings';
-import { Note, NoteListParams, Notes, NotesCursorPage } from './resources/notes';
+import {
+  Note,
+  NoteCreateParams,
+  NoteListParams,
+  NoteUpdateParams,
+  Notes,
+  NotesCursorPage,
+} from './resources/notes';
 import { ProgramMessage, ProgramMessageSendParams, ProgramMessages } from './resources/program-messages';
 import {
   ProgramTemplate,
@@ -260,7 +271,7 @@ export class Moonbase {
   baseURL: string;
   maxRetries: number;
   timeout: number;
-  logger: Logger | undefined;
+  logger: Logger;
   logLevel: LogLevel | undefined;
   fetchOptions: MergedRequestInit | undefined;
 
@@ -871,6 +882,7 @@ export class Moonbase {
 
   funnels: API.Funnels = new API.Funnels(this);
   collections: API.Collections = new API.Collections(this);
+  items: API.Items = new API.Items(this);
   views: API.Views = new API.Views(this);
   inboxes: API.Inboxes = new API.Inboxes(this);
   inboxConversations: API.InboxConversations = new API.InboxConversations(this);
@@ -886,10 +898,12 @@ export class Moonbase {
   meetings: API.Meetings = new API.Meetings(this);
   notes: API.Notes = new API.Notes(this);
   webhookEndpoints: API.WebhookEndpoints = new API.WebhookEndpoints(this);
+  agentSettings: API.AgentSettings = new API.AgentSettings(this);
 }
 
 Moonbase.Funnels = Funnels;
 Moonbase.Collections = Collections;
+Moonbase.Items = Items;
 Moonbase.Views = Views;
 Moonbase.Inboxes = Inboxes;
 Moonbase.InboxConversations = InboxConversations;
@@ -905,6 +919,7 @@ Moonbase.Files = Files;
 Moonbase.Meetings = Meetings;
 Moonbase.Notes = Notes;
 Moonbase.WebhookEndpoints = WebhookEndpoints;
+Moonbase.AgentSettings = AgentSettings;
 
 export declare namespace Moonbase {
   export type RequestOptions = Opts.RequestOptions;
@@ -972,6 +987,12 @@ export declare namespace Moonbase {
     type CollectionListParams as CollectionListParams,
   };
 
+  export {
+    Items as Items,
+    type ItemSearchResponse as ItemSearchResponse,
+    type ItemSearchParams as ItemSearchParams,
+  };
+
   export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
 
   export {
@@ -995,7 +1016,9 @@ export declare namespace Moonbase {
     type Address as Address,
     type EmailMessage as EmailMessage,
     type EmailMessagesCursorPage as EmailMessagesCursorPage,
+    type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
+    type InboxMessageUpdateParams as InboxMessageUpdateParams,
     type InboxMessageListParams as InboxMessageListParams,
   };
 
@@ -1089,6 +1112,8 @@ export declare namespace Moonbase {
     Notes as Notes,
     type Note as Note,
     type NotesCursorPage as NotesCursorPage,
+    type NoteCreateParams as NoteCreateParams,
+    type NoteUpdateParams as NoteUpdateParams,
     type NoteListParams as NoteListParams,
   };
 
@@ -1100,6 +1125,11 @@ export declare namespace Moonbase {
     type WebhookEndpointCreateParams as WebhookEndpointCreateParams,
     type WebhookEndpointUpdateParams as WebhookEndpointUpdateParams,
     type WebhookEndpointListParams as WebhookEndpointListParams,
+  };
+
+  export {
+    AgentSettings as AgentSettings,
+    type AgentSettingRetrieveResponse as AgentSettingRetrieveResponse,
   };
 
   export type Error = API.Error;

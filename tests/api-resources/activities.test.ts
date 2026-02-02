@@ -34,7 +34,16 @@ describe('resource activities', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.activities.list(
-        { after: 'after', before: 'before', limit: 1 },
+        {
+          after: 'after',
+          before: 'before',
+          filter: {
+            item_id: { eq: 'eq' },
+            occurred_at: { gte: '2019-12-27T18:11:19.117Z', lte: '2019-12-27T18:11:19.117Z' },
+            type: { in: ['activity/call_occurred'] },
+          },
+          limit: 1,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Moonbase.NotFoundError);
