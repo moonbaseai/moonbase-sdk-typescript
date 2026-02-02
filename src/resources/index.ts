@@ -106,6 +106,7 @@ export {
   type EmailMessage,
   type InboxMessageCreateParams,
   type InboxMessageRetrieveParams,
+  type InboxMessageUpdateParams,
   type InboxMessageListParams,
   type EmailMessagesCursorPage,
 } from './inbox-messages';

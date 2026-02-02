@@ -10,7 +10,7 @@ const client = new Moonbase({
 describe('resource inboxMessages', () => {
   test('create: only required params', async () => {
     const responsePromise = client.inboxMessages.create({
-      body: 'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+      body: {},
       inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -24,7 +24,10 @@ describe('resource inboxMessages', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.inboxMessages.create({
-      body: 'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+      body: {
+        markdown:
+          'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+      },
       inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
       bcc: [{ email: 'steve@example.com', name: 'Steve' }],
       cc: [{ email: 'joe@example.com', name: 'Joe' }],
@@ -55,6 +58,34 @@ describe('resource inboxMessages', () => {
     ).rejects.toThrow(Moonbase.NotFoundError);
   });
 
+  test('update: only required params', async () => {
+    const responsePromise = client.inboxMessages.update('id', { lock_version: 0 });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('update: required and optional params', async () => {
+    const response = await client.inboxMessages.update('id', {
+      lock_version: 0,
+      bcc: [{ email: 'steve@example.com', name: 'Steve' }],
+      body: {
+        markdown:
+          'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+      },
+      cc: [{ email: 'joe@example.com', name: 'Joe' }],
+      subject: 'Test Subject',
+      to: [
+        { email: 'bob@example.com', name: 'Bob' },
+        { email: 'jack@example.com', name: 'name' },
+      ],
+    });
+  });
+
   test('list', async () => {
     const responsePromise = client.inboxMessages.list();
     const rawResponse = await responsePromise.asResponse();
@@ -83,5 +114,16 @@ describe('resource inboxMessages', () => {
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Moonbase.NotFoundError);
+  });
+
+  test('delete', async () => {
+    const responsePromise = client.inboxMessages.delete('id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 });
