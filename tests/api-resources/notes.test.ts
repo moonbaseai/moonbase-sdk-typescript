@@ -22,6 +22,7 @@ describe('resource notes', () => {
   test('create: required and optional params', async () => {
     const response = await client.notes.create({
       body: { markdown: "# A note title\n\nHere's a note for me! Yay!" },
+      associations: [{ id: 'id', type: 'type' }],
     });
   });
 
