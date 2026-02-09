@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.1.0-alpha.10 (2026-02-09)
+
+Full Changelog: [v0.1.0-alpha.9...v0.1.0-alpha.10](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.9...v0.1.0-alpha.10)
+
+### Features
+
+* **api:** update api ([63572e5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/63572e5b967c9087b011541ca11e090c2a416994))
+* **mcp:** add initial server instructions ([4a41176](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/4a41176080e84e9795213d30847af11ae7c84cab))
+
+
+### Bug Fixes
+
+* **client:** avoid memory leak with abort signals ([e9a9385](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/e9a93857f2f5c9a1b8a8c75aee085ddcfa28fd15))
+* **client:** avoid removing abort listener too early ([788585c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/788585cb5f3ed6948f4e7b0b6c95f78203742250))
+
+
+### Chores
+
+* **client:** do not parse responses with empty content-length ([75f7963](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75f7963dec9b126daaafe1f7d46ce7e3b20fe97f))
+* **client:** restructure abort controller binding ([d29a328](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/d29a328873dea164abd16b14473706f4d7960e3a))
+* **internal:** add health check to MCP server when running in HTTP mode ([57c48d0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/57c48d01a15e9cb34362f5cc23e70db93e66fb11))
+* **internal:** fix pagination internals not accepting option promises ([2f770f0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/2f770f0897841e214fa46a4e978afc605bb4a9e7))
+* **internal:** refactor flag parsing for MCP servers and add debug flag ([7856ef8](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/7856ef8ab0d1af1a3abf9122b7098ed069665cf2))
+* **internal:** support oauth authorization code flow for MCP servers ([a6a879c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/a6a879c1da72062c1df01024c2bcf5b077c38489))
+
 ## 0.1.0-alpha.9 (2026-02-02)
 
 Full Changelog: [v0.1.0-alpha.8...v0.1.0-alpha.9](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.8...v0.1.0-alpha.9)

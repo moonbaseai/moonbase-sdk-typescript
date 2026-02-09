@@ -88,6 +88,11 @@ export interface Note {
   id: string;
 
   /**
+   * A list of items, meetings or calls this note is associated with.
+   */
+  associations: Array<Shared.Pointer>;
+
+  /**
    * The main content of the note.
    */
   body: Shared.FormattedText;
@@ -134,6 +139,12 @@ export interface NoteCreateParams {
    * The main content of the note.
    */
   body: Shared.FormattedText;
+
+  /**
+   * Link the Note to Moonbase items (person, organization, deal, task, or an item in
+   * a custom collection), meetings, or calls.
+   */
+  associations?: Array<Shared.Pointer>;
 }
 
 export interface NoteUpdateParams {
