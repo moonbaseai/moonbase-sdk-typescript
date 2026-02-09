@@ -57,7 +57,7 @@ export const newMcpServer = async () =>
   new McpServer(
     {
       name: 'moonbaseai_sdk_api',
-      version: '0.1.0-alpha.9',
+      version: '0.1.0-alpha.10',
     },
     {
       instructions: await getInstructions(),
