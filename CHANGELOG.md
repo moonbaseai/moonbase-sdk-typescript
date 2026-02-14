@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.11 (2026-02-14)
+
+Full Changelog: [v0.1.0-alpha.10...v0.1.0-alpha.11](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.10...v0.1.0-alpha.11)
+
+### Chores
+
+* **internal:** allow basic filtering of methods allowed for MCP code mode ([a086254](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/a086254ad7b16fa56ee1d2748cd19f123d8e661b))
+* **internal:** always generate MCP server dockerfiles and upgrade associated dependencies ([7bfbd74](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/7bfbd74a1f520681a561609b816b6e044e7a6df7))
+* **internal:** avoid type checking errors with ts-reset ([5097f13](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/5097f138fdc5f6807edaf2f5956a443c56efb64a))
+* **internal:** improve layout of generated MCP server files ([bfe9643](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/bfe9643c7f91c14d48f4cd0809a17a82eec55fff))
+* **mcp:** forward STAINLESS_API_KEY to docs search endpoint ([267542e](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/267542e75b3982f2a7f767ac2bab7fa08462ca67))
+* update SDK settings ([2cf35a7](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/2cf35a759667ced6f3e533e2235b1c0e61bbf089))
+
 ## 0.1.0-alpha.10 (2026-02-09)
 
 Full Changelog: [v0.1.0-alpha.9...v0.1.0-alpha.10](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.9...v0.1.0-alpha.10)
