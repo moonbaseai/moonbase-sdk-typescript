@@ -6,6 +6,7 @@ import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { type Uploadable } from '../core/uploads';
+import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { multipartFormRequestOptions } from '../internal/uploads';
 import { path } from '../internal/utils/path';
@@ -26,6 +27,16 @@ export class Files extends APIResource {
     options?: RequestOptions,
   ): PagePromise<MoonbaseFilesCursorPage, MoonbaseFile> {
     return this._client.getAPIList('/files', CursorPage<MoonbaseFile>, { query, ...options });
+  }
+
+  /**
+   * Permanently deletes a file.
+   */
+  delete(id: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.delete(path`/files/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**

@@ -31,6 +31,12 @@ export {
   type IntegerValue,
   type Item,
   type ItemPointer,
+  type ItemsFilter,
+  type ItemsFilterAndGroup,
+  type ItemsFilterNotGroup,
+  type ItemsFilterOrGroup,
+  type ItemsFilterValueExists,
+  type ItemsFilterValueMatches,
   type MonetaryField,
   type MonetaryValue,
   type MultiLineTextField,
@@ -61,10 +67,13 @@ export {
 export { Fields, type FieldRetrieveParams } from './fields';
 export {
   Items,
+  type ItemSearchResponse,
   type ItemCreateParams,
   type ItemRetrieveParams,
   type ItemUpdateParams,
   type ItemListParams,
   type ItemDeleteParams,
+  type ItemSearchParams,
   type ItemUpsertParams,
+  type ItemSearchResponsesCursorPage,
 } from './items';

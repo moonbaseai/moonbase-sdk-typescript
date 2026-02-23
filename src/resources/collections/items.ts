@@ -146,6 +146,49 @@ export class Items extends APIResource {
   }
 
   /**
+   * Returns a list of items in the collection that match the given filters.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const itemSearchResponse of client.collections.items.search(
+   *   'collection_id',
+   *   {
+   *     filter: {
+   *       op: 'and',
+   *       filters: [
+   *         {
+   *           op: 'starts_with',
+   *           field: 'name',
+   *           value: 'C',
+   *         },
+   *         {
+   *           op: 'ends_with',
+   *           field: 'name',
+   *           value: 'e',
+   *         },
+   *       ],
+   *     },
+   *   },
+   * )) {
+   *   // ...
+   * }
+   * ```
+   */
+  search(
+    collectionID: string,
+    params: ItemSearchParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<ItemSearchResponsesCursorPage, ItemSearchResponse> {
+    const { after, before, limit, ...body } = params ?? {};
+    return this._client.getAPIList(
+      path`/collections/${collectionID}/items/search`,
+      CursorPage<ItemSearchResponse>,
+      { query: { after, before, limit }, body, method: 'post', ...options },
+    );
+  }
+
+  /**
    * Find and update an existing item, or create a new one.
    *
    * @example
@@ -192,6 +235,19 @@ export class Items extends APIResource {
       ]),
     });
   }
+}
+
+export type ItemSearchResponsesCursorPage = CursorPage<ItemSearchResponse>;
+
+/**
+ * A search result entry
+ */
+export interface ItemSearchResponse {
+  /**
+   * An Item represents a single record or row within a Collection. It holds a set of
+   * `values` corresponding to the Collection's `fields`.
+   */
+  data: CollectionsAPI.Item;
 }
 
 export interface ItemCreateParams {
@@ -244,14 +300,58 @@ export interface ItemListParams extends CursorPageParams {
   before?: string;
 
   /**
+   * Include only specific fields in the returned items. Specify fields by id or key.
+   */
+  include?: Array<string>;
+
+  /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
    * to 20 if not specified.
    */
   limit?: number;
+
+  /**
+   * Sort items by the specified field ids or keys. Prefix a field with a
+   * hyphen/minus (`-`) to sort in descending order by that field.
+   */
+  sort?: Array<string>;
 }
 
 export interface ItemDeleteParams {
   collection_id: string;
+}
+
+export interface ItemSearchParams extends CursorPageParams {
+  /**
+   * Query param: When specified, returns results starting immediately before the
+   * item identified by this cursor. Use the cursor value from the response's
+   * metadata to fetch the previous page of results.
+   */
+  before?: string;
+
+  /**
+   * Query param: Maximum number of items to return per page. Must be between 1
+   * and 100. Defaults to 20 if not specified.
+   */
+  limit?: number;
+
+  /**
+   * Body param: Return only items that match the filter conditions. Complex filters
+   * can be created by nesting filters inside of `AND`, `OR`, and `NOT` filters.
+   */
+  filter?: CollectionsAPI.ItemsFilter;
+
+  /**
+   * Body param: Include only specific fields in the returned items. Specify fields
+   * by id or key.
+   */
+  include?: Array<string>;
+
+  /**
+   * Body param: Sort items by the specified field ids or keys. Prefix a field with a
+   * hyphen/minus (`-`) to sort in descending order by that field.
+   */
+  sort?: Array<string>;
 }
 
 export interface ItemUpsertParams {
@@ -286,11 +386,14 @@ export interface ItemUpsertParams {
 
 export declare namespace Items {
   export {
+    type ItemSearchResponse as ItemSearchResponse,
+    type ItemSearchResponsesCursorPage as ItemSearchResponsesCursorPage,
     type ItemCreateParams as ItemCreateParams,
     type ItemRetrieveParams as ItemRetrieveParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemListParams as ItemListParams,
     type ItemDeleteParams as ItemDeleteParams,
+    type ItemSearchParams as ItemSearchParams,
     type ItemUpsertParams as ItemUpsertParams,
   };
 }

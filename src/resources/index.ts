@@ -25,7 +25,15 @@ export {
   type ActivitiesCursorPage,
 } from './activities';
 export { AgentSettings, type AgentSettingRetrieveResponse } from './agent-settings';
-export { Calls, type Call, type CallCreateParams, type CallUpsertParams } from './calls';
+export {
+  Calls,
+  type Call,
+  type CallCreateParams,
+  type CallRetrieveParams,
+  type CallListParams,
+  type CallUpsertParams,
+  type CallsCursorPage,
+} from './calls';
 export {
   Collections,
   type BooleanField,
@@ -57,6 +65,12 @@ export {
   type IntegerValue,
   type Item,
   type ItemPointer,
+  type ItemsFilter,
+  type ItemsFilterAndGroup,
+  type ItemsFilterNotGroup,
+  type ItemsFilterOrGroup,
+  type ItemsFilterValueExists,
+  type ItemsFilterValueMatches,
   type MonetaryField,
   type MonetaryValue,
   type MultiLineTextField,
@@ -117,7 +131,6 @@ export {
   type InboxListParams,
   type InboxesCursorPage,
 } from './inboxes';
-export { Items, type ItemSearchResponse, type ItemSearchParams } from './items';
 export {
   Meetings,
   type Attendee,
@@ -162,3 +175,4 @@ export {
   type WebhookEndpointListParams,
   type EndpointsCursorPage,
 } from './webhook-endpoints';
+export { type SearchResponse, type SearchParams } from './top-level';

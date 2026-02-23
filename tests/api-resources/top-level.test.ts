@@ -7,9 +7,9 @@ const client = new Moonbase({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource items', () => {
+describe('top level methods', () => {
   test('search: only required params', async () => {
-    const responsePromise = client.items.search({ query: 'query' });
+    const responsePromise = client.search({ query: 'query' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,9 +20,6 @@ describe('resource items', () => {
   });
 
   test('search: required and optional params', async () => {
-    const response = await client.items.search({
-      query: 'query',
-      filter: { collection_id: { in: ['string'] } },
-    });
+    const response = await client.search({ query: 'query' });
   });
 });

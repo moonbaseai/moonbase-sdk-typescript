@@ -11,6 +11,12 @@ export type SdkMethod = {
 
 export const sdkMethods: SdkMethod[] = [
   {
+    clientCallName: 'client.search',
+    fullyQualifiedName: 'search',
+    httpMethod: 'post',
+    httpPath: '/search',
+  },
+  {
     clientCallName: 'client.collections.retrieve',
     fullyQualifiedName: 'collections.retrieve',
     httpMethod: 'get',
@@ -59,16 +65,16 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/collections/{collection_id}/items/{id}',
   },
   {
+    clientCallName: 'client.collections.items.search',
+    fullyQualifiedName: 'collections.items.search',
+    httpMethod: 'post',
+    httpPath: '/collections/{collection_id}/items/search',
+  },
+  {
     clientCallName: 'client.collections.items.upsert',
     fullyQualifiedName: 'collections.items.upsert',
     httpMethod: 'post',
     httpPath: '/collections/{collection_id}/items/upsert',
-  },
-  {
-    clientCallName: 'client.items.search',
-    fullyQualifiedName: 'items.search',
-    httpMethod: 'get',
-    httpPath: '/items/search',
   },
   {
     clientCallName: 'client.views.retrieve',
@@ -209,6 +215,18 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/calls',
   },
   {
+    clientCallName: 'client.calls.retrieve',
+    fullyQualifiedName: 'calls.retrieve',
+    httpMethod: 'get',
+    httpPath: '/calls/{id}',
+  },
+  {
+    clientCallName: 'client.calls.list',
+    fullyQualifiedName: 'calls.list',
+    httpMethod: 'get',
+    httpPath: '/calls',
+  },
+  {
     clientCallName: 'client.calls.upsert',
     fullyQualifiedName: 'calls.upsert',
     httpMethod: 'post',
@@ -225,6 +243,12 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'files.list',
     httpMethod: 'get',
     httpPath: '/files',
+  },
+  {
+    clientCallName: 'client.files.delete',
+    fullyQualifiedName: 'files.delete',
+    httpMethod: 'delete',
+    httpPath: '/files/{id}',
   },
   {
     clientCallName: 'client.files.upload',
@@ -273,6 +297,12 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'notes.list',
     httpMethod: 'get',
     httpPath: '/notes',
+  },
+  {
+    clientCallName: 'client.notes.delete',
+    fullyQualifiedName: 'notes.delete',
+    httpMethod: 'delete',
+    httpPath: '/notes/{id}',
   },
   {
     clientCallName: 'client.webhookEndpoints.create',

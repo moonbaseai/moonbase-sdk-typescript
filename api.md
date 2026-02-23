@@ -1,3 +1,13 @@
+# Moonbase
+
+Types:
+
+- <code><a href="./src/resources/top-level.ts">SearchResponse</a></code>
+
+Methods:
+
+- <code title="post /search">client.<a href="./src/index.ts">search</a>({ ...params }) -> SearchResponse</code>
+
 # Shared
 
 Types:
@@ -46,6 +56,12 @@ Types:
 - <code><a href="./src/resources/collections/collections.ts">IntegerValue</a></code>
 - <code><a href="./src/resources/collections/collections.ts">Item</a></code>
 - <code><a href="./src/resources/collections/collections.ts">ItemPointer</a></code>
+- <code><a href="./src/resources/collections/collections.ts">ItemsFilter</a></code>
+- <code><a href="./src/resources/collections/collections.ts">ItemsFilterAndGroup</a></code>
+- <code><a href="./src/resources/collections/collections.ts">ItemsFilterNotGroup</a></code>
+- <code><a href="./src/resources/collections/collections.ts">ItemsFilterOrGroup</a></code>
+- <code><a href="./src/resources/collections/collections.ts">ItemsFilterValueExists</a></code>
+- <code><a href="./src/resources/collections/collections.ts">ItemsFilterValueMatches</a></code>
 - <code><a href="./src/resources/collections/collections.ts">MonetaryField</a></code>
 - <code><a href="./src/resources/collections/collections.ts">MonetaryValue</a></code>
 - <code><a href="./src/resources/collections/collections.ts">MultiLineTextField</a></code>
@@ -82,6 +98,10 @@ Methods:
 
 ## Items
 
+Types:
+
+- <code><a href="./src/resources/collections/items.ts">ItemSearchResponse</a></code>
+
 Methods:
 
 - <code title="post /collections/{collection_id}/items">client.collections.items.<a href="./src/resources/collections/items.ts">create</a>(collectionID, { ...params }) -> Item</code>
@@ -89,17 +109,8 @@ Methods:
 - <code title="patch /collections/{collection_id}/items/{id}">client.collections.items.<a href="./src/resources/collections/items.ts">update</a>(id, { ...params }) -> Item</code>
 - <code title="get /collections/{collection_id}/items">client.collections.items.<a href="./src/resources/collections/items.ts">list</a>(collectionID, { ...params }) -> ItemsCursorPage</code>
 - <code title="delete /collections/{collection_id}/items/{id}">client.collections.items.<a href="./src/resources/collections/items.ts">delete</a>(id, { ...params }) -> void</code>
+- <code title="post /collections/{collection_id}/items/search">client.collections.items.<a href="./src/resources/collections/items.ts">search</a>(collectionID, { ...params }) -> ItemSearchResponsesCursorPage</code>
 - <code title="post /collections/{collection_id}/items/upsert">client.collections.items.<a href="./src/resources/collections/items.ts">upsert</a>(collectionID, { ...params }) -> Item</code>
-
-# Items
-
-Types:
-
-- <code><a href="./src/resources/items.ts">ItemSearchResponse</a></code>
-
-Methods:
-
-- <code title="get /items/search">client.items.<a href="./src/resources/items.ts">search</a>({ ...params }) -> ItemSearchResponse</code>
 
 # Views
 
@@ -245,6 +256,8 @@ Types:
 Methods:
 
 - <code title="post /calls">client.calls.<a href="./src/resources/calls.ts">create</a>({ ...params }) -> Call</code>
+- <code title="get /calls/{id}">client.calls.<a href="./src/resources/calls.ts">retrieve</a>(id, { ...params }) -> Call</code>
+- <code title="get /calls">client.calls.<a href="./src/resources/calls.ts">list</a>({ ...params }) -> CallsCursorPage</code>
 - <code title="post /calls/upsert">client.calls.<a href="./src/resources/calls.ts">upsert</a>({ ...params }) -> Call</code>
 
 # Files
@@ -257,6 +270,7 @@ Methods:
 
 - <code title="get /files/{id}">client.files.<a href="./src/resources/files.ts">retrieve</a>(id) -> MoonbaseFile</code>
 - <code title="get /files">client.files.<a href="./src/resources/files.ts">list</a>({ ...params }) -> MoonbaseFilesCursorPage</code>
+- <code title="delete /files/{id}">client.files.<a href="./src/resources/files.ts">delete</a>(id) -> void</code>
 - <code title="post /files">client.files.<a href="./src/resources/files.ts">upload</a>({ ...params }) -> MoonbaseFile</code>
 
 # Meetings
@@ -285,6 +299,7 @@ Methods:
 - <code title="get /notes/{id}">client.notes.<a href="./src/resources/notes.ts">retrieve</a>(id) -> Note</code>
 - <code title="patch /notes/{id}">client.notes.<a href="./src/resources/notes.ts">update</a>(id, { ...params }) -> Note</code>
 - <code title="get /notes">client.notes.<a href="./src/resources/notes.ts">list</a>({ ...params }) -> NotesCursorPage</code>
+- <code title="delete /notes/{id}">client.notes.<a href="./src/resources/notes.ts">delete</a>(id) -> void</code>
 
 # WebhookEndpoints
 
