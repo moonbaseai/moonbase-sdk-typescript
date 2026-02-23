@@ -96,7 +96,9 @@ describe('resource items', () => {
         {
           after: 'after',
           before: 'before',
+          include: ['string'],
           limit: 1,
+          sort: ['string'],
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -116,6 +118,35 @@ describe('resource items', () => {
 
   test('delete: required and optional params', async () => {
     const response = await client.collections.items.delete('id', { collection_id: 'collection_id' });
+  });
+
+  test('search', async () => {
+    const responsePromise = client.collections.items.search('collection_id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('search: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.collections.items.search(
+        'collection_id',
+        {
+          after: 'after',
+          before: 'before',
+          limit: 1,
+          filter: { filters: [], op: 'and' },
+          include: ['string'],
+          sort: ['string'],
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Moonbase.NotFoundError);
   });
 
   test('upsert: only required params', async () => {

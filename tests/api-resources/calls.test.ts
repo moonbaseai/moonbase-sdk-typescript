@@ -16,7 +16,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000006',
+      provider_id: 'openphone_id_000000000002',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
     });
@@ -37,7 +37,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000006',
+      provider_id: 'openphone_id_000000000002',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
       answered_at: '2025-02-17T15:01:00Z',
@@ -68,6 +68,49 @@ describe('resource calls', () => {
     });
   });
 
+  test('retrieve', async () => {
+    const responsePromise = client.calls.retrieve('id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('retrieve: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.calls.retrieve('id', { include: ['transcript'] }, { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Moonbase.NotFoundError);
+  });
+
+  test('list', async () => {
+    const responsePromise = client.calls.list();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.calls.list(
+        {
+          after: 'after',
+          before: 'before',
+          limit: 1,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Moonbase.NotFoundError);
+  });
+
   test('upsert: only required params', async () => {
     const responsePromise = client.calls.upsert({
       direction: 'incoming',
@@ -76,7 +119,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000001',
+      provider_id: 'openphone_id_000000000009',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
     });
@@ -97,7 +140,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000001',
+      provider_id: 'openphone_id_000000000009',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
       answered_at: '2025-02-17T15:01:00Z',

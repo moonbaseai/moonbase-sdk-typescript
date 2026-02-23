@@ -11,6 +11,9 @@ import {
   ItemDeleteParams,
   ItemListParams,
   ItemRetrieveParams,
+  ItemSearchParams,
+  ItemSearchResponse,
+  ItemSearchResponsesCursorPage,
   ItemUpdateParams,
   ItemUpsertParams,
   Items,
@@ -1114,6 +1117,98 @@ export interface ItemPointer {
 }
 
 /**
+ * Return only items that match the filter conditions. Complex filters can be
+ * created by nesting filters inside of `AND`, `OR`, and `NOT` filters.
+ */
+export type ItemsFilter =
+  | ItemsFilterValueMatches
+  | ItemsFilterValueExists
+  | ItemsFilterAndGroup
+  | ItemsFilterOrGroup
+  | ItemsFilterNotGroup;
+
+/**
+ * Include only items that match ALL of the filters in `filters`.
+ */
+export interface ItemsFilterAndGroup {
+  /**
+   * An array of filters, ALL of which must be satisfied for this `and` filter to
+   * match.
+   */
+  filters: Array<ItemsFilter>;
+
+  op: 'and';
+}
+
+export interface ItemsFilterNotGroup {
+  /**
+   * A nested filter which must NOT match in order for this `not` filter to match.
+   */
+  filter: ItemsFilter;
+
+  op: 'not';
+}
+
+/**
+ * Include only items that match ANY of the filters in `filters`.
+ */
+export interface ItemsFilterOrGroup {
+  /**
+   * An array of filters, ANY of which must be satisfied for this `or` filter to
+   * match.
+   */
+  filters: Array<ItemsFilter>;
+
+  op: 'or';
+}
+
+/**
+ * Include only items that have a value in the given `field`.
+ */
+export interface ItemsFilterValueExists {
+  /**
+   * The id or key of the field for which a value must exist.
+   */
+  field: string;
+
+  op: 'exists';
+}
+
+/**
+ * Include only items with a value in the given `field` that satisfies the `op`
+ * condition.
+ */
+export interface ItemsFilterValueMatches {
+  /**
+   * The id or key of the field in which values are matched.
+   */
+  field: string;
+
+  /**
+   * The matching operator for this filter.
+   */
+  op:
+    | 'starts_with'
+    | 'ends_with'
+    | 'contains'
+    | 'not_contains'
+    | 'eq'
+    | 'not_eq'
+    | 'gt'
+    | 'lt'
+    | 'gte'
+    | 'lte';
+
+  /**
+   * The value to match against. Use ISO8601 format for dates and datetime fields.
+   * For date fields, the time portion of the date-time will be ignored. For currency
+   * fields, the amount should be in the smallest unit of currency (eg: cents for
+   * USD).
+   */
+  value: string | number | boolean;
+}
+
+/**
  * A field that stores monetary amounts with currency information.
  */
 export interface MonetaryField {
@@ -2174,6 +2269,12 @@ export declare namespace Collections {
     type IntegerValue as IntegerValue,
     type Item as Item,
     type ItemPointer as ItemPointer,
+    type ItemsFilter as ItemsFilter,
+    type ItemsFilterAndGroup as ItemsFilterAndGroup,
+    type ItemsFilterNotGroup as ItemsFilterNotGroup,
+    type ItemsFilterOrGroup as ItemsFilterOrGroup,
+    type ItemsFilterValueExists as ItemsFilterValueExists,
+    type ItemsFilterValueMatches as ItemsFilterValueMatches,
     type MonetaryField as MonetaryField,
     type MonetaryValue as MonetaryValue,
     type MultiLineTextField as MultiLineTextField,
@@ -2205,11 +2306,14 @@ export declare namespace Collections {
 
   export {
     Items as Items,
+    type ItemSearchResponse as ItemSearchResponse,
+    type ItemSearchResponsesCursorPage as ItemSearchResponsesCursorPage,
     type ItemCreateParams as ItemCreateParams,
     type ItemRetrieveParams as ItemRetrieveParams,
     type ItemUpdateParams as ItemUpdateParams,
     type ItemListParams as ItemListParams,
     type ItemDeleteParams as ItemDeleteParams,
+    type ItemSearchParams as ItemSearchParams,
     type ItemUpsertParams as ItemUpsertParams,
   };
 }
