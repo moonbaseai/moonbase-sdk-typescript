@@ -1,6 +1,6 @@
 {
   "name": "@moonbaseai/sdk",
-  "version": "0.1.0-alpha.12",
+  "version": "0.1.0-alpha.13",
   "description": "The official TypeScript library for the Moonbase API",
   "author": "Moonbase <support@moonbase.ai>",
   "types": "dist/index.d.ts",
