@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.0-alpha.13 (2026-02-24)
+
+Full Changelog: [v0.1.0-alpha.12...v0.1.0-alpha.13](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.12...v0.1.0-alpha.13)
+
+### Bug Fixes
+
+* **docs/contributing:** correct pnpm link command ([d96185d](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/d96185dc745aa8a1d1c46632982d5e7bced188d1))
+
+
+### Chores
+
+* **api:** update SDK settings ([7207d3f](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/7207d3f5bf21d1516b63c08c5b2229e322bd5b9c))
+* **internal:** upgrade @modelcontextprotocol/sdk and hono ([15d0385](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/15d038504c22e9c18e06ddcdc431f5cdfd8c31fa))
+
 ## 0.1.0-alpha.12 (2026-02-24)
 
 Full Changelog: [v0.1.0-alpha.11...v0.1.0-alpha.12](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.11...v0.1.0-alpha.12)
