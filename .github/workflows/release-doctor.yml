@@ -1,6 +1,6 @@
 name: Release Doctor
 on:
-  push:
+  pull_request:
     branches:
       - main
   workflow_dispatch:
@@ -9,7 +9,6 @@ jobs:
   release_doctor:
     name: release doctor
     runs-on: ubuntu-latest
-    environment: production
     if: github.repository == 'moonbaseai/moonbase-sdk-typescript' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'release-please') || github.head_ref == 'next')
 
     steps:
