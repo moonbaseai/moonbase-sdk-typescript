@@ -18,6 +18,8 @@ import * as Pagination from './core/pagination';
 import { AbstractPage, type CursorPageParams, CursorPageResponse } from './core/pagination';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
+import * as TopLevelAPI from './resources/top-level';
+import { SearchParams, SearchResponse } from './resources/top-level';
 import { APIPromise } from './core/api-promise';
 import {
   Activities,
@@ -43,7 +45,15 @@ import {
   ActivityProgramMessageUnsubscribed,
 } from './resources/activities';
 import { AgentSettingRetrieveResponse, AgentSettings } from './resources/agent-settings';
-import { Call, CallCreateParams, CallUpsertParams, Calls } from './resources/calls';
+import {
+  Call,
+  CallCreateParams,
+  CallListParams,
+  CallRetrieveParams,
+  CallUpsertParams,
+  Calls,
+  CallsCursorPage,
+} from './resources/calls';
 import {
   FileListParams,
   FileUploadParams,
@@ -71,7 +81,6 @@ import {
   InboxMessages,
 } from './resources/inbox-messages';
 import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
-import { ItemSearchParams, ItemSearchResponse, Items } from './resources/items';
 import {
   Attendee,
   Meeting,
@@ -149,6 +158,12 @@ import {
   IntegerValue,
   Item,
   ItemPointer,
+  ItemsFilter,
+  ItemsFilterAndGroup,
+  ItemsFilterNotGroup,
+  ItemsFilterOrGroup,
+  ItemsFilterValueExists,
+  ItemsFilterValueMatches,
   MonetaryField,
   MonetaryValue,
   MultiLineTextField,
@@ -359,6 +374,11 @@ export class Moonbase {
    */
   #baseURLOverridden(): boolean {
     return this.baseURL !== 'https://api.moonbase.ai/v0';
+  }
+
+  search(params: TopLevelAPI.SearchParams, options?: RequestOptions): APIPromise<TopLevelAPI.SearchResponse> {
+    const { query } = params;
+    return this.post('/search', { query: { query }, ...options });
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -595,7 +615,7 @@ export class Moonbase {
       loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
 
       const errText = await response.text().catch((err: any) => castToError(err).message);
-      const errJSON = safeJSON(errText);
+      const errJSON = safeJSON(errText) as any;
       const errMessage = errJSON ? undefined : errText;
 
       loggerFor(this).debug(
@@ -868,6 +888,14 @@ export class Moonbase {
         (Symbol.iterator in body && 'next' in body && typeof body.next === 'function'))
     ) {
       return { bodyHeaders: undefined, body: Shims.ReadableStreamFrom(body as AsyncIterable<Uint8Array>) };
+    } else if (
+      typeof body === 'object' &&
+      headers.values.get('content-type') === 'application/x-www-form-urlencoded'
+    ) {
+      return {
+        bodyHeaders: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: this.stringifyQuery(body as Record<string, unknown>),
+      };
     } else {
       return this.#encoder({ body, headers });
     }
@@ -894,7 +922,6 @@ export class Moonbase {
 
   funnels: API.Funnels = new API.Funnels(this);
   collections: API.Collections = new API.Collections(this);
-  items: API.Items = new API.Items(this);
   views: API.Views = new API.Views(this);
   inboxes: API.Inboxes = new API.Inboxes(this);
   inboxConversations: API.InboxConversations = new API.InboxConversations(this);
@@ -915,7 +942,6 @@ export class Moonbase {
 
 Moonbase.Funnels = Funnels;
 Moonbase.Collections = Collections;
-Moonbase.Items = Items;
 Moonbase.Views = Views;
 Moonbase.Inboxes = Inboxes;
 Moonbase.InboxConversations = InboxConversations;
@@ -938,6 +964,8 @@ export declare namespace Moonbase {
 
   export import CursorPage = Pagination.CursorPage;
   export { type CursorPageParams as CursorPageParams, type CursorPageResponse as CursorPageResponse };
+
+  export { type SearchResponse as SearchResponse, type SearchParams as SearchParams };
 
   export { Funnels as Funnels, type Funnel as Funnel, type FunnelStep as FunnelStep };
 
@@ -972,6 +1000,12 @@ export declare namespace Moonbase {
     type IntegerValue as IntegerValue,
     type Item as Item,
     type ItemPointer as ItemPointer,
+    type ItemsFilter as ItemsFilter,
+    type ItemsFilterAndGroup as ItemsFilterAndGroup,
+    type ItemsFilterNotGroup as ItemsFilterNotGroup,
+    type ItemsFilterOrGroup as ItemsFilterOrGroup,
+    type ItemsFilterValueExists as ItemsFilterValueExists,
+    type ItemsFilterValueMatches as ItemsFilterValueMatches,
     type MonetaryField as MonetaryField,
     type MonetaryValue as MonetaryValue,
     type MultiLineTextField as MultiLineTextField,
@@ -997,12 +1031,6 @@ export declare namespace Moonbase {
     type CollectionsCursorPage as CollectionsCursorPage,
     type CollectionRetrieveParams as CollectionRetrieveParams,
     type CollectionListParams as CollectionListParams,
-  };
-
-  export {
-    Items as Items,
-    type ItemSearchResponse as ItemSearchResponse,
-    type ItemSearchParams as ItemSearchParams,
   };
 
   export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
@@ -1097,7 +1125,10 @@ export declare namespace Moonbase {
   export {
     Calls as Calls,
     type Call as Call,
+    type CallsCursorPage as CallsCursorPage,
     type CallCreateParams as CallCreateParams,
+    type CallRetrieveParams as CallRetrieveParams,
+    type CallListParams as CallListParams,
     type CallUpsertParams as CallUpsertParams,
   };
 

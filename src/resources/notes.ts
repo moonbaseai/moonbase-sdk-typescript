@@ -5,6 +5,7 @@ import * as Shared from './shared';
 import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
+import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -72,6 +73,21 @@ export class Notes extends APIResource {
     options?: RequestOptions,
   ): PagePromise<NotesCursorPage, Note> {
     return this._client.getAPIList('/notes', CursorPage<Note>, { query, ...options });
+  }
+
+  /**
+   * Permanently deletes a note.
+   *
+   * @example
+   * ```ts
+   * await client.notes.delete('id');
+   * ```
+   */
+  delete(id: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.delete(path`/notes/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 

@@ -1,9 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as NotesAPI from './notes';
 import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
+import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
 export class Calls extends APIResource {
   /**
@@ -18,7 +21,7 @@ export class Calls extends APIResource {
    *     { phone: '+16505551212', role: 'callee' },
    *   ],
    *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000006',
+   *   provider_id: 'openphone_id_000000000002',
    *   provider_status: 'completed',
    *   start_at: '2025-02-17T15:00:00.000Z',
    *   answered_at: '2025-02-17T15:01:00Z',
@@ -37,6 +40,40 @@ export class Calls extends APIResource {
   }
 
   /**
+   * Retrieves the details of an existing call.
+   *
+   * @example
+   * ```ts
+   * const call = await client.calls.retrieve('id');
+   * ```
+   */
+  retrieve(
+    id: string,
+    query: CallRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Call> {
+    return this._client.get(path`/calls/${id}`, { query, ...options });
+  }
+
+  /**
+   * Returns a list of calls.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const call of client.calls.list()) {
+   *   // ...
+   * }
+   * ```
+   */
+  list(
+    query: CallListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<CallsCursorPage, Call> {
+    return this._client.getAPIList('/calls', CursorPage<Call>, { query, ...options });
+  }
+
+  /**
    * Find and update an existing phone call, or create a new one.
    *
    * @example
@@ -48,7 +85,7 @@ export class Calls extends APIResource {
    *     { phone: '+16505551212', role: 'callee' },
    *   ],
    *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000001',
+   *   provider_id: 'openphone_id_000000000009',
    *   provider_status: 'completed',
    *   start_at: '2025-02-17T15:00:00.000Z',
    *   answered_at: '2025-02-17T15:01:00Z',
@@ -66,6 +103,8 @@ export class Calls extends APIResource {
     return this._client.post('/calls/upsert', { body, ...options });
   }
 }
+
+export type CallsCursorPage = CursorPage<Call>;
 
 /**
  * The Call object represents a phone call that has been logged in the system. It
@@ -133,9 +172,23 @@ export interface Call {
   end_at?: string;
 
   /**
+   * The Note object represents a block of text content, often used for meeting notes
+   * or summaries.
+   */
+  note?: NotesAPI.Note;
+
+  /**
    * A hash of additional metadata from the provider.
    */
   provider_metadata?: { [key: string]: unknown };
+
+  /**
+   * The Note object represents a block of text content, often used for meeting notes
+   * or summaries.
+   */
+  summary?: NotesAPI.Note;
+
+  transcript?: Call.Transcript | null;
 }
 
 export namespace Call {
@@ -173,6 +226,30 @@ export namespace Call {
      * A lightweight reference to another resource.
      */
     person?: Shared.Pointer;
+  }
+
+  export interface Transcript {
+    cues: Array<Transcript.Cue>;
+  }
+
+  export namespace Transcript {
+    export interface Cue {
+      from: number;
+
+      speaker: Cue.Speaker;
+
+      text: string;
+
+      to: number;
+    }
+
+    export namespace Cue {
+      export interface Speaker {
+        attendee_id?: string;
+
+        label?: string;
+      }
+    }
   }
 }
 
@@ -308,6 +385,29 @@ export namespace CallCreateParams {
       to: number;
     }
   }
+}
+
+export interface CallRetrieveParams {
+  /**
+   * Specifies which related objects to include in the response. Valid options are
+   * `transcript`, `note`, and `summary`.
+   */
+  include?: Array<'transcript' | 'note' | 'summary'>;
+}
+
+export interface CallListParams extends CursorPageParams {
+  /**
+   * When specified, returns results starting immediately before the item identified
+   * by this cursor. Use the cursor value from the response's metadata to fetch the
+   * previous page of results.
+   */
+  before?: string;
+
+  /**
+   * Maximum number of items to return per page. Must be between 1 and 100. Defaults
+   * to 20 if not specified.
+   */
+  limit?: number;
 }
 
 export interface CallUpsertParams {
@@ -447,7 +547,10 @@ export namespace CallUpsertParams {
 export declare namespace Calls {
   export {
     type Call as Call,
+    type CallsCursorPage as CallsCursorPage,
     type CallCreateParams as CallCreateParams,
+    type CallRetrieveParams as CallRetrieveParams,
+    type CallListParams as CallListParams,
     type CallUpsertParams as CallUpsertParams,
   };
 }
