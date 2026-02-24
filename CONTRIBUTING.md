@@ -60,7 +60,7 @@ $ yarn link @moonbaseai/sdk
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @moonbaseai/sdk
+$ pnpm link --global @moonbaseai/sdk
 ```
 
 ## Running tests
