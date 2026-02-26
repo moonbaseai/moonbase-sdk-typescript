@@ -316,7 +316,7 @@ export namespace MeetingUpdateParams {
      * The content type of the recording. Note that only `video/mp4` is supported at
      * this time.
      */
-    content_type: string;
+    content_type: 'video/mp4';
 
     /**
      * The unique identifier for the recording from the provider's system.
