@@ -50,7 +50,7 @@ describe('resource calls', () => {
       },
       recordings: [
         {
-          content_type: 'content_type',
+          content_type: 'audio/mpeg',
           provider_id: 'provider_id',
           url: 'https://example.com',
         },
@@ -153,7 +153,7 @@ describe('resource calls', () => {
       },
       recordings: [
         {
-          content_type: 'content_type',
+          content_type: 'audio/mpeg',
           provider_id: 'provider_id',
           url: 'https://example.com',
         },

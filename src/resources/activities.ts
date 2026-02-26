@@ -504,7 +504,7 @@ export interface ActivityProgramMessageFailed {
   /**
    * A code indicating the reason for the failure (e.g., `message_contained_virus`).
    */
-  reason_code?: string;
+  reason_code?: 'liquid_error' | 'person_missing_email' | 'message_contained_virus';
 }
 
 /**
@@ -609,7 +609,7 @@ export interface ActivityProgramMessageShielded {
    * A code indicating why the message was shielded (e.g.,
    * `person_previously_unsubscribed`).
    */
-  reason_code?: string;
+  reason_code?: 'person_previously_unsubscribed' | 'email_on_unsubscribe_list';
 }
 
 /**

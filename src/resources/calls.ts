@@ -134,7 +134,7 @@ export interface Call {
   /**
    * The name of the phone provider that handled the call.
    */
-  provider: string;
+  provider: 'openphone' | 'user' | 'zoom_phone';
 
   /**
    * The unique identifier for the call from the provider's system.
@@ -267,7 +267,7 @@ export interface CallCreateParams {
   /**
    * The name of the phone provider that handled the call (e.g., `openphone`).
    */
-  provider: string;
+  provider: 'openphone' | 'user' | 'zoom_phone';
 
   /**
    * The unique identifier for the call from the provider's system.
@@ -334,7 +334,7 @@ export namespace CallCreateParams {
      * The content type of the recording. Note that only `audio/mpeg` is supported at
      * this time.
      */
-    content_type: string;
+    content_type: 'audio/mpeg';
 
     /**
      * The unique identifier for the recording from the provider's system.
@@ -424,7 +424,7 @@ export interface CallUpsertParams {
   /**
    * The name of the phone provider that handled the call (e.g., `openphone`).
    */
-  provider: string;
+  provider: 'openphone' | 'user' | 'zoom_phone';
 
   /**
    * The unique identifier for the call from the provider's system.
@@ -491,7 +491,7 @@ export namespace CallUpsertParams {
      * The content type of the recording. Note that only `audio/mpeg` is supported at
      * this time.
      */
-    content_type: string;
+    content_type: 'audio/mpeg';
 
     /**
      * The unique identifier for the recording from the provider's system.
