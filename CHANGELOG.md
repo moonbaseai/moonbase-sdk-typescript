@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.14 (2026-02-26)
+
+Full Changelog: [v0.1.0-alpha.13...v0.1.0-alpha.14](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.13...v0.1.0-alpha.14)
+
+### Bug Fixes
+
+* **types:** constrain string fields to enums in activities/calls/meetings ([d4cf104](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/d4cf1041f6d8710fc39845b172016f9b1817bd3f))
+
+
+### Chores
+
+* **internal:** make MCP code execution location configurable via a flag ([9648898](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/96488986fd77f7bdf4c19d1c8f577c5ed7036356))
+
 ## 0.1.0-alpha.13 (2026-02-24)
 
 Full Changelog: [v0.1.0-alpha.12...v0.1.0-alpha.13](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.12...v0.1.0-alpha.13)

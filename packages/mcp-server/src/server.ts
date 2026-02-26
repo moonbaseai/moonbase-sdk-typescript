@@ -20,7 +20,7 @@ export const newMcpServer = async (stainlessApiKey: string | undefined) =>
   new McpServer(
     {
       name: 'moonbaseai_sdk_api',
-      version: '0.1.0-alpha.13',
+      version: '0.1.0-alpha.14',
     },
     {
       instructions: await getInstructions(stainlessApiKey),
@@ -159,6 +159,7 @@ export function selectTools(options?: McpOptions): McpTool[] {
   const includedTools = [
     codeTool({
       blockedMethods: blockedMethodsForCodeTool(options),
+      codeExecutionMode: options?.codeExecutionMode ?? 'stainless-sandbox',
     }),
   ];
   if (options?.includeDocsTools ?? true) {
