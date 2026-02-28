@@ -24,6 +24,9 @@ import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagin
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Manage your collections and items
+ */
 export class Collections extends APIResource {
   fields: FieldsAPI.Fields = new FieldsAPI.Fields(this._client);
   items: ItemsAPI.Items = new ItemsAPI.Items(this._client);

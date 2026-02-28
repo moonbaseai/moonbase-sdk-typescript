@@ -5,6 +5,9 @@ import * as ProgramTemplatesAPI from './program-templates';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * Manage your marketing campaigns and forms
+ */
 export class ProgramMessages extends APIResource {
   /**
    * Sends a message using a program template.

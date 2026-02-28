@@ -921,20 +921,65 @@ export class Moonbase {
   static toFile = Uploads.toFile;
 
   funnels: API.Funnels = new API.Funnels(this);
+  /**
+   * Manage your collections and items
+   */
   collections: API.Collections = new API.Collections(this);
+  /**
+   * Manage your collections and items
+   */
   views: API.Views = new API.Views(this);
+  /**
+   * Manage your inboxes, conversations, and messages
+   */
   inboxes: API.Inboxes = new API.Inboxes(this);
+  /**
+   * Manage your inboxes, conversations, and messages
+   */
   inboxConversations: API.InboxConversations = new API.InboxConversations(this);
+  /**
+   * Manage your inboxes, conversations, and messages
+   */
   inboxMessages: API.InboxMessages = new API.InboxMessages(this);
+  /**
+   * Manage your inboxes, conversations, and messages
+   */
   tagsets: API.Tagsets = new API.Tagsets(this);
+  /**
+   * Manage your marketing campaigns and forms
+   */
   programs: API.Programs = new API.Programs(this);
+  /**
+   * Manage your marketing campaigns and forms
+   */
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
+  /**
+   * Manage your marketing campaigns and forms
+   */
   programMessages: API.ProgramMessages = new API.ProgramMessages(this);
+  /**
+   * Manage your marketing campaigns and forms
+   */
   forms: API.Forms = new API.Forms(this);
+  /**
+   * View activities and capture calls
+   */
   activities: API.Activities = new API.Activities(this);
+  /**
+   * View activities and capture calls
+   */
   calls: API.Calls = new API.Calls(this);
+  /**
+   * Manage your meetings, files, and notes
+   */
   files: API.Files = new API.Files(this);
+  /**
+   * Manage your meetings, files, and notes
+   */
   meetings: API.Meetings = new API.Meetings(this);
+  /**
+   * Manage your meetings, files, and notes
+   */
   notes: API.Notes = new API.Notes(this);
   webhookEndpoints: API.WebhookEndpoints = new API.WebhookEndpoints(this);
   agentSettings: API.AgentSettings = new API.AgentSettings(this);

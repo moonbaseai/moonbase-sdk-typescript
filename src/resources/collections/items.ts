@@ -9,6 +9,9 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Manage your collections and items
+ */
 export class Items extends APIResource {
   /**
    * Creates a new item in a collection.

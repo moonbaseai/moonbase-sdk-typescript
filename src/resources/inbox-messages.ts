@@ -9,6 +9,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage your inboxes, conversations, and messages
+ */
 export class InboxMessages extends APIResource {
   /**
    * Creates a new message draft.
