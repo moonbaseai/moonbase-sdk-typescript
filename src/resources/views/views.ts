@@ -8,6 +8,9 @@ import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Manage your collections and items
+ */
 export class Views extends APIResource {
   items: ItemsAPI.Items = new ItemsAPI.Items(this._client);
 

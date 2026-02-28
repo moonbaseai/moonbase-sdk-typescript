@@ -11,6 +11,9 @@ import { RequestOptions } from '../internal/request-options';
 import { multipartFormRequestOptions } from '../internal/uploads';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage your meetings, files, and notes
+ */
 export class Files extends APIResource {
   /**
    * Retrieves the details of an existing file.

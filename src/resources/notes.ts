@@ -9,6 +9,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage your meetings, files, and notes
+ */
 export class Notes extends APIResource {
   /**
    * Create a new note.

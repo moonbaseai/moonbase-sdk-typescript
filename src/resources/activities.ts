@@ -8,6 +8,9 @@ import { CursorPage, type CursorPageParams, PagePromise } from '../core/paginati
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * View activities and capture calls
+ */
 export class Activities extends APIResource {
   /**
    * Retrieves the details of an existing activity.
