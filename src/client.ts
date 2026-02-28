@@ -11,7 +11,7 @@ import type { APIResponseProps } from './internal/parse';
 import { getPlatformHeaders } from './internal/detect-platform';
 import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
-import * as qs from './internal/qs';
+import { stringifyQuery } from './internal/utils/query';
 import { VERSION } from './version';
 import * as Errors from './core/error';
 import * as Pagination from './core/pagination';
@@ -393,8 +393,8 @@ export class Moonbase {
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
-  protected stringifyQuery(query: Record<string, unknown>): string {
-    return qs.stringify(query, { arrayFormat: 'brackets' });
+  protected stringifyQuery(query: object | Record<string, unknown>): string {
+    return stringifyQuery(query);
   }
 
   private getUserAgent(): string {
@@ -431,7 +431,7 @@ export class Moonbase {
     }
 
     if (typeof query === 'object' && query && !Array.isArray(query)) {
-      url.search = this.stringifyQuery(query as Record<string, unknown>);
+      url.search = this.stringifyQuery(query);
     }
 
     return url.toString();
@@ -894,7 +894,7 @@ export class Moonbase {
     ) {
       return {
         bodyHeaders: { 'content-type': 'application/x-www-form-urlencoded' },
-        body: this.stringifyQuery(body as Record<string, unknown>),
+        body: this.stringifyQuery(body),
       };
     } else {
       return this.#encoder({ body, headers });
@@ -921,20 +921,65 @@ export class Moonbase {
   static toFile = Uploads.toFile;
 
   funnels: API.Funnels = new API.Funnels(this);
+  /**
+   * Manage your collections and items
+   */
   collections: API.Collections = new API.Collections(this);
+  /**
+   * Manage your collections and items
+   */
   views: API.Views = new API.Views(this);
+  /**
+   * Manage your inboxes, conversations, and messages
+   */
   inboxes: API.Inboxes = new API.Inboxes(this);
+  /**
+   * Manage your inboxes, conversations, and messages
+   */
   inboxConversations: API.InboxConversations = new API.InboxConversations(this);
+  /**
+   * Manage your inboxes, conversations, and messages
+   */
   inboxMessages: API.InboxMessages = new API.InboxMessages(this);
+  /**
+   * Manage your inboxes, conversations, and messages
+   */
   tagsets: API.Tagsets = new API.Tagsets(this);
+  /**
+   * Manage your marketing campaigns and forms
+   */
   programs: API.Programs = new API.Programs(this);
+  /**
+   * Manage your marketing campaigns and forms
+   */
   programTemplates: API.ProgramTemplates = new API.ProgramTemplates(this);
+  /**
+   * Manage your marketing campaigns and forms
+   */
   programMessages: API.ProgramMessages = new API.ProgramMessages(this);
+  /**
+   * Manage your marketing campaigns and forms
+   */
   forms: API.Forms = new API.Forms(this);
+  /**
+   * View activities and capture calls
+   */
   activities: API.Activities = new API.Activities(this);
+  /**
+   * View activities and capture calls
+   */
   calls: API.Calls = new API.Calls(this);
+  /**
+   * Manage your meetings, files, and notes
+   */
   files: API.Files = new API.Files(this);
+  /**
+   * Manage your meetings, files, and notes
+   */
   meetings: API.Meetings = new API.Meetings(this);
+  /**
+   * Manage your meetings, files, and notes
+   */
   notes: API.Notes = new API.Notes(this);
   webhookEndpoints: API.WebhookEndpoints = new API.WebhookEndpoints(this);
   agentSettings: API.AgentSettings = new API.AgentSettings(this);

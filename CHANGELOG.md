@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.1.0-alpha.15 (2026-02-28)
+
+Full Changelog: [v0.1.0-alpha.14...v0.1.0-alpha.15](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.14...v0.1.0-alpha.15)
+
+### Features
+
+* **mcp:** add an option to disable code tool ([3cbef18](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/3cbef18125fe0ff486ee359f600e835ce20c275e))
+
+
+### Bug Fixes
+
+* **mcp:** update prompt ([c8e8468](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c8e84688643e420ed8d1428af9af5dc289b9780f))
+
+
+### Chores
+
+* **docs:** add missing descriptions ([065bb17](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/065bb178fbfa9a1b4258da028e2273621b9778c7))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([9683974](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/9683974fec2fd9c02448dce2b0f669df2a51d413))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([feca6a1](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/feca6a14e31380f71ff1cf8f9267483b039b6664))
+* **internal:** move stringifyQuery implementation to internal function ([25464d4](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/25464d442a079a8def348c88c251aef6715e2d5c))
+* **internal:** switch MCP servers to use pino for logging ([ef5a426](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ef5a426497c4269a4a39634b1902a5448d628d8a))
+
 ## 0.1.0-alpha.14 (2026-02-26)
 
 Full Changelog: [v0.1.0-alpha.13...v0.1.0-alpha.14](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.13...v0.1.0-alpha.14)
