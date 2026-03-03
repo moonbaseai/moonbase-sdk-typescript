@@ -341,10 +341,9 @@ export interface ActivityNoteCreated {
   occurred_at: string;
 
   /**
-   * A reference to an `Item` within a specific `Collection`, providing the context
-   * needed to locate the item.
+   * An array of `Item` this note is related to, if any.
    */
-  related_item: CollectionsAPI.ItemPointer | null;
+  related_items: Array<CollectionsAPI.ItemPointer>;
 
   /**
    * A lightweight reference to another resource.
