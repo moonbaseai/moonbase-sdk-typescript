@@ -119,7 +119,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000004',
+      provider_id: 'openphone_id_000000000009',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
     });
@@ -140,7 +140,7 @@ describe('resource calls', () => {
         { phone: '+16505551212', role: 'callee' },
       ],
       provider: 'openphone',
-      provider_id: 'openphone_id_000000000004',
+      provider_id: 'openphone_id_000000000009',
       provider_status: 'completed',
       start_at: '2025-02-17T15:00:00.000Z',
       answered_at: '2025-02-17T15:01:00Z',
