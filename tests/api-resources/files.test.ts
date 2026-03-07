@@ -57,7 +57,7 @@ describe('resource files', () => {
 
   test('upload: only required params', async () => {
     const responsePromise = client.files.upload({
-      file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+      file: await toFile(Buffer.from('Example data'), 'README.md'),
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -70,7 +70,7 @@ describe('resource files', () => {
 
   test('upload: required and optional params', async () => {
     const response = await client.files.upload({
-      file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+      file: await toFile(Buffer.from('Example data'), 'README.md'),
       associations: [{ id: 'id', type: 'type' }],
       name: 'name',
     });
