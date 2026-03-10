@@ -165,6 +165,13 @@ export {
   type ProgramsCursorPage,
 } from './programs';
 export { Tagsets, type Tagset, type TagsetListParams, type TagsetsCursorPage } from './tagsets';
+export {
+  Unsubscribes,
+  type Unsubscribe,
+  type UnsubscribeCreateParams,
+  type UnsubscribeListParams,
+  type UnsubscribesCursorPage,
+} from './unsubscribes';
 export { Views, type View, type ViewRetrieveParams } from './views/views';
 export {
   WebhookEndpoints,

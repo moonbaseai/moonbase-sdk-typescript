@@ -197,6 +197,24 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/forms',
   },
   {
+    clientCallName: 'client.unsubscribes.create',
+    fullyQualifiedName: 'unsubscribes.create',
+    httpMethod: 'post',
+    httpPath: '/unsubscribes',
+  },
+  {
+    clientCallName: 'client.unsubscribes.list',
+    fullyQualifiedName: 'unsubscribes.list',
+    httpMethod: 'get',
+    httpPath: '/unsubscribes',
+  },
+  {
+    clientCallName: 'client.unsubscribes.delete',
+    fullyQualifiedName: 'unsubscribes.delete',
+    httpMethod: 'delete',
+    httpPath: '/unsubscribes/{email}',
+  },
+  {
     clientCallName: 'client.activities.retrieve',
     fullyQualifiedName: 'activities.retrieve',
     httpMethod: 'get',
