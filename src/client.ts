@@ -383,6 +383,9 @@ export class Moonbase {
     return this.baseURL !== 'https://api.moonbase.ai/v0';
   }
 
+  /**
+   * Returns items that match the search query.
+   */
   search(params: TopLevelAPI.SearchParams, options?: RequestOptions): APIPromise<TopLevelAPI.SearchResponse> {
     const { query } = params;
     return this.post('/search', { query: { query }, ...options });

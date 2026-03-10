@@ -3,7 +3,7 @@
 import * as CollectionsAPI from './collections/collections';
 
 /**
- * A field in a search result
+ * A list of search results.
  */
 export interface SearchResponse {
   data: Array<SearchResponse.Data>;
@@ -25,6 +25,9 @@ export namespace SearchResponse {
 }
 
 export interface SearchParams {
+  /**
+   * The search text to match against items.
+   */
   query: string;
 }
 
