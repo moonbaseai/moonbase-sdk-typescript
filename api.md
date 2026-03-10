@@ -219,6 +219,18 @@ Methods:
 - <code title="get /forms/{id}">client.forms.<a href="./src/resources/forms.ts">retrieve</a>(id) -> Form</code>
 - <code title="get /forms">client.forms.<a href="./src/resources/forms.ts">list</a>({ ...params }) -> FormsCursorPage</code>
 
+# Unsubscribes
+
+Types:
+
+- <code><a href="./src/resources/unsubscribes.ts">Unsubscribe</a></code>
+
+Methods:
+
+- <code title="post /unsubscribes">client.unsubscribes.<a href="./src/resources/unsubscribes.ts">create</a>({ ...params }) -> Unsubscribe</code>
+- <code title="get /unsubscribes">client.unsubscribes.<a href="./src/resources/unsubscribes.ts">list</a>({ ...params }) -> UnsubscribesCursorPage</code>
+- <code title="delete /unsubscribes/{email}">client.unsubscribes.<a href="./src/resources/unsubscribes.ts">delete</a>(email) -> void</code>
+
 # Activities
 
 Types:

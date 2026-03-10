@@ -116,6 +116,13 @@ import {
 } from './resources/programs';
 import { Tagset, TagsetListParams, Tagsets, TagsetsCursorPage } from './resources/tagsets';
 import {
+  Unsubscribe,
+  UnsubscribeCreateParams,
+  UnsubscribeListParams,
+  Unsubscribes,
+  UnsubscribesCursorPage,
+} from './resources/unsubscribes';
+import {
   Endpoint,
   EndpointsCursorPage,
   Subscription,
@@ -963,6 +970,10 @@ export class Moonbase {
    */
   forms: API.Forms = new API.Forms(this);
   /**
+   * Manage your marketing campaigns and forms
+   */
+  unsubscribes: API.Unsubscribes = new API.Unsubscribes(this);
+  /**
    * View activities and capture calls
    */
   activities: API.Activities = new API.Activities(this);
@@ -997,6 +1008,7 @@ Moonbase.Programs = Programs;
 Moonbase.ProgramTemplates = ProgramTemplates;
 Moonbase.ProgramMessages = ProgramMessages;
 Moonbase.Forms = Forms;
+Moonbase.Unsubscribes = Unsubscribes;
 Moonbase.Activities = Activities;
 Moonbase.Calls = Calls;
 Moonbase.Files = Files;
@@ -1142,6 +1154,14 @@ export declare namespace Moonbase {
     type Form as Form,
     type FormsCursorPage as FormsCursorPage,
     type FormListParams as FormListParams,
+  };
+
+  export {
+    Unsubscribes as Unsubscribes,
+    type Unsubscribe as Unsubscribe,
+    type UnsubscribesCursorPage as UnsubscribesCursorPage,
+    type UnsubscribeCreateParams as UnsubscribeCreateParams,
+    type UnsubscribeListParams as UnsubscribeListParams,
   };
 
   export {
