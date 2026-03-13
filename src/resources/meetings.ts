@@ -193,12 +193,10 @@ export interface Meeting {
   location?: string;
 
   /**
-   * Any personal notes taken during the meeting. It also includes the AI-generated
-   * pre-meeting briefing.
-   *
-   * **Note:** Only present when requested using the `include` query parameter.
+   * The Note object represents a block of text content, often used for meeting notes
+   * or summaries.
    */
-  note?: NotesAPI.Note;
+  note?: NotesAPI.Note | null;
 
   /**
    * The `Organizer` of the meeting.
@@ -219,11 +217,10 @@ export interface Meeting {
   recording_url?: string;
 
   /**
-   * A summary of the meeting.
-   *
-   * **Note:** Only present when requested using the `include` query parameter.
+   * The Note object represents a block of text content, often used for meeting notes
+   * or summaries.
    */
-  summary?: NotesAPI.Note;
+  summary?: NotesAPI.Note | null;
 
   /**
    * The title or subject of the meeting.
