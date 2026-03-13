@@ -178,7 +178,7 @@ export interface Call {
    * The Note object represents a block of text content, often used for meeting notes
    * or summaries.
    */
-  note?: NotesAPI.Note;
+  note?: NotesAPI.Note | null;
 
   /**
    * A hash of additional metadata from the provider.
@@ -189,7 +189,7 @@ export interface Call {
    * The Note object represents a block of text content, often used for meeting notes
    * or summaries.
    */
-  summary?: NotesAPI.Note;
+  summary?: NotesAPI.Note | null;
 
   transcript?: Call.Transcript | null;
 }
