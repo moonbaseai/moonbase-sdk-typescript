@@ -1837,7 +1837,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       typescript: {
         method: 'client.files.upload',
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst moonbaseFile = await client.files.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(moonbaseFile.id);",
+          "import fs from 'fs';\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst moonbaseFile = await client.files.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(moonbaseFile.id);",
       },
     },
   },
