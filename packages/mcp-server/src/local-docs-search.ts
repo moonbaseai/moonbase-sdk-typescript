@@ -63,29 +63,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## search\n\n`client.search(query: string): { data: object[]; type: 'list'; }`\n\n**post** `/search`\n\nReturns items that match the search query.\n\n### Parameters\n\n- `query: string`\n  The search text to match against items.\n\n### Returns\n\n- `{ data: { data: object; }[]; type: 'list'; }`\n  A list of search results.\n\n  - `data: { data: { id: string; collection: object; type: 'item'; values: object; }; }[]`\n  - `type: 'list'`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst response = await client.search({ query: 'query' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Search',
+      typescript: {
+        method: 'client.search',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Search(context.TODO(), moonbase.SearchParams{\n\t\tQuery: "query",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/search \\\n    -X POST \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.search({ query: 'query' });\n\nconsole.log(response.data);",
       },
       python: {
         method: 'search',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.search(\n    query="query",\n)\nprint(response.data)',
       },
+      go: {
+        method: 'client.Search',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Search(context.TODO(), moonbase.SearchParams{\n\t\tQuery: "query",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
       ruby: {
         method: 'search',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nresponse = moonbase.search(query: "query")\n\nputs(response)',
       },
-      typescript: {
-        method: 'client.search',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.search({ query: 'query' });\n\nconsole.log(response.data);",
+          'curl https://api.moonbase.ai/v0/search \\\n    -X POST \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -103,29 +103,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.collections.list(after?: string, before?: string, limit?: number): { id: string; core: boolean; created_at: string; fields: field[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: view[]; }`\n\n**get** `/collections`\n\nReturns a list of your collections.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; core: boolean; created_at: string; fields: object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: { id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: collection; }[]; }`\n  A Collection is a container for structured data, similar to a database table or spreadsheet. It defines a schema using a set of `Fields` and holds the data as a list of `Items`.\n\n\n  - `id: string`\n  - `core: boolean`\n  - `created_at: string`\n  - `fields: { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/text/single_line'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/text/multi_line'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/unitless_integer'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/unitless_float'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/monetary'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/percentage'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/boolean'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/email'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/url'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/domain'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/social_x'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/social_linked_in'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/telephone_number'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/geo'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/date'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/datetime'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; options: object[]; readonly: boolean; ref: string; required: boolean; type: 'field/choice'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; funnel: object; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/stage'; unique: boolean; updated_at: string; description?: string; } | { id: string; allowed_collections: object[]; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; relation_type: 'one_way' | 'two_way'; required: boolean; type: 'field/relation'; unique: boolean; updated_at: string; description?: string; }[]`\n  - `name: string`\n  - `ref: string`\n  - `type: 'collection'`\n  - `updated_at: string`\n  - `description?: string`\n  - `views?: { id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: { id: string; core: boolean; created_at: string; fields: field[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: view[]; }; }[]`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const collection of client.collections.list()) {\n  console.log(collection);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.List',
+      typescript: {
+        method: 'client.collections.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Collections.List(context.TODO(), moonbase.CollectionListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const collection of client.collections.list()) {\n  console.log(collection.id);\n}",
       },
       python: {
         method: 'collections.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.collections.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Collections.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Collections.List(context.TODO(), moonbase.CollectionListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'collections.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.collections.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.collections.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const collection of client.collections.list()) {\n  console.log(collection.id);\n}",
+          'curl https://api.moonbase.ai/v0/collections \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -143,29 +143,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.collections.retrieve(id: string, include?: 'views'[]): { id: string; core: boolean; created_at: string; fields: field[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: view[]; }`\n\n**get** `/collections/{id}`\n\nRetrieves the details of an existing collection.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'views'[]`\n  Specifies which related objects to include in the response.\n\n### Returns\n\n- `{ id: string; core: boolean; created_at: string; fields: object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: { id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: collection; }[]; }`\n  A Collection is a container for structured data, similar to a database table or spreadsheet. It defines a schema using a set of `Fields` and holds the data as a list of `Items`.\n\n\n  - `id: string`\n  - `core: boolean`\n  - `created_at: string`\n  - `fields: { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/text/single_line'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/text/multi_line'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/unitless_integer'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/unitless_float'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/monetary'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/percentage'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/boolean'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/email'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/url'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/domain'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/social_x'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/social_linked_in'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/telephone_number'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/geo'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/date'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/datetime'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; options: object[]; readonly: boolean; ref: string; required: boolean; type: 'field/choice'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; funnel: object; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/stage'; unique: boolean; updated_at: string; description?: string; } | { id: string; allowed_collections: object[]; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; relation_type: 'one_way' | 'two_way'; required: boolean; type: 'field/relation'; unique: boolean; updated_at: string; description?: string; }[]`\n  - `name: string`\n  - `ref: string`\n  - `type: 'collection'`\n  - `updated_at: string`\n  - `description?: string`\n  - `views?: { id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: { id: string; core: boolean; created_at: string; fields: field[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: view[]; }; }[]`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst collection = await client.collections.retrieve('id');\n\nconsole.log(collection);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Get',
+      typescript: {
+        method: 'client.collections.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcollection, err := client.Collections.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", collection.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst collection = await client.collections.retrieve('id');\n\nconsole.log(collection.id);",
       },
       python: {
         method: 'collections.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\ncollection = client.collections.retrieve(\n    id="id",\n)\nprint(collection.id)',
       },
+      go: {
+        method: 'client.Collections.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcollection, err := client.Collections.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", collection.ID)\n}\n',
+      },
       ruby: {
         method: 'collections.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\ncollection = moonbase.collections.retrieve("id")\n\nputs(collection)',
       },
-      typescript: {
-        method: 'client.collections.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst collection = await client.collections.retrieve('id');\n\nconsole.log(collection.id);",
+          'curl https://api.moonbase.ai/v0/collections/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -183,29 +183,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.collections.fields.retrieve(collection_id: string, id: string): object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object`\n\n**get** `/collections/{collection_id}/fields/{id}`\n\nRetrieves the details of a field in a collection.\n\n### Parameters\n\n- `collection_id: string`\n\n- `id: string`\n\n### Returns\n\n- `{ id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/text/single_line'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/text/multi_line'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/unitless_integer'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/unitless_float'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/monetary'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/number/percentage'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/boolean'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/email'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/url'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/domain'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/social_x'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/uri/social_linked_in'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/telephone_number'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/geo'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/date'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/datetime'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; options: object[]; readonly: boolean; ref: string; required: boolean; type: 'field/choice'; unique: boolean; updated_at: string; description?: string; } | { id: string; cardinality: 'one' | 'many'; core: boolean; created_at: string; funnel: object; name: string; readonly: boolean; ref: string; required: boolean; type: 'field/stage'; unique: boolean; updated_at: string; description?: string; } | { id: string; allowed_collections: object[]; cardinality: 'one' | 'many'; core: boolean; created_at: string; name: string; readonly: boolean; ref: string; relation_type: 'one_way' | 'two_way'; required: boolean; type: 'field/relation'; unique: boolean; updated_at: string; description?: string; }`\n  A field definition, which varies by type\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst field = await client.collections.fields.retrieve('id', { collection_id: 'collection_id' });\n\nconsole.log(field);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Fields.Get',
+      typescript: {
+        method: 'client.collections.fields.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tfield, err := client.Collections.Fields.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionFieldGetParams{\n\t\t\tCollectionID: "collection_id",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", field)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/fields/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst field = await client.collections.fields.retrieve('id', { collection_id: 'collection_id' });\n\nconsole.log(field);",
       },
       python: {
         method: 'collections.fields.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nfield = client.collections.fields.retrieve(\n    id="id",\n    collection_id="collection_id",\n)\nprint(field)',
       },
+      go: {
+        method: 'client.Collections.Fields.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tfield, err := client.Collections.Fields.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionFieldGetParams{\n\t\t\tCollectionID: "collection_id",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", field)\n}\n',
+      },
       ruby: {
         method: 'collections.fields.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nfield = moonbase.collections.fields.retrieve("id", collection_id: "collection_id")\n\nputs(field)',
       },
-      typescript: {
-        method: 'client.collections.fields.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst field = await client.collections.fields.retrieve('id', { collection_id: 'collection_id' });\n\nconsole.log(field);",
+          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/fields/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -230,29 +230,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.collections.items.list(collection_id: string, after?: string, before?: string, include?: string[], limit?: number, sort?: string[]): { id: string; collection: collection_pointer; type: 'item'; values: object; }`\n\n**get** `/collections/{collection_id}/items`\n\nReturns a list of items that are part of the collection.\n\n### Parameters\n\n- `collection_id: string`\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `include?: string[]`\n  Include only specific fields in the returned items. Specify fields by id or key.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n- `sort?: string[]`\n  Sort items by the specified field ids or keys. Prefix a field with a hyphen/minus (`-`) to sort in descending order by that field.\n\n### Returns\n\n- `{ id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; values: object; }`\n  An Item represents a single record or row within a Collection. It holds a set of `values` corresponding to the Collection's `fields`.\n\n  - `id: string`\n  - `collection: { id: string; ref: string; type: 'collection'; }`\n  - `type: 'item'`\n  - `values: object`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const item of client.collections.items.list('collection_id')) {\n  console.log(item);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Items.List',
+      typescript: {
+        method: 'client.collections.items.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Collections.Items.List(\n\t\tcontext.TODO(),\n\t\t"collection_id",\n\t\tmoonbase.CollectionItemListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const item of client.collections.items.list('collection_id')) {\n  console.log(item.id);\n}",
       },
       python: {
         method: 'collections.items.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.collections.items.list(\n    collection_id="collection_id",\n)\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Collections.Items.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Collections.Items.List(\n\t\tcontext.TODO(),\n\t\t"collection_id",\n\t\tmoonbase.CollectionItemListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'collections.items.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.collections.items.list("collection_id")\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.collections.items.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const item of client.collections.items.list('collection_id')) {\n  console.log(item.id);\n}",
+          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -270,29 +270,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.collections.items.create(collection_id: string, values: object): { id: string; collection: collection_pointer; type: 'item'; values: object; }`\n\n**post** `/collections/{collection_id}/items`\n\nCreates a new item in a collection.\n\n### Parameters\n\n- `collection_id: string`\n\n- `values: object`\n  A hash where keys are the `ref` of a `Field` and values are the data to be set.\n\n### Returns\n\n- `{ id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; values: object; }`\n  An Item represents a single record or row within a Collection. It holds a set of `values` corresponding to the Collection's `fields`.\n\n  - `id: string`\n  - `collection: { id: string; ref: string; type: 'collection'; }`\n  - `type: 'item'`\n  - `values: object`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst item = await client.collections.items.create('collection_id', { values: {\n  name: { data: 'Aperture Science', type: 'value/text/single_line' },\n  ceo: {\n  data: { id: '1CLJt2v84CdKMEKqwBNXfE', type: 'item' },\n  type: 'value/relation',\n},\n} });\n\nconsole.log(item);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Items.New',
+      typescript: {
+        method: 'client.collections.items.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\titem, err := client.Collections.Items.New(\n\t\tcontext.TODO(),\n\t\t"collection_id",\n\t\tmoonbase.CollectionItemNewParams{\n\t\t\tValues: map[string]moonbase.FieldValueParamUnion{\n\t\t\t\t"name": {\n\t\t\t\t\tOfSingleLineText: &moonbase.SingleLineTextValueParam{\n\t\t\t\t\t\tData: "Aperture Science",\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t\t"ceo": {\n\t\t\t\t\tOfRelation: &moonbase.RelationValueParam{\n\t\t\t\t\t\tData: moonbase.RelationValueParamDataUnion{\n\t\t\t\t\t\t\tOfPointer: &shared.PointerParam{\n\t\t\t\t\t\t\t\tType: "item",\n\t\t\t\t\t\t\t\tID:   "1CLJt2v84CdKMEKqwBNXfE",\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t},\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", item.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "values": {\n            "name": {\n              "data": "Aperture Science",\n              "type": "value/text/single_line"\n            },\n            "ceo": {\n              "data": {\n                "id": "1CLJt2v84CdKMEKqwBNXfE",\n                "type": "item"\n              },\n              "type": "value/relation"\n            }\n          }\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst item = await client.collections.items.create('collection_id', {\n  values: {\n    name: { type: 'value/text/single_line', data: 'Aperture Science' },\n    ceo: {\n      type: 'value/relation',\n      data: { type: 'item', id: '1CLJt2v84CdKMEKqwBNXfE' },\n    },\n  },\n});\n\nconsole.log(item.id);",
       },
       python: {
         method: 'collections.items.create',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nitem = client.collections.items.create(\n    collection_id="collection_id",\n    values={\n        "name": {\n            "type": "value/text/single_line",\n            "data": "Aperture Science",\n        },\n        "ceo": {\n            "type": "value/relation",\n            "data": {\n                "type": "item",\n                "id": "1CLJt2v84CdKMEKqwBNXfE",\n            },\n        },\n    },\n)\nprint(item.id)',
       },
+      go: {
+        method: 'client.Collections.Items.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\titem, err := client.Collections.Items.New(\n\t\tcontext.TODO(),\n\t\t"collection_id",\n\t\tmoonbase.CollectionItemNewParams{\n\t\t\tValues: map[string]moonbase.FieldValueParamUnion{\n\t\t\t\t"name": {\n\t\t\t\t\tOfSingleLineText: &moonbase.SingleLineTextValueParam{\n\t\t\t\t\t\tData: "Aperture Science",\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t\t"ceo": {\n\t\t\t\t\tOfRelation: &moonbase.RelationValueParam{\n\t\t\t\t\t\tData: moonbase.RelationValueParamDataUnion{\n\t\t\t\t\t\t\tOfPointer: &shared.PointerParam{\n\t\t\t\t\t\t\t\tType: "item",\n\t\t\t\t\t\t\t\tID:   "1CLJt2v84CdKMEKqwBNXfE",\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t},\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", item.ID)\n}\n',
+      },
       ruby: {
         method: 'collections.items.create',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nitem = moonbase.collections.items.create(\n  "collection_id",\n  values: {\n    name: {data: "Aperture Science", type: :"value/text/single_line"},\n    ceo: {data: {id: "1CLJt2v84CdKMEKqwBNXfE", type: "item"}, type: :"value/relation"}\n  }\n)\n\nputs(item)',
       },
-      typescript: {
-        method: 'client.collections.items.create',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst item = await client.collections.items.create('collection_id', {\n  values: {\n    name: { type: 'value/text/single_line', data: 'Aperture Science' },\n    ceo: {\n      type: 'value/relation',\n      data: { type: 'item', id: '1CLJt2v84CdKMEKqwBNXfE' },\n    },\n  },\n});\n\nconsole.log(item.id);",
+          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "values": {\n            "name": {\n              "data": "Aperture Science",\n              "type": "value/text/single_line"\n            },\n            "ceo": {\n              "data": {\n                "id": "1CLJt2v84CdKMEKqwBNXfE",\n                "type": "item"\n              },\n              "type": "value/relation"\n            }\n          }\n        }\'',
       },
     },
   },
@@ -310,29 +310,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.collections.items.retrieve(collection_id: string, id: string): { id: string; collection: collection_pointer; type: 'item'; values: object; }`\n\n**get** `/collections/{collection_id}/items/{id}`\n\nRetrieves the details of an existing item.\n\n### Parameters\n\n- `collection_id: string`\n\n- `id: string`\n\n### Returns\n\n- `{ id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; values: object; }`\n  An Item represents a single record or row within a Collection. It holds a set of `values` corresponding to the Collection's `fields`.\n\n  - `id: string`\n  - `collection: { id: string; ref: string; type: 'collection'; }`\n  - `type: 'item'`\n  - `values: object`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst item = await client.collections.items.retrieve('id', { collection_id: 'collection_id' });\n\nconsole.log(item);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Items.Get',
+      typescript: {
+        method: 'client.collections.items.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\titem, err := client.Collections.Items.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionItemGetParams{\n\t\t\tCollectionID: "collection_id",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", item.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst item = await client.collections.items.retrieve('id', { collection_id: 'collection_id' });\n\nconsole.log(item.id);",
       },
       python: {
         method: 'collections.items.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nitem = client.collections.items.retrieve(\n    id="id",\n    collection_id="collection_id",\n)\nprint(item.id)',
       },
+      go: {
+        method: 'client.Collections.Items.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\titem, err := client.Collections.Items.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionItemGetParams{\n\t\t\tCollectionID: "collection_id",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", item.ID)\n}\n',
+      },
       ruby: {
         method: 'collections.items.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nitem = moonbase.collections.items.retrieve("id", collection_id: "collection_id")\n\nputs(item)',
       },
-      typescript: {
-        method: 'client.collections.items.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst item = await client.collections.items.retrieve('id', { collection_id: 'collection_id' });\n\nconsole.log(item.id);",
+          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -356,29 +356,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.collections.items.update(collection_id: string, id: string, values: object, update-many-strategy?: 'replace' | 'preserve' | 'merge', update-one-strategy?: 'replace' | 'preserve'): { id: string; collection: collection_pointer; type: 'item'; values: object; }`\n\n**patch** `/collections/{collection_id}/items/{id}`\n\nUpdates an item.\n\n### Parameters\n\n- `collection_id: string`\n\n- `id: string`\n\n- `values: object`\n  A hash where keys are the `ref` of a `Field` and values are the new data to be set.\n\n- `update-many-strategy?: 'replace' | 'preserve' | 'merge'`\n\n- `update-one-strategy?: 'replace' | 'preserve'`\n\n### Returns\n\n- `{ id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; values: object; }`\n  An Item represents a single record or row within a Collection. It holds a set of `values` corresponding to the Collection's `fields`.\n\n  - `id: string`\n  - `collection: { id: string; ref: string; type: 'collection'; }`\n  - `type: 'item'`\n  - `values: object`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst item = await client.collections.items.update('id', {\n  collection_id: 'collection_id',\n  values: { name: { data: 'Jony Appleseed', type: 'value/text/single_line' } },\n});\n\nconsole.log(item);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Items.Update',
+      typescript: {
+        method: 'client.collections.items.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\titem, err := client.Collections.Items.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionItemUpdateParams{\n\t\t\tCollectionID: "collection_id",\n\t\t\tValues: map[string]moonbase.FieldValueParamUnion{\n\t\t\t\t"name": {\n\t\t\t\t\tOfSingleLineText: &moonbase.SingleLineTextValueParam{\n\t\t\t\t\t\tData: "Jony Appleseed",\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", item.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "values": {\n            "name": {\n              "data": "Jony Appleseed",\n              "type": "value/text/single_line"\n            }\n          }\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst item = await client.collections.items.update('id', {\n  collection_id: 'collection_id',\n  values: { name: { type: 'value/text/single_line', data: 'Jony Appleseed' } },\n});\n\nconsole.log(item.id);",
       },
       python: {
         method: 'collections.items.update',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nitem = client.collections.items.update(\n    id="id",\n    collection_id="collection_id",\n    values={\n        "name": {\n            "type": "value/text/single_line",\n            "data": "Jony Appleseed",\n        }\n    },\n)\nprint(item.id)',
       },
+      go: {
+        method: 'client.Collections.Items.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\titem, err := client.Collections.Items.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionItemUpdateParams{\n\t\t\tCollectionID: "collection_id",\n\t\t\tValues: map[string]moonbase.FieldValueParamUnion{\n\t\t\t\t"name": {\n\t\t\t\t\tOfSingleLineText: &moonbase.SingleLineTextValueParam{\n\t\t\t\t\t\tData: "Jony Appleseed",\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", item.ID)\n}\n',
+      },
       ruby: {
         method: 'collections.items.update',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nitem = moonbase.collections.items.update(\n  "id",\n  collection_id: "collection_id",\n  values: {name: {data: "Jony Appleseed", type: :"value/text/single_line"}}\n)\n\nputs(item)',
       },
-      typescript: {
-        method: 'client.collections.items.update',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst item = await client.collections.items.update('id', {\n  collection_id: 'collection_id',\n  values: { name: { type: 'value/text/single_line', data: 'Jony Appleseed' } },\n});\n\nconsole.log(item.id);",
+          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "values": {\n            "name": {\n              "data": "Jony Appleseed",\n              "type": "value/text/single_line"\n            }\n          }\n        }\'',
       },
     },
   },
@@ -394,29 +394,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.collections.items.delete(collection_id: string, id: string): void`\n\n**delete** `/collections/{collection_id}/items/{id}`\n\nPermanently deletes an item.\n\n### Parameters\n\n- `collection_id: string`\n\n- `id: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nawait client.collections.items.delete('id', { collection_id: 'collection_id' })\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Items.Delete',
+      typescript: {
+        method: 'client.collections.items.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Collections.Items.Delete(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionItemDeleteParams{\n\t\t\tCollectionID: "collection_id",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.collections.items.delete('id', { collection_id: 'collection_id' });",
       },
       python: {
         method: 'collections.items.delete',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nclient.collections.items.delete(\n    id="id",\n    collection_id="collection_id",\n)',
       },
+      go: {
+        method: 'client.Collections.Items.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Collections.Items.Delete(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CollectionItemDeleteParams{\n\t\t\tCollectionID: "collection_id",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
       ruby: {
         method: 'collections.items.delete',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nresult = moonbase.collections.items.delete("id", collection_id: "collection_id")\n\nputs(result)',
       },
-      typescript: {
-        method: 'client.collections.items.delete',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.collections.items.delete('id', { collection_id: 'collection_id' });",
+          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -440,29 +440,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## upsert\n\n`client.collections.items.upsert(collection_id: string, identifiers: object, values: object, update-many-strategy?: 'replace' | 'preserve' | 'merge', update-one-strategy?: 'replace' | 'preserve'): { id: string; collection: collection_pointer; type: 'item'; values: object; }`\n\n**post** `/collections/{collection_id}/items/upsert`\n\nFind and update an existing item, or create a new one.\n\n### Parameters\n\n- `collection_id: string`\n\n- `identifiers: object`\n  A hash where keys are the `ref` of a `Field` and values are used to identify the item to update. When multiple identifiers are provided, the update will find items that match any of the identifiers.\n\n- `values: object`\n  A hash where keys are the `ref` of a `Field` and values are the data to be set.\n\n- `update-many-strategy?: 'replace' | 'preserve' | 'merge'`\n\n- `update-one-strategy?: 'replace' | 'preserve'`\n\n### Returns\n\n- `{ id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; values: object; }`\n  An Item represents a single record or row within a Collection. It holds a set of `values` corresponding to the Collection's `fields`.\n\n  - `id: string`\n  - `collection: { id: string; ref: string; type: 'collection'; }`\n  - `type: 'item'`\n  - `values: object`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst item = await client.collections.items.upsert('collection_id', {\n  identifiers: { domain: [{ data: 'aperturescience.com', type: 'value/uri/domain' }] },\n  values: {\n  name: { data: 'Aperture Science', type: 'value/text/single_line' },\n  domain: [{ data: 'aperturescience.com', type: 'value/uri/domain' }],\n  linked_in: {\n  data: {},\n  type: 'value/uri/social_linked_in',\n},\n},\n});\n\nconsole.log(item);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Items.Upsert',
+      typescript: {
+        method: 'client.collections.items.upsert',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\titem, err := client.Collections.Items.Upsert(\n\t\tcontext.TODO(),\n\t\t"1CLJt2uco2zG6pdjxS37sg",\n\t\tmoonbase.CollectionItemUpsertParams{\n\t\t\tIdentifiers: map[string]moonbase.FieldValueParamUnion{\n\t\t\t\t"domain": {\n\t\t\t\t\tOfArrayOfValues: []moonbase.ValueParamUnion{{\n\t\t\t\t\t\tOfValueUriDomain: &moonbase.DomainValueParam{\n\t\t\t\t\t\t\tData: "aperturescience.com",\n\t\t\t\t\t\t},\n\t\t\t\t\t}},\n\t\t\t\t},\n\t\t\t},\n\t\t\tValues: map[string]moonbase.FieldValueParamUnion{\n\t\t\t\t"name": {\n\t\t\t\t\tOfSingleLineText: &moonbase.SingleLineTextValueParam{\n\t\t\t\t\t\tData: "Aperture Science",\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t\t"domain": {\n\t\t\t\t\tOfArrayOfValues: []moonbase.ValueParamUnion{{\n\t\t\t\t\t\tOfValueUriDomain: &moonbase.DomainValueParam{\n\t\t\t\t\t\t\tData: "aperturescience.com",\n\t\t\t\t\t\t},\n\t\t\t\t\t}},\n\t\t\t\t},\n\t\t\t\t"linked_in": {\n\t\t\t\t\tOfLinkedIn: &moonbase.FieldValueParamLinkedIn{\n\t\t\t\t\t\tData: moonbase.FieldValueParamLinkedInData{\n\t\t\t\t\t\t\tURL: moonbase.String("https://linkedin.com/company/aperturescience"),\n\t\t\t\t\t\t},\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", item.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/upsert \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "identifiers": {\n            "domain": [\n              {\n                "data": "aperturescience.com",\n                "type": "value/uri/domain"\n              }\n            ]\n          },\n          "values": {\n            "name": {\n              "data": "Aperture Science",\n              "type": "value/text/single_line"\n            },\n            "domain": [\n              {\n                "data": "aperturescience.com",\n                "type": "value/uri/domain"\n              }\n            ],\n            "linked_in": {\n              "data": {\n                "url": "https://linkedin.com/company/aperturescience"\n              },\n              "type": "value/uri/social_linked_in"\n            }\n          }\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst item = await client.collections.items.upsert('collection_id', {\n  identifiers: { domain: [{ type: 'value/uri/domain', data: 'aperturescience.com' }] },\n  values: {\n    name: { type: 'value/text/single_line', data: 'Aperture Science' },\n    domain: [{ type: 'value/uri/domain', data: 'aperturescience.com' }],\n    linked_in: {\n      type: 'value/uri/social_linked_in',\n      data: { url: 'https://linkedin.com/company/aperturescience' },\n    },\n  },\n});\n\nconsole.log(item.id);",
       },
       python: {
         method: 'collections.items.upsert',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nitem = client.collections.items.upsert(\n    collection_id="1CLJt2uco2zG6pdjxS37sg",\n    identifiers={\n        "domain": [{\n            "type": "value/uri/domain",\n            "data": "aperturescience.com",\n        }]\n    },\n    values={\n        "name": {\n            "type": "value/text/single_line",\n            "data": "Aperture Science",\n        },\n        "domain": [{\n            "type": "value/uri/domain",\n            "data": "aperturescience.com",\n        }],\n        "linked_in": {\n            "type": "value/uri/social_linked_in",\n            "data": {\n                "url": "https://linkedin.com/company/aperturescience"\n            },\n        },\n    },\n)\nprint(item.id)',
       },
+      go: {
+        method: 'client.Collections.Items.Upsert',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\titem, err := client.Collections.Items.Upsert(\n\t\tcontext.TODO(),\n\t\t"1CLJt2uco2zG6pdjxS37sg",\n\t\tmoonbase.CollectionItemUpsertParams{\n\t\t\tIdentifiers: map[string]moonbase.FieldValueParamUnion{\n\t\t\t\t"domain": {\n\t\t\t\t\tOfArrayOfValues: []moonbase.ValueParamUnion{{\n\t\t\t\t\t\tOfValueUriDomain: &moonbase.DomainValueParam{\n\t\t\t\t\t\t\tData: "aperturescience.com",\n\t\t\t\t\t\t},\n\t\t\t\t\t}},\n\t\t\t\t},\n\t\t\t},\n\t\t\tValues: map[string]moonbase.FieldValueParamUnion{\n\t\t\t\t"name": {\n\t\t\t\t\tOfSingleLineText: &moonbase.SingleLineTextValueParam{\n\t\t\t\t\t\tData: "Aperture Science",\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t\t"domain": {\n\t\t\t\t\tOfArrayOfValues: []moonbase.ValueParamUnion{{\n\t\t\t\t\t\tOfValueUriDomain: &moonbase.DomainValueParam{\n\t\t\t\t\t\t\tData: "aperturescience.com",\n\t\t\t\t\t\t},\n\t\t\t\t\t}},\n\t\t\t\t},\n\t\t\t\t"linked_in": {\n\t\t\t\t\tOfLinkedIn: &moonbase.FieldValueParamLinkedIn{\n\t\t\t\t\t\tData: moonbase.FieldValueParamLinkedInData{\n\t\t\t\t\t\t\tURL: moonbase.String("https://linkedin.com/company/aperturescience"),\n\t\t\t\t\t\t},\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", item.ID)\n}\n',
+      },
       ruby: {
         method: 'collections.items.upsert',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nitem = moonbase.collections.items.upsert(\n  "collection_id",\n  identifiers: {domain: [{data: "aperturescience.com", type: :"value/uri/domain"}]},\n  values: {\n    name: {data: "Aperture Science", type: :"value/text/single_line"},\n    domain: [{data: "aperturescience.com", type: :"value/uri/domain"}],\n    linked_in: {data: {}, type: :"value/uri/social_linked_in"}\n  }\n)\n\nputs(item)',
       },
-      typescript: {
-        method: 'client.collections.items.upsert',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst item = await client.collections.items.upsert('collection_id', {\n  identifiers: { domain: [{ type: 'value/uri/domain', data: 'aperturescience.com' }] },\n  values: {\n    name: { type: 'value/text/single_line', data: 'Aperture Science' },\n    domain: [{ type: 'value/uri/domain', data: 'aperturescience.com' }],\n    linked_in: {\n      type: 'value/uri/social_linked_in',\n      data: { url: 'https://linkedin.com/company/aperturescience' },\n    },\n  },\n});\n\nconsole.log(item.id);",
+          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/upsert \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "identifiers": {\n            "domain": [\n              {\n                "data": "aperturescience.com",\n                "type": "value/uri/domain"\n              }\n            ]\n          },\n          "values": {\n            "name": {\n              "data": "Aperture Science",\n              "type": "value/text/single_line"\n            },\n            "domain": [\n              {\n                "data": "aperturescience.com",\n                "type": "value/uri/domain"\n              }\n            ],\n            "linked_in": {\n              "data": {\n                "url": "https://linkedin.com/company/aperturescience"\n              },\n              "type": "value/uri/social_linked_in"\n            }\n          }\n        }\'',
       },
     },
   },
@@ -487,29 +487,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## search\n\n`client.collections.items.search(collection_id: string, after?: string, before?: string, limit?: number, filter?: object | object | object | object | object, include?: string[], sort?: string[]): { data: item; }`\n\n**post** `/collections/{collection_id}/items/search`\n\nReturns a list of items in the collection that match the given filters.\n\n### Parameters\n\n- `collection_id: string`\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n- `filter?: { field: string; op: string; value: string | number | boolean; } | { field: string; op: 'exists'; } | { filters: items_filter_value_matches | items_filter_value_exists | items_filter_and_group | items_filter_or_group | items_filter_not_group[]; op: 'and'; } | { filters: items_filter_value_matches | items_filter_value_exists | items_filter_and_group | items_filter_or_group | items_filter_not_group[]; op: 'or'; } | { filter: items_filter_value_matches | items_filter_value_exists | items_filter_and_group | items_filter_or_group | items_filter_not_group; op: 'not'; }`\n  Return only items that match the filter conditions. Complex filters can be created by nesting filters inside of `AND`, `OR`, and `NOT` filters.\n\n- `include?: string[]`\n  Include only specific fields in the returned items. Specify fields by id or key.\n\n- `sort?: string[]`\n  Sort items by the specified field ids or keys. Prefix a field with a hyphen/minus (`-`) to sort in descending order by that field.\n\n### Returns\n\n- `{ data: { id: string; collection: collection_pointer; type: 'item'; values: object; }; }`\n  A search result entry\n\n  - `data: { id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; values: object; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const itemSearchResponse of client.collections.items.search('collection_id')) {\n  console.log(itemSearchResponse);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Collections.Items.Search',
+      typescript: {
+        method: 'client.collections.items.search',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Collections.Items.Search(\n\t\tcontext.TODO(),\n\t\t"collection_id",\n\t\tmoonbase.CollectionItemSearchParams{\n\t\t\tFilter: moonbase.ItemsFilterUnionParam{\n\t\t\t\tOfItemsFilterAndGroup: &moonbase.ItemsFilterAndGroupParam{\n\t\t\t\t\tFilters: []moonbase.ItemsFilterUnionParam{{\n\t\t\t\t\t\tOfItemsFilterValueMatches: &moonbase.ItemsFilterValueMatchesParam{\n\t\t\t\t\t\t\tOp:    moonbase.ItemsFilterValueMatchesOpStartsWith,\n\t\t\t\t\t\t\tField: "name",\n\t\t\t\t\t\t\tValue: moonbase.ItemsFilterValueMatchesValueUnionParam{\n\t\t\t\t\t\t\t\tOfString: moonbase.String("C"),\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t},\n\t\t\t\t\t}, {\n\t\t\t\t\t\tOfItemsFilterValueMatches: &moonbase.ItemsFilterValueMatchesParam{\n\t\t\t\t\t\t\tOp:    moonbase.ItemsFilterValueMatchesOpEndsWith,\n\t\t\t\t\t\t\tField: "name",\n\t\t\t\t\t\t\tValue: moonbase.ItemsFilterValueMatchesValueUnionParam{\n\t\t\t\t\t\t\t\tOfString: moonbase.String("e"),\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t},\n\t\t\t\t\t}},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/search \\\n    -X POST \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const itemSearchResponse of client.collections.items.search('collection_id', {\n  filter: {\n    op: 'and',\n    filters: [\n      {\n        op: 'starts_with',\n        field: 'name',\n        value: 'C',\n      },\n      {\n        op: 'ends_with',\n        field: 'name',\n        value: 'e',\n      },\n    ],\n  },\n})) {\n  console.log(itemSearchResponse.data);\n}",
       },
       python: {
         method: 'collections.items.search',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.collections.items.search(\n    collection_id="collection_id",\n    filter={\n        "op": "and",\n        "filters": [{\n            "op": "starts_with",\n            "field": "name",\n            "value": "C",\n        }, {\n            "op": "ends_with",\n            "field": "name",\n            "value": "e",\n        }],\n    },\n)\npage = page.data[0]\nprint(page.data)',
       },
+      go: {
+        method: 'client.Collections.Items.Search',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Collections.Items.Search(\n\t\tcontext.TODO(),\n\t\t"collection_id",\n\t\tmoonbase.CollectionItemSearchParams{\n\t\t\tFilter: moonbase.ItemsFilterUnionParam{\n\t\t\t\tOfItemsFilterAndGroup: &moonbase.ItemsFilterAndGroupParam{\n\t\t\t\t\tFilters: []moonbase.ItemsFilterUnionParam{{\n\t\t\t\t\t\tOfItemsFilterValueMatches: &moonbase.ItemsFilterValueMatchesParam{\n\t\t\t\t\t\t\tOp:    moonbase.ItemsFilterValueMatchesOpStartsWith,\n\t\t\t\t\t\t\tField: "name",\n\t\t\t\t\t\t\tValue: moonbase.ItemsFilterValueMatchesValueUnionParam{\n\t\t\t\t\t\t\t\tOfString: moonbase.String("C"),\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t},\n\t\t\t\t\t}, {\n\t\t\t\t\t\tOfItemsFilterValueMatches: &moonbase.ItemsFilterValueMatchesParam{\n\t\t\t\t\t\t\tOp:    moonbase.ItemsFilterValueMatchesOpEndsWith,\n\t\t\t\t\t\t\tField: "name",\n\t\t\t\t\t\t\tValue: moonbase.ItemsFilterValueMatchesValueUnionParam{\n\t\t\t\t\t\t\t\tOfString: moonbase.String("e"),\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t},\n\t\t\t\t\t}},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'collections.items.search',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.collections.items.search("collection_id")\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.collections.items.search',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const itemSearchResponse of client.collections.items.search('collection_id', {\n  filter: {\n    op: 'and',\n    filters: [\n      {\n        op: 'starts_with',\n        field: 'name',\n        value: 'C',\n      },\n      {\n        op: 'ends_with',\n        field: 'name',\n        value: 'e',\n      },\n    ],\n  },\n})) {\n  console.log(itemSearchResponse.data);\n}",
+          'curl https://api.moonbase.ai/v0/collections/$COLLECTION_ID/items/search \\\n    -X POST \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -527,29 +527,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.views.retrieve(id: string, include?: 'collection'[]): { id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: collection; }`\n\n**get** `/views/{id}`\n\nRetrieves the details of an existing view.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'collection'[]`\n  Specifies which related objects to include in the response. Valid option is `collection`.\n\n### Returns\n\n- `{ id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: { id: string; core: boolean; created_at: string; fields: field[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: view[]; }; }`\n  A View represents a saved configuration for displaying items in a collection, including filters and sorting rules.\n\n  - `id: string`\n  - `created_at: string`\n  - `name: string`\n  - `type: 'view'`\n  - `updated_at: string`\n  - `view_type: 'table' | 'board'`\n  - `collection?: { id: string; core: boolean; created_at: string; fields: object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: { id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: collection; }[]; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst view = await client.views.retrieve('id');\n\nconsole.log(view);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Views.Get',
+      typescript: {
+        method: 'client.views.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tview, err := client.Views.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.ViewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/views/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.retrieve('id');\n\nconsole.log(view.id);",
       },
       python: {
         method: 'views.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.retrieve(\n    id="id",\n)\nprint(view.id)',
       },
+      go: {
+        method: 'client.Views.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tview, err := client.Views.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.ViewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view.ID)\n}\n',
+      },
       ruby: {
         method: 'views.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nview = moonbase.views.retrieve("id")\n\nputs(view)',
       },
-      typescript: {
-        method: 'client.views.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.retrieve('id');\n\nconsole.log(view.id);",
+          'curl https://api.moonbase.ai/v0/views/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -567,29 +567,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.views.items.list(id: string, after?: string, before?: string, limit?: number): { id: string; collection: collection_pointer; type: 'item'; values: object; }`\n\n**get** `/views/{id}/items`\n\nReturns a list of items that are part of the specified view.\n\n### Parameters\n\n- `id: string`\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; values: object; }`\n  An Item represents a single record or row within a Collection. It holds a set of `values` corresponding to the Collection's `fields`.\n\n  - `id: string`\n  - `collection: { id: string; ref: string; type: 'collection'; }`\n  - `type: 'item'`\n  - `values: object`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const item of client.views.items.list('id')) {\n  console.log(item);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Views.Items.List',
+      typescript: {
+        method: 'client.views.items.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Views.Items.List(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.ViewItemListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/views/$ID/items \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const item of client.views.items.list('id')) {\n  console.log(item.id);\n}",
       },
       python: {
         method: 'views.items.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.views.items.list(\n    id="id",\n)\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Views.Items.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Views.Items.List(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.ViewItemListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'views.items.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.views.items.list("id")\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.views.items.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const item of client.views.items.list('id')) {\n  console.log(item.id);\n}",
+          'curl https://api.moonbase.ai/v0/views/$ID/items \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -607,29 +607,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.inboxes.list(after?: string, before?: string, include?: 'tagsets'[], limit?: number): { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: tagset[]; }`\n\n**get** `/inboxes`\n\nReturns a list of shared inboxes.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `include?: 'tagsets'[]`\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: { id: string; created_at: string; name: string; tags: object[]; type: 'tagset'; updated_at: string; description?: string; }[]; }`\n  The Inbox object represents a shared inbox for receiving and sending messages.\n\n  - `id: string`\n  - `created_at: string`\n  - `name: string`\n  - `type: 'inbox'`\n  - `updated_at: string`\n  - `can_read?: boolean`\n  - `tagsets?: { id: string; created_at: string; name: string; tags: { id: string; name: string; type: 'tag'; }[]; type: 'tagset'; updated_at: string; description?: string; }[]`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const inbox of client.inboxes.list()) {\n  console.log(inbox);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Inboxes.List',
+      typescript: {
+        method: 'client.inboxes.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Inboxes.List(context.TODO(), moonbase.InboxListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inboxes \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const inbox of client.inboxes.list()) {\n  console.log(inbox.id);\n}",
       },
       python: {
         method: 'inboxes.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.inboxes.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Inboxes.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Inboxes.List(context.TODO(), moonbase.InboxListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'inboxes.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.inboxes.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.inboxes.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const inbox of client.inboxes.list()) {\n  console.log(inbox.id);\n}",
+          'curl https://api.moonbase.ai/v0/inboxes \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -647,29 +647,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.inboxes.retrieve(id: string, include?: 'tagsets'[]): { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: tagset[]; }`\n\n**get** `/inboxes/{id}`\n\nRetrieves the details of an existing inbox.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'tagsets'[]`\n  Specifies which related objects to include in the response. Valid option is `tagsets`.\n\n### Returns\n\n- `{ id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: { id: string; created_at: string; name: string; tags: object[]; type: 'tagset'; updated_at: string; description?: string; }[]; }`\n  The Inbox object represents a shared inbox for receiving and sending messages.\n\n  - `id: string`\n  - `created_at: string`\n  - `name: string`\n  - `type: 'inbox'`\n  - `updated_at: string`\n  - `can_read?: boolean`\n  - `tagsets?: { id: string; created_at: string; name: string; tags: { id: string; name: string; type: 'tag'; }[]; type: 'tagset'; updated_at: string; description?: string; }[]`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst inbox = await client.inboxes.retrieve('id');\n\nconsole.log(inbox);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Inboxes.Get',
+      typescript: {
+        method: 'client.inboxes.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tinbox, err := client.Inboxes.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.InboxGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", inbox.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inboxes/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst inbox = await client.inboxes.retrieve('id');\n\nconsole.log(inbox.id);",
       },
       python: {
         method: 'inboxes.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\ninbox = client.inboxes.retrieve(\n    id="id",\n)\nprint(inbox.id)',
       },
+      go: {
+        method: 'client.Inboxes.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tinbox, err := client.Inboxes.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.InboxGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", inbox.ID)\n}\n',
+      },
       ruby: {
         method: 'inboxes.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\ninbox = moonbase.inboxes.retrieve("id")\n\nputs(inbox)',
       },
-      typescript: {
-        method: 'client.inboxes.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst inbox = await client.inboxes.retrieve('id');\n\nconsole.log(inbox.id);",
+          'curl https://api.moonbase.ai/v0/inboxes/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -693,29 +693,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.inboxConversations.list(after?: string, before?: string, filter?: { conversation_id?: { eq?: string; }; inbox_id?: { eq?: string; }; }, include?: 'inbox' | 'messages' | 'messages.addresses'[], limit?: number): { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: object[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: inbox; messages?: email_message[]; unsnooze_at?: string; }`\n\n**get** `/inbox_conversations`\n\nReturns a list of your conversations.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `filter?: { conversation_id?: { eq?: string; }; inbox_id?: { eq?: string; }; }`\n  - `conversation_id?: { eq?: string; }`\n  - `inbox_id?: { eq?: string; }`\n\n- `include?: 'inbox' | 'messages' | 'messages.addresses'[]`\n  Specifies which related objects to include in the response. Valid options are `inbox`, `messages`, and `messages.addresses`.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: { id: string; name: string; type: 'tag'; }[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: tagset[]; }; messages?: { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }[]; unsnooze_at?: string; }`\n  The Conversation object represents a thread of related messages.\n\n  - `id: string`\n  - `bulk: boolean`\n  - `created_at: string`\n  - `draft: boolean`\n  - `follow_up: boolean`\n  - `last_message_at: string`\n  - `spam: boolean`\n  - `state: 'unassigned' | 'active' | 'closed' | 'waiting'`\n  - `subject: string`\n  - `tags: { id: string; name: string; type: 'tag'; }[]`\n  - `trash: boolean`\n  - `type: 'inbox_conversation'`\n  - `unread: boolean`\n  - `updated_at: string`\n  - `inbox?: { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: { id: string; created_at: string; name: string; tags: object[]; type: 'tagset'; updated_at: string; description?: string; }[]; }`\n  - `messages?: { id: string; body: { markdown?: string; }; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: pointer; person?: pointer; }[]; attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]; conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: object[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: inbox; messages?: email_message[]; unsnooze_at?: string; }; summary?: string; }[]`\n  - `unsnooze_at?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const inboxConversation of client.inboxConversations.list()) {\n  console.log(inboxConversation);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.InboxConversations.List',
+      typescript: {
+        method: 'client.inboxConversations.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.InboxConversations.List(context.TODO(), moonbase.InboxConversationListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inbox_conversations \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const inboxConversation of client.inboxConversations.list()) {\n  console.log(inboxConversation.id);\n}",
       },
       python: {
         method: 'inbox_conversations.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.inbox_conversations.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.InboxConversations.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.InboxConversations.List(context.TODO(), moonbase.InboxConversationListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'inbox_conversations.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.inbox_conversations.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.inboxConversations.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const inboxConversation of client.inboxConversations.list()) {\n  console.log(inboxConversation.id);\n}",
+          'curl https://api.moonbase.ai/v0/inbox_conversations \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -733,29 +733,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.inboxConversations.retrieve(id: string, include?: 'inbox' | 'messages' | 'messages.addresses'[]): { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: object[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: inbox; messages?: email_message[]; unsnooze_at?: string; }`\n\n**get** `/inbox_conversations/{id}`\n\nRetrieves the details of an existing conversation.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'inbox' | 'messages' | 'messages.addresses'[]`\n  Specifies which related objects to include in the response. Valid options are `inbox`, `messages`, and `messages.addresses`.\n\n### Returns\n\n- `{ id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: { id: string; name: string; type: 'tag'; }[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: tagset[]; }; messages?: { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }[]; unsnooze_at?: string; }`\n  The Conversation object represents a thread of related messages.\n\n  - `id: string`\n  - `bulk: boolean`\n  - `created_at: string`\n  - `draft: boolean`\n  - `follow_up: boolean`\n  - `last_message_at: string`\n  - `spam: boolean`\n  - `state: 'unassigned' | 'active' | 'closed' | 'waiting'`\n  - `subject: string`\n  - `tags: { id: string; name: string; type: 'tag'; }[]`\n  - `trash: boolean`\n  - `type: 'inbox_conversation'`\n  - `unread: boolean`\n  - `updated_at: string`\n  - `inbox?: { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: { id: string; created_at: string; name: string; tags: object[]; type: 'tagset'; updated_at: string; description?: string; }[]; }`\n  - `messages?: { id: string; body: { markdown?: string; }; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: pointer; person?: pointer; }[]; attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]; conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: object[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: inbox; messages?: email_message[]; unsnooze_at?: string; }; summary?: string; }[]`\n  - `unsnooze_at?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst inboxConversation = await client.inboxConversations.retrieve('id');\n\nconsole.log(inboxConversation);\n```",
     perLanguage: {
-      go: {
-        method: 'client.InboxConversations.Get',
+      typescript: {
+        method: 'client.inboxConversations.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tinboxConversation, err := client.InboxConversations.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.InboxConversationGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", inboxConversation.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inbox_conversations/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst inboxConversation = await client.inboxConversations.retrieve('id');\n\nconsole.log(inboxConversation.id);",
       },
       python: {
         method: 'inbox_conversations.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\ninbox_conversation = client.inbox_conversations.retrieve(\n    id="id",\n)\nprint(inbox_conversation.id)',
       },
+      go: {
+        method: 'client.InboxConversations.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tinboxConversation, err := client.InboxConversations.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.InboxConversationGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", inboxConversation.ID)\n}\n',
+      },
       ruby: {
         method: 'inbox_conversations.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\ninbox_conversation = moonbase.inbox_conversations.retrieve("id")\n\nputs(inbox_conversation)',
       },
-      typescript: {
-        method: 'client.inboxConversations.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst inboxConversation = await client.inboxConversations.retrieve('id');\n\nconsole.log(inboxConversation.id);",
+          'curl https://api.moonbase.ai/v0/inbox_conversations/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -779,29 +779,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.inboxMessages.list(after?: string, before?: string, filter?: { conversation_id?: { eq?: string; }; inbox_id?: { eq?: string; }; }, include?: 'addresses' | 'attachments' | 'conversation'[], limit?: number): { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }`\n\n**get** `/inbox_messages`\n\nReturns a list of messages.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `filter?: { conversation_id?: { eq?: string; }; inbox_id?: { eq?: string; }; }`\n  - `conversation_id?: { eq?: string; }`\n  - `inbox_id?: { eq?: string; }`\n\n- `include?: 'addresses' | 'attachments' | 'conversation'[]`\n  Specifies which related objects to include in the response. Valid options are `addresses`, `attachments`, and `conversation`.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; body: { markdown?: string; }; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: pointer; person?: pointer; }[]; attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]; conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: object[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: inbox; messages?: email_message[]; unsnooze_at?: string; }; summary?: string; }`\n  The Email Message object represents a single email within a `Conversation`.\n\n  - `id: string`\n  - `body: { markdown?: string; }`\n  - `bulk: boolean`\n  - `created_at: string`\n  - `draft: boolean`\n  - `lock_version: number`\n  - `spam: boolean`\n  - `subject: string`\n  - `trash: boolean`\n  - `type: 'email_message'`\n  - `unread: boolean`\n  - `addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]`\n  - `conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: { id: string; name: string; type: 'tag'; }[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: tagset[]; }; messages?: { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }[]; unsnooze_at?: string; }`\n  - `summary?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const emailMessage of client.inboxMessages.list()) {\n  console.log(emailMessage);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.InboxMessages.List',
+      typescript: {
+        method: 'client.inboxMessages.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.InboxMessages.List(context.TODO(), moonbase.InboxMessageListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inbox_messages \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const emailMessage of client.inboxMessages.list()) {\n  console.log(emailMessage.id);\n}",
       },
       python: {
         method: 'inbox_messages.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.inbox_messages.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.InboxMessages.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.InboxMessages.List(context.TODO(), moonbase.InboxMessageListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'inbox_messages.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.inbox_messages.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.inboxMessages.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const emailMessage of client.inboxMessages.list()) {\n  console.log(emailMessage.id);\n}",
+          'curl https://api.moonbase.ai/v0/inbox_messages \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -819,29 +819,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.inboxMessages.retrieve(id: string, include?: 'addresses' | 'attachments' | 'conversation'[]): { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }`\n\n**get** `/inbox_messages/{id}`\n\nRetrieves the details of an existing message.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'addresses' | 'attachments' | 'conversation'[]`\n  Specifies which related objects to include in the response. Valid options are `addresses`, `attachments`, and `conversation`.\n\n### Returns\n\n- `{ id: string; body: { markdown?: string; }; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: pointer; person?: pointer; }[]; attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]; conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: object[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: inbox; messages?: email_message[]; unsnooze_at?: string; }; summary?: string; }`\n  The Email Message object represents a single email within a `Conversation`.\n\n  - `id: string`\n  - `body: { markdown?: string; }`\n  - `bulk: boolean`\n  - `created_at: string`\n  - `draft: boolean`\n  - `lock_version: number`\n  - `spam: boolean`\n  - `subject: string`\n  - `trash: boolean`\n  - `type: 'email_message'`\n  - `unread: boolean`\n  - `addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]`\n  - `conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: { id: string; name: string; type: 'tag'; }[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: tagset[]; }; messages?: { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }[]; unsnooze_at?: string; }`\n  - `summary?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst emailMessage = await client.inboxMessages.retrieve('id');\n\nconsole.log(emailMessage);\n```",
     perLanguage: {
-      go: {
-        method: 'client.InboxMessages.Get',
+      typescript: {
+        method: 'client.inboxMessages.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\temailMessage, err := client.InboxMessages.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.InboxMessageGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", emailMessage.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inbox_messages/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst emailMessage = await client.inboxMessages.retrieve('id');\n\nconsole.log(emailMessage.id);",
       },
       python: {
         method: 'inbox_messages.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nemail_message = client.inbox_messages.retrieve(\n    id="id",\n)\nprint(email_message.id)',
       },
+      go: {
+        method: 'client.InboxMessages.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\temailMessage, err := client.InboxMessages.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.InboxMessageGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", emailMessage.ID)\n}\n',
+      },
       ruby: {
         method: 'inbox_messages.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nemail_message = moonbase.inbox_messages.retrieve("id")\n\nputs(email_message)',
       },
-      typescript: {
-        method: 'client.inboxMessages.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst emailMessage = await client.inboxMessages.retrieve('id');\n\nconsole.log(emailMessage.id);",
+          'curl https://api.moonbase.ai/v0/inbox_messages/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -867,29 +867,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.inboxMessages.create(body: { markdown?: string; }, inbox_id: string, bcc?: { email: string; name?: string; }[], cc?: { email: string; name?: string; }[], conversation_id?: string, subject?: string, to?: { email: string; name?: string; }[]): { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }`\n\n**post** `/inbox_messages`\n\nCreates a new message draft.\n\n### Parameters\n\n- `body: { markdown?: string; }`\n  The email body.\n  - `markdown?: string`\n    The content formatted as Markdown text.\n\n- `inbox_id: string`\n  The inbox to use for sending the email.\n\n- `bcc?: { email: string; name?: string; }[]`\n  A list of the BCC recipients.\n\n- `cc?: { email: string; name?: string; }[]`\n  A list of the CC recipients.\n\n- `conversation_id?: string`\n  The ID of the conversation, if responding to an existing conversation.\n\n- `subject?: string`\n  The subject line of the email.\n\n- `to?: { email: string; name?: string; }[]`\n  A list of recipients.\n\n### Returns\n\n- `{ id: string; body: { markdown?: string; }; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: pointer; person?: pointer; }[]; attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]; conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: object[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: inbox; messages?: email_message[]; unsnooze_at?: string; }; summary?: string; }`\n  The Email Message object represents a single email within a `Conversation`.\n\n  - `id: string`\n  - `body: { markdown?: string; }`\n  - `bulk: boolean`\n  - `created_at: string`\n  - `draft: boolean`\n  - `lock_version: number`\n  - `spam: boolean`\n  - `subject: string`\n  - `trash: boolean`\n  - `type: 'email_message'`\n  - `unread: boolean`\n  - `addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]`\n  - `conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: { id: string; name: string; type: 'tag'; }[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: tagset[]; }; messages?: { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }[]; unsnooze_at?: string; }`\n  - `summary?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst emailMessage = await client.inboxMessages.create({\n  body: {},\n  inbox_id: '1CLJt2v6KXDyzDuM57pQqo',\n});\n\nconsole.log(emailMessage);\n```",
     perLanguage: {
-      go: {
-        method: 'client.InboxMessages.New',
+      typescript: {
+        method: 'client.inboxMessages.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\temailMessage, err := client.InboxMessages.New(context.TODO(), moonbase.InboxMessageNewParams{\n\t\tBody: shared.FormattedTextParam{\n\t\t\tMarkdown: moonbase.String("This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."),\n\t\t},\n\t\tInboxID: "1CLJt2v6KXDyzDuM57pQqo",\n\t\tBcc: []moonbase.InboxMessageNewParamsBcc{{\n\t\t\tEmail: "steve@example.com",\n\t\t\tName:  moonbase.String("Steve"),\n\t\t}},\n\t\tCc: []moonbase.InboxMessageNewParamsCc{{\n\t\t\tEmail: "joe@example.com",\n\t\t\tName:  moonbase.String("Joe"),\n\t\t}},\n\t\tSubject: moonbase.String("Test Subject"),\n\t\tTo: []moonbase.InboxMessageNewParamsTo{{\n\t\t\tEmail: "bob@example.com",\n\t\t\tName:  moonbase.String("Bob"),\n\t\t}, {\n\t\t\tEmail: "jack@example.com",\n\t\t}},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", emailMessage.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inbox_messages \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "body": {\n            "markdown": "This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."\n          },\n          "inbox_id": "1CLJt2v6KXDyzDuM57pQqo"\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst emailMessage = await client.inboxMessages.create({\n  body: {\n    markdown:\n      'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',\n  },\n  inbox_id: '1CLJt2v6KXDyzDuM57pQqo',\n  bcc: [{ email: 'steve@example.com', name: 'Steve' }],\n  cc: [{ email: 'joe@example.com', name: 'Joe' }],\n  subject: 'Test Subject',\n  to: [{ email: 'bob@example.com', name: 'Bob' }, { email: 'jack@example.com' }],\n});\n\nconsole.log(emailMessage.id);",
       },
       python: {
         method: 'inbox_messages.create',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nemail_message = client.inbox_messages.create(\n    body={\n        "markdown": "This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."\n    },\n    inbox_id="1CLJt2v6KXDyzDuM57pQqo",\n    bcc=[{\n        "email": "steve@example.com",\n        "name": "Steve",\n    }],\n    cc=[{\n        "email": "joe@example.com",\n        "name": "Joe",\n    }],\n    subject="Test Subject",\n    to=[{\n        "email": "bob@example.com",\n        "name": "Bob",\n    }, {\n        "email": "jack@example.com"\n    }],\n)\nprint(email_message.id)',
       },
+      go: {
+        method: 'client.InboxMessages.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\temailMessage, err := client.InboxMessages.New(context.TODO(), moonbase.InboxMessageNewParams{\n\t\tBody: shared.FormattedTextParam{\n\t\t\tMarkdown: moonbase.String("This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."),\n\t\t},\n\t\tInboxID: "1CLJt2v6KXDyzDuM57pQqo",\n\t\tBcc: []moonbase.InboxMessageNewParamsBcc{{\n\t\t\tEmail: "steve@example.com",\n\t\t\tName:  moonbase.String("Steve"),\n\t\t}},\n\t\tCc: []moonbase.InboxMessageNewParamsCc{{\n\t\t\tEmail: "joe@example.com",\n\t\t\tName:  moonbase.String("Joe"),\n\t\t}},\n\t\tSubject: moonbase.String("Test Subject"),\n\t\tTo: []moonbase.InboxMessageNewParamsTo{{\n\t\t\tEmail: "bob@example.com",\n\t\t\tName:  moonbase.String("Bob"),\n\t\t}, {\n\t\t\tEmail: "jack@example.com",\n\t\t}},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", emailMessage.ID)\n}\n',
+      },
       ruby: {
         method: 'inbox_messages.create',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nemail_message = moonbase.inbox_messages.create(body: {}, inbox_id: "1CLJt2v6KXDyzDuM57pQqo")\n\nputs(email_message)',
       },
-      typescript: {
-        method: 'client.inboxMessages.create',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst emailMessage = await client.inboxMessages.create({\n  body: {\n    markdown:\n      'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',\n  },\n  inbox_id: '1CLJt2v6KXDyzDuM57pQqo',\n  bcc: [{ email: 'steve@example.com', name: 'Steve' }],\n  cc: [{ email: 'joe@example.com', name: 'Joe' }],\n  subject: 'Test Subject',\n  to: [{ email: 'bob@example.com', name: 'Bob' }, { email: 'jack@example.com' }],\n});\n\nconsole.log(emailMessage.id);",
+          'curl https://api.moonbase.ai/v0/inbox_messages \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "body": {\n            "markdown": "This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."\n          },\n          "inbox_id": "1CLJt2v6KXDyzDuM57pQqo"\n        }\'',
       },
     },
   },
@@ -915,29 +915,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.inboxMessages.update(id: string, lock_version: number, bcc?: { email: string; name?: string; }[], body?: { markdown?: string; }, cc?: { email: string; name?: string; }[], subject?: string, to?: { email: string; name?: string; }[]): { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }`\n\n**patch** `/inbox_messages/{id}`\n\nUpdates an existing message draft.\n\n### Parameters\n\n- `id: string`\n\n- `lock_version: number`\n  The current lock version of the draft for optimistic concurrency control.\n\n- `bcc?: { email: string; name?: string; }[]`\n  A list of the BCC recipients.\n\n- `body?: { markdown?: string; }`\n  The email body.\n  - `markdown?: string`\n    The content formatted as Markdown text.\n\n- `cc?: { email: string; name?: string; }[]`\n  A list of the CC recipients.\n\n- `subject?: string`\n  The subject line of the email.\n\n- `to?: { email: string; name?: string; }[]`\n  A list of the recipients.\n\n### Returns\n\n- `{ id: string; body: { markdown?: string; }; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: pointer; person?: pointer; }[]; attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]; conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: object[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: inbox; messages?: email_message[]; unsnooze_at?: string; }; summary?: string; }`\n  The Email Message object represents a single email within a `Conversation`.\n\n  - `id: string`\n  - `body: { markdown?: string; }`\n  - `bulk: boolean`\n  - `created_at: string`\n  - `draft: boolean`\n  - `lock_version: number`\n  - `spam: boolean`\n  - `subject: string`\n  - `trash: boolean`\n  - `type: 'email_message'`\n  - `unread: boolean`\n  - `addresses?: { id: string; email: string; role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc'; type: 'message_address'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `attachments?: { id: string; created_at: string; download_url: string; filename: string; size: number; type: 'message_attachment'; }[]`\n  - `conversation?: { id: string; bulk: boolean; created_at: string; draft: boolean; follow_up: boolean; last_message_at: string; spam: boolean; state: 'unassigned' | 'active' | 'closed' | 'waiting'; subject: string; tags: { id: string; name: string; type: 'tag'; }[]; trash: boolean; type: 'inbox_conversation'; unread: boolean; updated_at: string; inbox?: { id: string; created_at: string; name: string; type: 'inbox'; updated_at: string; can_read?: boolean; tagsets?: tagset[]; }; messages?: { id: string; body: formatted_text; bulk: boolean; created_at: string; draft: boolean; lock_version: number; spam: boolean; subject: string; trash: boolean; type: 'email_message'; unread: boolean; addresses?: address[]; attachments?: object[]; conversation?: inbox_conversation; summary?: string; }[]; unsnooze_at?: string; }`\n  - `summary?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst emailMessage = await client.inboxMessages.update('id', { lock_version: 0 });\n\nconsole.log(emailMessage);\n```",
     perLanguage: {
-      go: {
-        method: 'client.InboxMessages.Update',
+      typescript: {
+        method: 'client.inboxMessages.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\temailMessage, err := client.InboxMessages.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.InboxMessageUpdateParams{\n\t\t\tLockVersion: 0,\n\t\t\tBcc: []moonbase.InboxMessageUpdateParamsBcc{{\n\t\t\t\tEmail: "steve@example.com",\n\t\t\t\tName:  moonbase.String("Steve"),\n\t\t\t}},\n\t\t\tBody: shared.FormattedTextParam{\n\t\t\t\tMarkdown: moonbase.String("This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."),\n\t\t\t},\n\t\t\tCc: []moonbase.InboxMessageUpdateParamsCc{{\n\t\t\t\tEmail: "joe@example.com",\n\t\t\t\tName:  moonbase.String("Joe"),\n\t\t\t}},\n\t\t\tSubject: moonbase.String("Test Subject"),\n\t\t\tTo: []moonbase.InboxMessageUpdateParamsTo{{\n\t\t\t\tEmail: "bob@example.com",\n\t\t\t\tName:  moonbase.String("Bob"),\n\t\t\t}, {\n\t\t\t\tEmail: "jack@example.com",\n\t\t\t}},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", emailMessage.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inbox_messages/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "lock_version": 0\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst emailMessage = await client.inboxMessages.update('id', {\n  lock_version: 0,\n  bcc: [{ email: 'steve@example.com', name: 'Steve' }],\n  body: {\n    markdown:\n      'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',\n  },\n  cc: [{ email: 'joe@example.com', name: 'Joe' }],\n  subject: 'Test Subject',\n  to: [{ email: 'bob@example.com', name: 'Bob' }, { email: 'jack@example.com' }],\n});\n\nconsole.log(emailMessage.id);",
       },
       python: {
         method: 'inbox_messages.update',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nemail_message = client.inbox_messages.update(\n    id="id",\n    lock_version=0,\n    bcc=[{\n        "email": "steve@example.com",\n        "name": "Steve",\n    }],\n    body={\n        "markdown": "This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."\n    },\n    cc=[{\n        "email": "joe@example.com",\n        "name": "Joe",\n    }],\n    subject="Test Subject",\n    to=[{\n        "email": "bob@example.com",\n        "name": "Bob",\n    }, {\n        "email": "jack@example.com"\n    }],\n)\nprint(email_message.id)',
       },
+      go: {
+        method: 'client.InboxMessages.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\temailMessage, err := client.InboxMessages.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.InboxMessageUpdateParams{\n\t\t\tLockVersion: 0,\n\t\t\tBcc: []moonbase.InboxMessageUpdateParamsBcc{{\n\t\t\t\tEmail: "steve@example.com",\n\t\t\t\tName:  moonbase.String("Steve"),\n\t\t\t}},\n\t\t\tBody: shared.FormattedTextParam{\n\t\t\t\tMarkdown: moonbase.String("This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."),\n\t\t\t},\n\t\t\tCc: []moonbase.InboxMessageUpdateParamsCc{{\n\t\t\t\tEmail: "joe@example.com",\n\t\t\t\tName:  moonbase.String("Joe"),\n\t\t\t}},\n\t\t\tSubject: moonbase.String("Test Subject"),\n\t\t\tTo: []moonbase.InboxMessageUpdateParamsTo{{\n\t\t\t\tEmail: "bob@example.com",\n\t\t\t\tName:  moonbase.String("Bob"),\n\t\t\t}, {\n\t\t\t\tEmail: "jack@example.com",\n\t\t\t}},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", emailMessage.ID)\n}\n',
+      },
       ruby: {
         method: 'inbox_messages.update',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nemail_message = moonbase.inbox_messages.update("id", lock_version: 0)\n\nputs(email_message)',
       },
-      typescript: {
-        method: 'client.inboxMessages.update',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst emailMessage = await client.inboxMessages.update('id', {\n  lock_version: 0,\n  bcc: [{ email: 'steve@example.com', name: 'Steve' }],\n  body: {\n    markdown:\n      'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',\n  },\n  cc: [{ email: 'joe@example.com', name: 'Joe' }],\n  subject: 'Test Subject',\n  to: [{ email: 'bob@example.com', name: 'Bob' }, { email: 'jack@example.com' }],\n});\n\nconsole.log(emailMessage.id);",
+          'curl https://api.moonbase.ai/v0/inbox_messages/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "lock_version": 0\n        }\'',
       },
     },
   },
@@ -953,29 +953,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.inboxMessages.delete(id: string): void`\n\n**delete** `/inbox_messages/{id}`\n\nPermanently deletes a message draft.\n\n### Parameters\n\n- `id: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nawait client.inboxMessages.delete('id')\n```",
     perLanguage: {
-      go: {
-        method: 'client.InboxMessages.Delete',
+      typescript: {
+        method: 'client.inboxMessages.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.InboxMessages.Delete(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/inbox_messages/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.inboxMessages.delete('id');",
       },
       python: {
         method: 'inbox_messages.delete',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nclient.inbox_messages.delete(\n    "id",\n)',
       },
+      go: {
+        method: 'client.InboxMessages.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.InboxMessages.Delete(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
       ruby: {
         method: 'inbox_messages.delete',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nresult = moonbase.inbox_messages.delete("id")\n\nputs(result)',
       },
-      typescript: {
-        method: 'client.inboxMessages.delete',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.inboxMessages.delete('id');",
+          'curl https://api.moonbase.ai/v0/inbox_messages/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -993,29 +993,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.tagsets.list(after?: string, before?: string, limit?: number): { id: string; created_at: string; name: string; tags: object[]; type: 'tagset'; updated_at: string; description?: string; }`\n\n**get** `/tagsets`\n\nReturns a list of your tagsets.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; created_at: string; name: string; tags: { id: string; name: string; type: 'tag'; }[]; type: 'tagset'; updated_at: string; description?: string; }`\n  A Tagset is a collection of `Tag` objects that can be applied within a specific `Inbox`.\n\n  - `id: string`\n  - `created_at: string`\n  - `name: string`\n  - `tags: { id: string; name: string; type: 'tag'; }[]`\n  - `type: 'tagset'`\n  - `updated_at: string`\n  - `description?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const tagset of client.tagsets.list()) {\n  console.log(tagset);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Tagsets.List',
+      typescript: {
+        method: 'client.tagsets.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Tagsets.List(context.TODO(), moonbase.TagsetListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/tagsets \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const tagset of client.tagsets.list()) {\n  console.log(tagset.id);\n}",
       },
       python: {
         method: 'tagsets.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.tagsets.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Tagsets.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Tagsets.List(context.TODO(), moonbase.TagsetListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'tagsets.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.tagsets.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.tagsets.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const tagset of client.tagsets.list()) {\n  console.log(tagset.id);\n}",
+          'curl https://api.moonbase.ai/v0/tagsets \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1033,29 +1033,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.tagsets.retrieve(id: string): { id: string; created_at: string; name: string; tags: object[]; type: 'tagset'; updated_at: string; description?: string; }`\n\n**get** `/tagsets/{id}`\n\nRetrieves the details of an existing tagset.\n\n### Parameters\n\n- `id: string`\n\n### Returns\n\n- `{ id: string; created_at: string; name: string; tags: { id: string; name: string; type: 'tag'; }[]; type: 'tagset'; updated_at: string; description?: string; }`\n  A Tagset is a collection of `Tag` objects that can be applied within a specific `Inbox`.\n\n  - `id: string`\n  - `created_at: string`\n  - `name: string`\n  - `tags: { id: string; name: string; type: 'tag'; }[]`\n  - `type: 'tagset'`\n  - `updated_at: string`\n  - `description?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst tagset = await client.tagsets.retrieve('id');\n\nconsole.log(tagset);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Tagsets.Get',
+      typescript: {
+        method: 'client.tagsets.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\ttagset, err := client.Tagsets.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", tagset.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/tagsets/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst tagset = await client.tagsets.retrieve('id');\n\nconsole.log(tagset.id);",
       },
       python: {
         method: 'tagsets.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\ntagset = client.tagsets.retrieve(\n    "id",\n)\nprint(tagset.id)',
       },
+      go: {
+        method: 'client.Tagsets.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\ttagset, err := client.Tagsets.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", tagset.ID)\n}\n',
+      },
       ruby: {
         method: 'tagsets.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\ntagset = moonbase.tagsets.retrieve("id")\n\nputs(tagset)',
       },
-      typescript: {
-        method: 'client.tagsets.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst tagset = await client.tagsets.retrieve('id');\n\nconsole.log(tagset.id);",
+          'curl https://api.moonbase.ai/v0/tagsets/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1073,29 +1073,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.programs.list(after?: string, before?: string, limit?: number): { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: object; display_name?: string; program_template?: program_template; scheduled_at?: string; }`\n\n**get** `/programs`\n\nReturns a list of your marketing programs.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: { bounced: number; clicked: number; complained: number; failed: number; opened: number; sent: number; shielded: number; unsubscribed: number; }; display_name?: string; program_template?: { id: string; body: formatted_text; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: program; }; scheduled_at?: string; }`\n  The Program object represents an email campaign. It defines the sending behavior and tracks engagement metrics.\n\n  - `id: string`\n  - `created_at: string`\n  - `status: 'draft' | 'published' | 'paused' | 'archived'`\n  - `track_clicks: boolean`\n  - `track_opens: boolean`\n  - `trigger: 'api' | 'broadcast'`\n  - `type: 'program'`\n  - `updated_at: string`\n  - `activity_metrics?: { bounced: number; clicked: number; complained: number; failed: number; opened: number; sent: number; shielded: number; unsubscribed: number; }`\n  - `display_name?: string`\n  - `program_template?: { id: string; body: { markdown?: string; }; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: object; display_name?: string; program_template?: program_template; scheduled_at?: string; }; }`\n  - `scheduled_at?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const program of client.programs.list()) {\n  console.log(program);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Programs.List',
+      typescript: {
+        method: 'client.programs.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Programs.List(context.TODO(), moonbase.ProgramListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/programs \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const program of client.programs.list()) {\n  console.log(program.id);\n}",
       },
       python: {
         method: 'programs.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.programs.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Programs.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Programs.List(context.TODO(), moonbase.ProgramListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'programs.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.programs.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.programs.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const program of client.programs.list()) {\n  console.log(program.id);\n}",
+          'curl https://api.moonbase.ai/v0/programs \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1113,29 +1113,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.programs.retrieve(id: string, include?: 'activity_metrics' | 'program_template'[]): { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: object; display_name?: string; program_template?: program_template; scheduled_at?: string; }`\n\n**get** `/programs/{id}`\n\nRetrieves the details of an existing program.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'activity_metrics' | 'program_template'[]`\n  Specifies which related objects to include in the response. Valid options are `activity_metrics` and `program_template`.\n\n### Returns\n\n- `{ id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: { bounced: number; clicked: number; complained: number; failed: number; opened: number; sent: number; shielded: number; unsubscribed: number; }; display_name?: string; program_template?: { id: string; body: formatted_text; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: program; }; scheduled_at?: string; }`\n  The Program object represents an email campaign. It defines the sending behavior and tracks engagement metrics.\n\n  - `id: string`\n  - `created_at: string`\n  - `status: 'draft' | 'published' | 'paused' | 'archived'`\n  - `track_clicks: boolean`\n  - `track_opens: boolean`\n  - `trigger: 'api' | 'broadcast'`\n  - `type: 'program'`\n  - `updated_at: string`\n  - `activity_metrics?: { bounced: number; clicked: number; complained: number; failed: number; opened: number; sent: number; shielded: number; unsubscribed: number; }`\n  - `display_name?: string`\n  - `program_template?: { id: string; body: { markdown?: string; }; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: object; display_name?: string; program_template?: program_template; scheduled_at?: string; }; }`\n  - `scheduled_at?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst program = await client.programs.retrieve('id');\n\nconsole.log(program);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Programs.Get',
+      typescript: {
+        method: 'client.programs.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tprogram, err := client.Programs.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.ProgramGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", program.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/programs/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst program = await client.programs.retrieve('id');\n\nconsole.log(program.id);",
       },
       python: {
         method: 'programs.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nprogram = client.programs.retrieve(\n    id="id",\n)\nprint(program.id)',
       },
+      go: {
+        method: 'client.Programs.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tprogram, err := client.Programs.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.ProgramGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", program.ID)\n}\n',
+      },
       ruby: {
         method: 'programs.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nprogram = moonbase.programs.retrieve("id")\n\nputs(program)',
       },
-      typescript: {
-        method: 'client.programs.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst program = await client.programs.retrieve('id');\n\nconsole.log(program.id);",
+          'curl https://api.moonbase.ai/v0/programs/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1153,29 +1153,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.programTemplates.list(after?: string, before?: string, include?: 'program'[], limit?: number): { id: string; body: formatted_text; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: program; }`\n\n**get** `/program_templates`\n\nReturns a list of your program templates.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `include?: 'program'[]`\n  Specifies which related objects to include in the response. Valid option is `program`.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; body: { markdown?: string; }; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: object; display_name?: string; program_template?: program_template; scheduled_at?: string; }; }`\n  The ProgramTemplate object defines the content of a message sent by a `Program`, including support for Liquid templating.\n\n  - `id: string`\n  - `body: { markdown?: string; }`\n  - `created_at: string`\n  - `subject: string`\n  - `type: 'program_template'`\n  - `updated_at: string`\n  - `program?: { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: { bounced: number; clicked: number; complained: number; failed: number; opened: number; sent: number; shielded: number; unsubscribed: number; }; display_name?: string; program_template?: { id: string; body: formatted_text; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: program; }; scheduled_at?: string; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const programTemplate of client.programTemplates.list()) {\n  console.log(programTemplate);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.ProgramTemplates.List',
+      typescript: {
+        method: 'client.programTemplates.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.ProgramTemplates.List(context.TODO(), moonbase.ProgramTemplateListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/program_templates \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const programTemplate of client.programTemplates.list()) {\n  console.log(programTemplate.id);\n}",
       },
       python: {
         method: 'program_templates.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.program_templates.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.ProgramTemplates.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.ProgramTemplates.List(context.TODO(), moonbase.ProgramTemplateListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'program_templates.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.program_templates.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.programTemplates.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const programTemplate of client.programTemplates.list()) {\n  console.log(programTemplate.id);\n}",
+          'curl https://api.moonbase.ai/v0/program_templates \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1193,29 +1193,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.programTemplates.retrieve(id: string, include?: 'program'[]): { id: string; body: formatted_text; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: program; }`\n\n**get** `/program_templates/{id}`\n\nRetrieves the details of an existing program template.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'program'[]`\n  Specifies which related objects to include in the response. Valid option is `program`.\n\n### Returns\n\n- `{ id: string; body: { markdown?: string; }; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: object; display_name?: string; program_template?: program_template; scheduled_at?: string; }; }`\n  The ProgramTemplate object defines the content of a message sent by a `Program`, including support for Liquid templating.\n\n  - `id: string`\n  - `body: { markdown?: string; }`\n  - `created_at: string`\n  - `subject: string`\n  - `type: 'program_template'`\n  - `updated_at: string`\n  - `program?: { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: { bounced: number; clicked: number; complained: number; failed: number; opened: number; sent: number; shielded: number; unsubscribed: number; }; display_name?: string; program_template?: { id: string; body: formatted_text; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: program; }; scheduled_at?: string; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst programTemplate = await client.programTemplates.retrieve('id');\n\nconsole.log(programTemplate);\n```",
     perLanguage: {
-      go: {
-        method: 'client.ProgramTemplates.Get',
+      typescript: {
+        method: 'client.programTemplates.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tprogramTemplate, err := client.ProgramTemplates.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.ProgramTemplateGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", programTemplate.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/program_templates/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst programTemplate = await client.programTemplates.retrieve('id');\n\nconsole.log(programTemplate.id);",
       },
       python: {
         method: 'program_templates.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nprogram_template = client.program_templates.retrieve(\n    id="id",\n)\nprint(program_template.id)',
       },
+      go: {
+        method: 'client.ProgramTemplates.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tprogramTemplate, err := client.ProgramTemplates.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.ProgramTemplateGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", programTemplate.ID)\n}\n',
+      },
       ruby: {
         method: 'program_templates.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nprogram_template = moonbase.program_templates.retrieve("id")\n\nputs(program_template)',
       },
-      typescript: {
-        method: 'client.programTemplates.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst programTemplate = await client.programTemplates.retrieve('id');\n\nconsole.log(programTemplate.id);",
+          'curl https://api.moonbase.ai/v0/program_templates/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1233,29 +1233,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## send\n\n`client.programMessages.send(person: { email: string; }, program_template_id: string, custom_variables?: object): { id: string; created_at: string; program_template: program_template; type: 'program_message'; updated_at: string; }`\n\n**post** `/program_messages`\n\nSends a message using a program template.\n\n### Parameters\n\n- `person: { email: string; }`\n  The person to send the message to.\n  - `email: string`\n\n- `program_template_id: string`\n  The ID of the `ProgramTemplate` to use for sending the message.\n\n- `custom_variables?: object`\n  Any custom Liquid variables to be interpolated into the message template.\n\n### Returns\n\n- `{ id: string; created_at: string; program_template: { id: string; body: formatted_text; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: program; }; type: 'program_message'; updated_at: string; }`\n  Represents a single message sent as part of a `Program`.\n\n  - `id: string`\n  - `created_at: string`\n  - `program_template: { id: string; body: { markdown?: string; }; created_at: string; subject: string; type: 'program_template'; updated_at: string; program?: { id: string; created_at: string; status: 'draft' | 'published' | 'paused' | 'archived'; track_clicks: boolean; track_opens: boolean; trigger: 'api' | 'broadcast'; type: 'program'; updated_at: string; activity_metrics?: object; display_name?: string; program_template?: program_template; scheduled_at?: string; }; }`\n  - `type: 'program_message'`\n  - `updated_at: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst programMessage = await client.programMessages.send({\n  person: { email: 'person-132@example-132.com' },\n  program_template_id: '1CLJt2v6ZuRbtwPhmQtzxa',\n});\n\nconsole.log(programMessage);\n```",
     perLanguage: {
-      go: {
-        method: 'client.ProgramMessages.Send',
+      typescript: {
+        method: 'client.programMessages.send',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tprogramMessage, err := client.ProgramMessages.Send(context.TODO(), moonbase.ProgramMessageSendParams{\n\t\tPerson: moonbase.ProgramMessageSendParamsPerson{\n\t\t\tEmail: "person-132@example-132.com",\n\t\t},\n\t\tProgramTemplateID: "1CLJt2v6ZuRbtwPhmQtzxa",\n\t\tCustomVariables: map[string]any{\n\t\t\t"coupon_code": "HOWDY",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", programMessage.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/program_messages \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "person": {\n            "email": "person-132@example-132.com"\n          },\n          "program_template_id": "1CLJt2v6ZuRbtwPhmQtzxa"\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst programMessage = await client.programMessages.send({\n  person: { email: 'person-132@example-132.com' },\n  program_template_id: '1CLJt2v6ZuRbtwPhmQtzxa',\n  custom_variables: { coupon_code: 'HOWDY' },\n});\n\nconsole.log(programMessage.id);",
       },
       python: {
         method: 'program_messages.send',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nprogram_message = client.program_messages.send(\n    person={\n        "email": "person-132@example-132.com"\n    },\n    program_template_id="1CLJt2v6ZuRbtwPhmQtzxa",\n    custom_variables={\n        "coupon_code": "HOWDY"\n    },\n)\nprint(program_message.id)',
       },
+      go: {
+        method: 'client.ProgramMessages.Send',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tprogramMessage, err := client.ProgramMessages.Send(context.TODO(), moonbase.ProgramMessageSendParams{\n\t\tPerson: moonbase.ProgramMessageSendParamsPerson{\n\t\t\tEmail: "person-132@example-132.com",\n\t\t},\n\t\tProgramTemplateID: "1CLJt2v6ZuRbtwPhmQtzxa",\n\t\tCustomVariables: map[string]any{\n\t\t\t"coupon_code": "HOWDY",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", programMessage.ID)\n}\n',
+      },
       ruby: {
         method: 'program_messages.send_',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nprogram_message = moonbase.program_messages.send_(\n  person: {email: "person-132@example-132.com"},\n  program_template_id: "1CLJt2v6ZuRbtwPhmQtzxa"\n)\n\nputs(program_message)',
       },
-      typescript: {
-        method: 'client.programMessages.send',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst programMessage = await client.programMessages.send({\n  person: { email: 'person-132@example-132.com' },\n  program_template_id: '1CLJt2v6ZuRbtwPhmQtzxa',\n  custom_variables: { coupon_code: 'HOWDY' },\n});\n\nconsole.log(programMessage.id);",
+          'curl https://api.moonbase.ai/v0/program_messages \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "person": {\n            "email": "person-132@example-132.com"\n          },\n          "program_template_id": "1CLJt2v6ZuRbtwPhmQtzxa"\n        }\'',
       },
     },
   },
@@ -1273,28 +1273,28 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.forms.list(after?: string, before?: string, limit?: number): { id: string; collection: collection; created_at: string; name: string; pages_enabled: boolean; type: 'form'; updated_at: string; pages_url?: string; redirect_url?: string; }`\n\n**get** `/forms`\n\nReturns a list of your forms.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; collection: { id: string; core: boolean; created_at: string; fields: field[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: view[]; }; created_at: string; name: string; pages_enabled: boolean; type: 'form'; updated_at: string; pages_url?: string; redirect_url?: string; }`\n  A Form provides a way to create `Items` in a `Collection`, often via a public URL for external users. Each form submission creates a new item.\n\n  - `id: string`\n  - `collection: { id: string; core: boolean; created_at: string; fields: object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: { id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: collection; }[]; }`\n  - `created_at: string`\n  - `name: string`\n  - `pages_enabled: boolean`\n  - `type: 'form'`\n  - `updated_at: string`\n  - `pages_url?: string`\n  - `redirect_url?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const form of client.forms.list()) {\n  console.log(form);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Forms.List',
+      typescript: {
+        method: 'client.forms.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Forms.List(context.TODO(), moonbase.FormListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example: 'curl https://api.moonbase.ai/v0/forms \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const form of client.forms.list()) {\n  console.log(form.id);\n}",
       },
       python: {
         method: 'forms.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.forms.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Forms.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Forms.List(context.TODO(), moonbase.FormListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'forms.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.forms.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.forms.list',
-        example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const form of client.forms.list()) {\n  console.log(form.id);\n}",
+      http: {
+        example: 'curl https://api.moonbase.ai/v0/forms \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1312,29 +1312,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.forms.retrieve(id: string): { id: string; collection: collection; created_at: string; name: string; pages_enabled: boolean; type: 'form'; updated_at: string; pages_url?: string; redirect_url?: string; }`\n\n**get** `/forms/{id}`\n\nRetrieves the details of an existing form.\n\n### Parameters\n\n- `id: string`\n\n### Returns\n\n- `{ id: string; collection: { id: string; core: boolean; created_at: string; fields: field[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: view[]; }; created_at: string; name: string; pages_enabled: boolean; type: 'form'; updated_at: string; pages_url?: string; redirect_url?: string; }`\n  A Form provides a way to create `Items` in a `Collection`, often via a public URL for external users. Each form submission creates a new item.\n\n  - `id: string`\n  - `collection: { id: string; core: boolean; created_at: string; fields: object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object | object[]; name: string; ref: string; type: 'collection'; updated_at: string; description?: string; views?: { id: string; created_at: string; name: string; type: 'view'; updated_at: string; view_type: 'table' | 'board'; collection?: collection; }[]; }`\n  - `created_at: string`\n  - `name: string`\n  - `pages_enabled: boolean`\n  - `type: 'form'`\n  - `updated_at: string`\n  - `pages_url?: string`\n  - `redirect_url?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst form = await client.forms.retrieve('id');\n\nconsole.log(form);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Forms.Get',
+      typescript: {
+        method: 'client.forms.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tform, err := client.Forms.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", form.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/forms/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst form = await client.forms.retrieve('id');\n\nconsole.log(form.id);",
       },
       python: {
         method: 'forms.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nform = client.forms.retrieve(\n    "id",\n)\nprint(form.id)',
       },
+      go: {
+        method: 'client.Forms.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tform, err := client.Forms.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", form.ID)\n}\n',
+      },
       ruby: {
         method: 'forms.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nform = moonbase.forms.retrieve("id")\n\nputs(form)',
       },
-      typescript: {
-        method: 'client.forms.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst form = await client.forms.retrieve('id');\n\nconsole.log(form.id);",
+          'curl https://api.moonbase.ai/v0/forms/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1351,29 +1351,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.unsubscribes.list(after?: string, before?: string, limit?: number): { created_at: string; email: string; type: 'unsubscribe'; }`\n\n**get** `/unsubscribes`\n\nReturns a list of unsubscribes.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ created_at: string; email: string; type: 'unsubscribe'; }`\n\n  - `created_at: string`\n  - `email: string`\n  - `type: 'unsubscribe'`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const unsubscribe of client.unsubscribes.list()) {\n  console.log(unsubscribe);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Unsubscribes.List',
+      typescript: {
+        method: 'client.unsubscribes.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Unsubscribes.List(context.TODO(), moonbase.UnsubscribeListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/unsubscribes \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const unsubscribe of client.unsubscribes.list()) {\n  console.log(unsubscribe.created_at);\n}",
       },
       python: {
         method: 'unsubscribes.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.unsubscribes.list()\npage = page.data[0]\nprint(page.created_at)',
       },
+      go: {
+        method: 'client.Unsubscribes.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Unsubscribes.List(context.TODO(), moonbase.UnsubscribeListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'unsubscribes.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.unsubscribes.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.unsubscribes.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const unsubscribe of client.unsubscribes.list()) {\n  console.log(unsubscribe.created_at);\n}",
+          'curl https://api.moonbase.ai/v0/unsubscribes \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1390,29 +1390,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.unsubscribes.create(email: string): { created_at: string; email: string; type: 'unsubscribe'; }`\n\n**post** `/unsubscribes`\n\nCreate a new unsubscribe.\n\n### Parameters\n\n- `email: string`\n\n### Returns\n\n- `{ created_at: string; email: string; type: 'unsubscribe'; }`\n\n  - `created_at: string`\n  - `email: string`\n  - `type: 'unsubscribe'`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst unsubscribe = await client.unsubscribes.create({ email: 'yoda@moonbase.ai' });\n\nconsole.log(unsubscribe);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Unsubscribes.New',
+      typescript: {
+        method: 'client.unsubscribes.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tunsubscribe, err := client.Unsubscribes.New(context.TODO(), moonbase.UnsubscribeNewParams{\n\t\tEmail: "yoda@moonbase.ai",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", unsubscribe.CreatedAt)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/unsubscribes \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "email": "yoda@moonbase.ai"\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst unsubscribe = await client.unsubscribes.create({ email: 'yoda@moonbase.ai' });\n\nconsole.log(unsubscribe.created_at);",
       },
       python: {
         method: 'unsubscribes.create',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nunsubscribe = client.unsubscribes.create(\n    email="yoda@moonbase.ai",\n)\nprint(unsubscribe.created_at)',
       },
+      go: {
+        method: 'client.Unsubscribes.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tunsubscribe, err := client.Unsubscribes.New(context.TODO(), moonbase.UnsubscribeNewParams{\n\t\tEmail: "yoda@moonbase.ai",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", unsubscribe.CreatedAt)\n}\n',
+      },
       ruby: {
         method: 'unsubscribes.create',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nunsubscribe = moonbase.unsubscribes.create(email: "yoda@moonbase.ai")\n\nputs(unsubscribe)',
       },
-      typescript: {
-        method: 'client.unsubscribes.create',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst unsubscribe = await client.unsubscribes.create({ email: 'yoda@moonbase.ai' });\n\nconsole.log(unsubscribe.created_at);",
+          'curl https://api.moonbase.ai/v0/unsubscribes \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "email": "yoda@moonbase.ai"\n        }\'',
       },
     },
   },
@@ -1428,29 +1428,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.unsubscribes.delete(email: string): void`\n\n**delete** `/unsubscribes/{email}`\n\nPermanently deletes an unsubscribe by email address.\n\n### Parameters\n\n- `email: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nawait client.unsubscribes.delete('email')\n```",
     perLanguage: {
-      go: {
-        method: 'client.Unsubscribes.Delete',
+      typescript: {
+        method: 'client.unsubscribes.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Unsubscribes.Delete(context.TODO(), "email")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/unsubscribes/$EMAIL \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.unsubscribes.delete('email');",
       },
       python: {
         method: 'unsubscribes.delete',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nclient.unsubscribes.delete(\n    "email",\n)',
       },
+      go: {
+        method: 'client.Unsubscribes.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Unsubscribes.Delete(context.TODO(), "email")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
       ruby: {
         method: 'unsubscribes.delete',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nresult = moonbase.unsubscribes.delete("email")\n\nputs(result)',
       },
-      typescript: {
-        method: 'client.unsubscribes.delete',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.unsubscribes.delete('email');",
+          'curl https://api.moonbase.ai/v0/unsubscribes/$EMAIL \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1473,29 +1473,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.activities.list(after?: string, before?: string, filter?: { item_id?: { eq?: string; }; occurred_at?: { gte?: string; lte?: string; }; type?: { in?: string[]; }; }, limit?: number): object | object | object | object | object | object | { id: string; file: pointer; occurred_at: string; related_item: item_pointer; type: 'activity/file_created'; } | object | object | object | object | object | object | object | object | object | object | object`\n\n**get** `/activities`\n\nReturns a list of activities.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `filter?: { item_id?: { eq?: string; }; occurred_at?: { gte?: string; lte?: string; }; type?: { in?: string[]; }; }`\n  Filter activities by type, date, or item.\n  - `item_id?: { eq?: string; }`\n  - `occurred_at?: { gte?: string; lte?: string; }`\n  - `type?: { in?: string[]; }`\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; call: object; occurred_at: string; type: 'activity/call_occurred'; } | { id: string; item: object; occurred_at: string; type: 'activity/form_submitted'; } | { id: string; message: object; occurred_at: string; type: 'activity/inbox_message_sent'; } | { id: string; item: object; occurred_at: string; type: 'activity/item_created'; } | { id: string; author: object; item: object; note: object; occurred_at: string; type: 'activity/item_mentioned'; } | { id: string; destination: object; initiator: object; occurred_at: string; source: object; type: 'activity/item_merged'; } | { id: string; file: { id: string; type: string; }; occurred_at: string; related_item: { id: string; collection: collection_pointer; type: 'item'; }; type: 'activity/file_created'; } | { id: string; meeting: object; occurred_at: string; type: 'activity/meeting_held'; } | { id: string; meeting: object; occurred_at: string; type: 'activity/meeting_scheduled'; } | { id: string; note: object; occurred_at: string; related_items: object[]; related_meeting: object; type: 'activity/note_created'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_bounced'; bounce_type?: string; bounced_recipient_emails?: string[]; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_clicked'; link_text?: string; link_url_unsafe?: string; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_complained'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_failed'; reason_code?: 'liquid_error' | 'person_missing_email' | 'message_contained_virus'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_opened'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_sent'; recipient_emails?: string[]; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_shielded'; reason_code?: 'person_previously_unsubscribed' | 'email_on_unsubscribe_list'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_unsubscribed'; email?: string; }`\n  The Activity object represents a specific event that has occurred, such as a meeting being scheduled or a form being submitted.\n\nActivities are polymorphic; the `type` field indicates the specific activity that occurred, and the object will contain a property with a matching name that holds the details of that event. For example, an `activity/meeting_held` activity will contain a `meeting` property.\n\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const activity of client.activities.list()) {\n  console.log(activity);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Activities.List',
+      typescript: {
+        method: 'client.activities.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Activities.List(context.TODO(), moonbase.ActivityListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/activities \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const activity of client.activities.list()) {\n  console.log(activity);\n}",
       },
       python: {
         method: 'activities.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.activities.list()\npage = page.data[0]\nprint(page)',
       },
+      go: {
+        method: 'client.Activities.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Activities.List(context.TODO(), moonbase.ActivityListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'activities.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.activities.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.activities.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const activity of client.activities.list()) {\n  console.log(activity);\n}",
+          'curl https://api.moonbase.ai/v0/activities \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1513,29 +1513,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.activities.retrieve(id: string): object | object | object | object | object | object | { id: string; file: pointer; occurred_at: string; related_item: item_pointer; type: 'activity/file_created'; } | object | object | object | object | object | object | object | object | object | object | object`\n\n**get** `/activities/{id}`\n\nRetrieves the details of an existing activity.\n\n### Parameters\n\n- `id: string`\n\n### Returns\n\n- `{ id: string; call: object; occurred_at: string; type: 'activity/call_occurred'; } | { id: string; item: object; occurred_at: string; type: 'activity/form_submitted'; } | { id: string; message: object; occurred_at: string; type: 'activity/inbox_message_sent'; } | { id: string; item: object; occurred_at: string; type: 'activity/item_created'; } | { id: string; author: object; item: object; note: object; occurred_at: string; type: 'activity/item_mentioned'; } | { id: string; destination: object; initiator: object; occurred_at: string; source: object; type: 'activity/item_merged'; } | { id: string; file: { id: string; type: string; }; occurred_at: string; related_item: { id: string; collection: collection_pointer; type: 'item'; }; type: 'activity/file_created'; } | { id: string; meeting: object; occurred_at: string; type: 'activity/meeting_held'; } | { id: string; meeting: object; occurred_at: string; type: 'activity/meeting_scheduled'; } | { id: string; note: object; occurred_at: string; related_items: object[]; related_meeting: object; type: 'activity/note_created'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_bounced'; bounce_type?: string; bounced_recipient_emails?: string[]; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_clicked'; link_text?: string; link_url_unsafe?: string; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_complained'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_failed'; reason_code?: 'liquid_error' | 'person_missing_email' | 'message_contained_virus'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_opened'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_sent'; recipient_emails?: string[]; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_shielded'; reason_code?: 'person_previously_unsubscribed' | 'email_on_unsubscribe_list'; } | { id: string; occurred_at: string; program_message: object; recipient: object; type: 'activity/program_message_unsubscribed'; email?: string; }`\n  The Activity object represents a specific event that has occurred, such as a meeting being scheduled or a form being submitted.\n\nActivities are polymorphic; the `type` field indicates the specific activity that occurred, and the object will contain a property with a matching name that holds the details of that event. For example, an `activity/meeting_held` activity will contain a `meeting` property.\n\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst activity = await client.activities.retrieve('id');\n\nconsole.log(activity);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Activities.Get',
+      typescript: {
+        method: 'client.activities.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tactivity, err := client.Activities.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", activity)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/activities/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst activity = await client.activities.retrieve('id');\n\nconsole.log(activity);",
       },
       python: {
         method: 'activities.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nactivity = client.activities.retrieve(\n    "id",\n)\nprint(activity)',
       },
+      go: {
+        method: 'client.Activities.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tactivity, err := client.Activities.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", activity)\n}\n',
+      },
       ruby: {
         method: 'activities.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nactivity = moonbase.activities.retrieve("id")\n\nputs(activity)',
       },
-      typescript: {
-        method: 'client.activities.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst activity = await client.activities.retrieve('id');\n\nconsole.log(activity);",
+          'curl https://api.moonbase.ai/v0/activities/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1565,29 +1565,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.calls.create(direction: 'incoming' | 'outgoing', participants: { phone: string; role: 'caller' | 'callee' | 'other'; }[], provider: 'openphone' | 'user' | 'zoom_phone', provider_id: string, provider_status: string, start_at: string, answered_at?: string, end_at?: string, provider_metadata?: object, recordings?: { content_type: 'audio/mpeg'; provider_id: string; url: string; }[], transcript?: { cues: { from: number; speaker: string; text: string; to: number; }[]; }): { id: string; created_at: string; direction: 'incoming' | 'outgoing'; participants: object[]; provider: 'openphone' | 'user' | 'zoom_phone'; provider_id: string; provider_status: string; start_at: string; type: 'call'; updated_at: string; answered_at?: string; end_at?: string; note?: note; provider_metadata?: object; summary?: note; transcript?: object; }`\n\n**post** `/calls`\n\nLogs a phone call.\n\n### Parameters\n\n- `direction: 'incoming' | 'outgoing'`\n  The direction of the call, either `incoming` or `outgoing`.\n\n- `participants: { phone: string; role: 'caller' | 'callee' | 'other'; }[]`\n  An array of participants involved in the call.\n\n- `provider: 'openphone' | 'user' | 'zoom_phone'`\n  The name of the phone provider that handled the call (e.g., `openphone`).\n\n- `provider_id: string`\n  The unique identifier for the call from the provider's system.\n\n- `provider_status: string`\n  The status of the call.\n\n- `start_at: string`\n  The time the call started, as an ISO 8601 timestamp in UTC.\n\n- `answered_at?: string`\n  The time the call was answered, as an ISO 8601 timestamp in UTC.\n\n- `end_at?: string`\n  The time the call ended, as an ISO 8601 timestamp in UTC.\n\n- `provider_metadata?: object`\n  A hash of additional metadata from the provider.\n\n- `recordings?: { content_type: 'audio/mpeg'; provider_id: string; url: string; }[]`\n  Any recordings associated with the call.\n\n- `transcript?: { cues: { from: number; speaker: string; text: string; to: number; }[]; }`\n  A transcript of the call.\n  - `cues: { from: number; speaker: string; text: string; to: number; }[]`\n    A list of cues that identify the text spoken in specific time slices of the call.\n\n### Returns\n\n- `{ id: string; created_at: string; direction: 'incoming' | 'outgoing'; participants: { id: string; phone: string; role: 'caller' | 'callee' | 'other'; type: 'call_participant'; organization?: object; person?: object; }[]; provider: 'openphone' | 'user' | 'zoom_phone'; provider_id: string; provider_status: string; start_at: string; type: 'call'; updated_at: string; answered_at?: string; end_at?: string; note?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; provider_metadata?: object; summary?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; transcript?: { cues: { from: number; speaker: object; text: string; to: number; }[]; }; }`\n  The Call object represents a phone call that has been logged in the system. It contains details about the participants, timing, and outcome of the call.\n\n  - `id: string`\n  - `created_at: string`\n  - `direction: 'incoming' | 'outgoing'`\n  - `participants: { id: string; phone: string; role: 'caller' | 'callee' | 'other'; type: 'call_participant'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `provider: 'openphone' | 'user' | 'zoom_phone'`\n  - `provider_id: string`\n  - `provider_status: string`\n  - `start_at: string`\n  - `type: 'call'`\n  - `updated_at: string`\n  - `answered_at?: string`\n  - `end_at?: string`\n  - `note?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `provider_metadata?: object`\n  - `summary?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `transcript?: { cues: { from: number; speaker: { attendee_id?: string; label?: string; }; text: string; to: number; }[]; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst call = await client.calls.create({\n  direction: 'incoming',\n  participants: [{ phone: '+14155551212', role: 'caller' }, { phone: '+16505551212', role: 'callee' }],\n  provider: 'openphone',\n  provider_id: 'openphone_id_000000000001',\n  provider_status: 'completed',\n  start_at: '2025-02-17T15:00:00.000Z',\n});\n\nconsole.log(call);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Calls.New',
+      typescript: {
+        method: 'client.calls.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcall, err := client.Calls.New(context.TODO(), moonbase.CallNewParams{\n\t\tDirection: moonbase.CallNewParamsDirectionIncoming,\n\t\tParticipants: []moonbase.CallNewParamsParticipant{{\n\t\t\tPhone: "+14155551212",\n\t\t\tRole:  "caller",\n\t\t}, {\n\t\t\tPhone: "+16505551212",\n\t\t\tRole:  "callee",\n\t\t}},\n\t\tProvider:       moonbase.CallNewParamsProviderOpenphone,\n\t\tProviderID:     "openphone_id_000000000001",\n\t\tProviderStatus: "completed",\n\t\tStartAt:        time.Now(),\n\t\tAnsweredAt:     moonbase.Time(time.Now()),\n\t\tEndAt:          moonbase.Time(time.Now()),\n\t\tProviderMetadata: map[string]any{\n\t\t\t"answered_by":     "UShjUatqtF",\n\t\t\t"user_id":         "UShjUatqtF",\n\t\t\t"phone_number_id": "PN72zMikBJ",\n\t\t\t"conversation_id": "CN3b48bcc423e772aeba377414a4fa6a06",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", call.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/calls \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "direction": "incoming",\n          "participants": [\n            {\n              "phone": "+14155551212",\n              "role": "caller"\n            },\n            {\n              "phone": "+16505551212",\n              "role": "callee"\n            }\n          ],\n          "provider": "openphone",\n          "provider_id": "openphone_id_000000000001",\n          "provider_status": "completed",\n          "start_at": "2025-02-17T15:00:00.000Z"\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst call = await client.calls.create({\n  direction: 'incoming',\n  participants: [\n    { phone: '+14155551212', role: 'caller' },\n    { phone: '+16505551212', role: 'callee' },\n  ],\n  provider: 'openphone',\n  provider_id: 'openphone_id_000000000001',\n  provider_status: 'completed',\n  start_at: '2025-02-17T15:00:00.000Z',\n  answered_at: '2025-02-17T15:01:00Z',\n  end_at: '2025-02-17T15:30:00.000Z',\n  provider_metadata: {\n    answered_by: 'UShjUatqtF',\n    user_id: 'UShjUatqtF',\n    phone_number_id: 'PN72zMikBJ',\n    conversation_id: 'CN3b48bcc423e772aeba377414a4fa6a06',\n  },\n});\n\nconsole.log(call.id);",
       },
       python: {
         method: 'calls.create',
         example:
           'import os\nfrom datetime import datetime\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\ncall = client.calls.create(\n    direction="incoming",\n    participants=[{\n        "phone": "+14155551212",\n        "role": "caller",\n    }, {\n        "phone": "+16505551212",\n        "role": "callee",\n    }],\n    provider="openphone",\n    provider_id="openphone_id_000000000001",\n    provider_status="completed",\n    start_at=datetime.fromisoformat("2025-02-17T15:00:00.000"),\n    answered_at=datetime.fromisoformat("2025-02-17T15:01:00"),\n    end_at=datetime.fromisoformat("2025-02-17T15:30:00.000"),\n    provider_metadata={\n        "answered_by": "UShjUatqtF",\n        "user_id": "UShjUatqtF",\n        "phone_number_id": "PN72zMikBJ",\n        "conversation_id": "CN3b48bcc423e772aeba377414a4fa6a06",\n    },\n)\nprint(call.id)',
       },
+      go: {
+        method: 'client.Calls.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcall, err := client.Calls.New(context.TODO(), moonbase.CallNewParams{\n\t\tDirection: moonbase.CallNewParamsDirectionIncoming,\n\t\tParticipants: []moonbase.CallNewParamsParticipant{{\n\t\t\tPhone: "+14155551212",\n\t\t\tRole:  "caller",\n\t\t}, {\n\t\t\tPhone: "+16505551212",\n\t\t\tRole:  "callee",\n\t\t}},\n\t\tProvider:       moonbase.CallNewParamsProviderOpenphone,\n\t\tProviderID:     "openphone_id_000000000001",\n\t\tProviderStatus: "completed",\n\t\tStartAt:        time.Now(),\n\t\tAnsweredAt:     moonbase.Time(time.Now()),\n\t\tEndAt:          moonbase.Time(time.Now()),\n\t\tProviderMetadata: map[string]any{\n\t\t\t"answered_by":     "UShjUatqtF",\n\t\t\t"user_id":         "UShjUatqtF",\n\t\t\t"phone_number_id": "PN72zMikBJ",\n\t\t\t"conversation_id": "CN3b48bcc423e772aeba377414a4fa6a06",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", call.ID)\n}\n',
+      },
       ruby: {
         method: 'calls.create',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\ncall = moonbase.calls.create(\n  direction: :incoming,\n  participants: [{phone: "+14155551212", role: :caller}, {phone: "+16505551212", role: :callee}],\n  provider: :openphone,\n  provider_id: "openphone_id_000000000001",\n  provider_status: "completed",\n  start_at: "2025-02-17T15:00:00.000Z"\n)\n\nputs(call)',
       },
-      typescript: {
-        method: 'client.calls.create',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst call = await client.calls.create({\n  direction: 'incoming',\n  participants: [\n    { phone: '+14155551212', role: 'caller' },\n    { phone: '+16505551212', role: 'callee' },\n  ],\n  provider: 'openphone',\n  provider_id: 'openphone_id_000000000001',\n  provider_status: 'completed',\n  start_at: '2025-02-17T15:00:00.000Z',\n  answered_at: '2025-02-17T15:01:00Z',\n  end_at: '2025-02-17T15:30:00.000Z',\n  provider_metadata: {\n    answered_by: 'UShjUatqtF',\n    user_id: 'UShjUatqtF',\n    phone_number_id: 'PN72zMikBJ',\n    conversation_id: 'CN3b48bcc423e772aeba377414a4fa6a06',\n  },\n});\n\nconsole.log(call.id);",
+          'curl https://api.moonbase.ai/v0/calls \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "direction": "incoming",\n          "participants": [\n            {\n              "phone": "+14155551212",\n              "role": "caller"\n            },\n            {\n              "phone": "+16505551212",\n              "role": "callee"\n            }\n          ],\n          "provider": "openphone",\n          "provider_id": "openphone_id_000000000001",\n          "provider_status": "completed",\n          "start_at": "2025-02-17T15:00:00.000Z"\n        }\'',
       },
     },
   },
@@ -1617,29 +1617,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## upsert\n\n`client.calls.upsert(direction: 'incoming' | 'outgoing', participants: { phone: string; role: 'caller' | 'callee' | 'other'; }[], provider: 'openphone' | 'user' | 'zoom_phone', provider_id: string, provider_status: string, start_at: string, answered_at?: string, end_at?: string, provider_metadata?: object, recordings?: { content_type: 'audio/mpeg'; provider_id: string; url: string; }[], transcript?: { cues: { from: number; speaker: string; text: string; to: number; }[]; }): { id: string; created_at: string; direction: 'incoming' | 'outgoing'; participants: object[]; provider: 'openphone' | 'user' | 'zoom_phone'; provider_id: string; provider_status: string; start_at: string; type: 'call'; updated_at: string; answered_at?: string; end_at?: string; note?: note; provider_metadata?: object; summary?: note; transcript?: object; }`\n\n**post** `/calls/upsert`\n\nFind and update an existing phone call, or create a new one.\n\n### Parameters\n\n- `direction: 'incoming' | 'outgoing'`\n  The direction of the call, either `incoming` or `outgoing`.\n\n- `participants: { phone: string; role: 'caller' | 'callee' | 'other'; }[]`\n  An array of participants involved in the call.\n\n- `provider: 'openphone' | 'user' | 'zoom_phone'`\n  The name of the phone provider that handled the call (e.g., `openphone`).\n\n- `provider_id: string`\n  The unique identifier for the call from the provider's system.\n\n- `provider_status: string`\n  The status of the call.\n\n- `start_at: string`\n  The time the call started, as an ISO 8601 timestamp in UTC.\n\n- `answered_at?: string`\n  The time the call was answered, as an ISO 8601 timestamp in UTC.\n\n- `end_at?: string`\n  The time the call ended, as an ISO 8601 timestamp in UTC.\n\n- `provider_metadata?: object`\n  A hash of additional metadata from the provider.\n\n- `recordings?: { content_type: 'audio/mpeg'; provider_id: string; url: string; }[]`\n  Any recordings associated with the call.\n\n- `transcript?: { cues: { from: number; speaker: string; text: string; to: number; }[]; }`\n  A transcript of the call.\n  - `cues: { from: number; speaker: string; text: string; to: number; }[]`\n    A list of cues that identify the text spoken in specific time slices of the call.\n\n### Returns\n\n- `{ id: string; created_at: string; direction: 'incoming' | 'outgoing'; participants: { id: string; phone: string; role: 'caller' | 'callee' | 'other'; type: 'call_participant'; organization?: object; person?: object; }[]; provider: 'openphone' | 'user' | 'zoom_phone'; provider_id: string; provider_status: string; start_at: string; type: 'call'; updated_at: string; answered_at?: string; end_at?: string; note?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; provider_metadata?: object; summary?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; transcript?: { cues: { from: number; speaker: object; text: string; to: number; }[]; }; }`\n  The Call object represents a phone call that has been logged in the system. It contains details about the participants, timing, and outcome of the call.\n\n  - `id: string`\n  - `created_at: string`\n  - `direction: 'incoming' | 'outgoing'`\n  - `participants: { id: string; phone: string; role: 'caller' | 'callee' | 'other'; type: 'call_participant'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `provider: 'openphone' | 'user' | 'zoom_phone'`\n  - `provider_id: string`\n  - `provider_status: string`\n  - `start_at: string`\n  - `type: 'call'`\n  - `updated_at: string`\n  - `answered_at?: string`\n  - `end_at?: string`\n  - `note?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `provider_metadata?: object`\n  - `summary?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `transcript?: { cues: { from: number; speaker: { attendee_id?: string; label?: string; }; text: string; to: number; }[]; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst call = await client.calls.upsert({\n  direction: 'incoming',\n  participants: [{ phone: '+14155551212', role: 'caller' }, { phone: '+16505551212', role: 'callee' }],\n  provider: 'openphone',\n  provider_id: 'openphone_id_000000000006',\n  provider_status: 'completed',\n  start_at: '2025-02-17T15:00:00.000Z',\n});\n\nconsole.log(call);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Calls.Upsert',
+      typescript: {
+        method: 'client.calls.upsert',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcall, err := client.Calls.Upsert(context.TODO(), moonbase.CallUpsertParams{\n\t\tDirection: moonbase.CallUpsertParamsDirectionIncoming,\n\t\tParticipants: []moonbase.CallUpsertParamsParticipant{{\n\t\t\tPhone: "+14155551212",\n\t\t\tRole:  "caller",\n\t\t}, {\n\t\t\tPhone: "+16505551212",\n\t\t\tRole:  "callee",\n\t\t}},\n\t\tProvider:       moonbase.CallUpsertParamsProviderOpenphone,\n\t\tProviderID:     "openphone_id_000000000006",\n\t\tProviderStatus: "completed",\n\t\tStartAt:        time.Now(),\n\t\tAnsweredAt:     moonbase.Time(time.Now()),\n\t\tEndAt:          moonbase.Time(time.Now()),\n\t\tProviderMetadata: map[string]any{\n\t\t\t"answered_by":     "UShjUatqtF",\n\t\t\t"user_id":         "UShjUatqtF",\n\t\t\t"phone_number_id": "PN72zMikBJ",\n\t\t\t"conversation_id": "CN3b48bcc423e772aeba377414a4fa6a06",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", call.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/calls/upsert \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "direction": "incoming",\n          "participants": [\n            {\n              "phone": "+14155551212",\n              "role": "caller"\n            },\n            {\n              "phone": "+16505551212",\n              "role": "callee"\n            }\n          ],\n          "provider": "openphone",\n          "provider_id": "openphone_id_000000000006",\n          "provider_status": "completed",\n          "start_at": "2025-02-17T15:00:00.000Z"\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst call = await client.calls.upsert({\n  direction: 'incoming',\n  participants: [\n    { phone: '+14155551212', role: 'caller' },\n    { phone: '+16505551212', role: 'callee' },\n  ],\n  provider: 'openphone',\n  provider_id: 'openphone_id_000000000006',\n  provider_status: 'completed',\n  start_at: '2025-02-17T15:00:00.000Z',\n  answered_at: '2025-02-17T15:01:00Z',\n  end_at: '2025-02-17T15:30:00.000Z',\n  provider_metadata: {\n    answered_by: 'UShjUatqtF',\n    user_id: 'UShjUatqtF',\n    phone_number_id: 'PN72zMikBJ',\n    conversation_id: 'CN3b48bcc423e772aeba377414a4fa6a06',\n  },\n});\n\nconsole.log(call.id);",
       },
       python: {
         method: 'calls.upsert',
         example:
           'import os\nfrom datetime import datetime\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\ncall = client.calls.upsert(\n    direction="incoming",\n    participants=[{\n        "phone": "+14155551212",\n        "role": "caller",\n    }, {\n        "phone": "+16505551212",\n        "role": "callee",\n    }],\n    provider="openphone",\n    provider_id="openphone_id_000000000006",\n    provider_status="completed",\n    start_at=datetime.fromisoformat("2025-02-17T15:00:00.000"),\n    answered_at=datetime.fromisoformat("2025-02-17T15:01:00"),\n    end_at=datetime.fromisoformat("2025-02-17T15:30:00.000"),\n    provider_metadata={\n        "answered_by": "UShjUatqtF",\n        "user_id": "UShjUatqtF",\n        "phone_number_id": "PN72zMikBJ",\n        "conversation_id": "CN3b48bcc423e772aeba377414a4fa6a06",\n    },\n)\nprint(call.id)',
       },
+      go: {
+        method: 'client.Calls.Upsert',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcall, err := client.Calls.Upsert(context.TODO(), moonbase.CallUpsertParams{\n\t\tDirection: moonbase.CallUpsertParamsDirectionIncoming,\n\t\tParticipants: []moonbase.CallUpsertParamsParticipant{{\n\t\t\tPhone: "+14155551212",\n\t\t\tRole:  "caller",\n\t\t}, {\n\t\t\tPhone: "+16505551212",\n\t\t\tRole:  "callee",\n\t\t}},\n\t\tProvider:       moonbase.CallUpsertParamsProviderOpenphone,\n\t\tProviderID:     "openphone_id_000000000006",\n\t\tProviderStatus: "completed",\n\t\tStartAt:        time.Now(),\n\t\tAnsweredAt:     moonbase.Time(time.Now()),\n\t\tEndAt:          moonbase.Time(time.Now()),\n\t\tProviderMetadata: map[string]any{\n\t\t\t"answered_by":     "UShjUatqtF",\n\t\t\t"user_id":         "UShjUatqtF",\n\t\t\t"phone_number_id": "PN72zMikBJ",\n\t\t\t"conversation_id": "CN3b48bcc423e772aeba377414a4fa6a06",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", call.ID)\n}\n',
+      },
       ruby: {
         method: 'calls.upsert',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\ncall = moonbase.calls.upsert(\n  direction: :incoming,\n  participants: [{phone: "+14155551212", role: :caller}, {phone: "+16505551212", role: :callee}],\n  provider: :openphone,\n  provider_id: "openphone_id_000000000006",\n  provider_status: "completed",\n  start_at: "2025-02-17T15:00:00.000Z"\n)\n\nputs(call)',
       },
-      typescript: {
-        method: 'client.calls.upsert',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst call = await client.calls.upsert({\n  direction: 'incoming',\n  participants: [\n    { phone: '+14155551212', role: 'caller' },\n    { phone: '+16505551212', role: 'callee' },\n  ],\n  provider: 'openphone',\n  provider_id: 'openphone_id_000000000006',\n  provider_status: 'completed',\n  start_at: '2025-02-17T15:00:00.000Z',\n  answered_at: '2025-02-17T15:01:00Z',\n  end_at: '2025-02-17T15:30:00.000Z',\n  provider_metadata: {\n    answered_by: 'UShjUatqtF',\n    user_id: 'UShjUatqtF',\n    phone_number_id: 'PN72zMikBJ',\n    conversation_id: 'CN3b48bcc423e772aeba377414a4fa6a06',\n  },\n});\n\nconsole.log(call.id);",
+          'curl https://api.moonbase.ai/v0/calls/upsert \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "direction": "incoming",\n          "participants": [\n            {\n              "phone": "+14155551212",\n              "role": "caller"\n            },\n            {\n              "phone": "+16505551212",\n              "role": "callee"\n            }\n          ],\n          "provider": "openphone",\n          "provider_id": "openphone_id_000000000006",\n          "provider_status": "completed",\n          "start_at": "2025-02-17T15:00:00.000Z"\n        }\'',
       },
     },
   },
@@ -1657,28 +1657,28 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.calls.list(after?: string, before?: string, limit?: number): { id: string; created_at: string; direction: 'incoming' | 'outgoing'; participants: object[]; provider: 'openphone' | 'user' | 'zoom_phone'; provider_id: string; provider_status: string; start_at: string; type: 'call'; updated_at: string; answered_at?: string; end_at?: string; note?: note; provider_metadata?: object; summary?: note; transcript?: object; }`\n\n**get** `/calls`\n\nReturns a list of calls.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; created_at: string; direction: 'incoming' | 'outgoing'; participants: { id: string; phone: string; role: 'caller' | 'callee' | 'other'; type: 'call_participant'; organization?: object; person?: object; }[]; provider: 'openphone' | 'user' | 'zoom_phone'; provider_id: string; provider_status: string; start_at: string; type: 'call'; updated_at: string; answered_at?: string; end_at?: string; note?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; provider_metadata?: object; summary?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; transcript?: { cues: { from: number; speaker: object; text: string; to: number; }[]; }; }`\n  The Call object represents a phone call that has been logged in the system. It contains details about the participants, timing, and outcome of the call.\n\n  - `id: string`\n  - `created_at: string`\n  - `direction: 'incoming' | 'outgoing'`\n  - `participants: { id: string; phone: string; role: 'caller' | 'callee' | 'other'; type: 'call_participant'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `provider: 'openphone' | 'user' | 'zoom_phone'`\n  - `provider_id: string`\n  - `provider_status: string`\n  - `start_at: string`\n  - `type: 'call'`\n  - `updated_at: string`\n  - `answered_at?: string`\n  - `end_at?: string`\n  - `note?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `provider_metadata?: object`\n  - `summary?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `transcript?: { cues: { from: number; speaker: { attendee_id?: string; label?: string; }; text: string; to: number; }[]; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const call of client.calls.list()) {\n  console.log(call);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Calls.List',
+      typescript: {
+        method: 'client.calls.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Calls.List(context.TODO(), moonbase.CallListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example: 'curl https://api.moonbase.ai/v0/calls \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const call of client.calls.list()) {\n  console.log(call.id);\n}",
       },
       python: {
         method: 'calls.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.calls.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Calls.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Calls.List(context.TODO(), moonbase.CallListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'calls.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.calls.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.calls.list',
-        example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const call of client.calls.list()) {\n  console.log(call.id);\n}",
+      http: {
+        example: 'curl https://api.moonbase.ai/v0/calls \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1696,29 +1696,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.calls.retrieve(id: string, include?: 'transcript' | 'note' | 'summary'[]): { id: string; created_at: string; direction: 'incoming' | 'outgoing'; participants: object[]; provider: 'openphone' | 'user' | 'zoom_phone'; provider_id: string; provider_status: string; start_at: string; type: 'call'; updated_at: string; answered_at?: string; end_at?: string; note?: note; provider_metadata?: object; summary?: note; transcript?: object; }`\n\n**get** `/calls/{id}`\n\nRetrieves the details of an existing call.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'transcript' | 'note' | 'summary'[]`\n  Specifies which related objects to include in the response. Valid options are `transcript`, `note`, and `summary`.\n\n### Returns\n\n- `{ id: string; created_at: string; direction: 'incoming' | 'outgoing'; participants: { id: string; phone: string; role: 'caller' | 'callee' | 'other'; type: 'call_participant'; organization?: object; person?: object; }[]; provider: 'openphone' | 'user' | 'zoom_phone'; provider_id: string; provider_status: string; start_at: string; type: 'call'; updated_at: string; answered_at?: string; end_at?: string; note?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; provider_metadata?: object; summary?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; transcript?: { cues: { from: number; speaker: object; text: string; to: number; }[]; }; }`\n  The Call object represents a phone call that has been logged in the system. It contains details about the participants, timing, and outcome of the call.\n\n  - `id: string`\n  - `created_at: string`\n  - `direction: 'incoming' | 'outgoing'`\n  - `participants: { id: string; phone: string; role: 'caller' | 'callee' | 'other'; type: 'call_participant'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `provider: 'openphone' | 'user' | 'zoom_phone'`\n  - `provider_id: string`\n  - `provider_status: string`\n  - `start_at: string`\n  - `type: 'call'`\n  - `updated_at: string`\n  - `answered_at?: string`\n  - `end_at?: string`\n  - `note?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `provider_metadata?: object`\n  - `summary?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `transcript?: { cues: { from: number; speaker: { attendee_id?: string; label?: string; }; text: string; to: number; }[]; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst call = await client.calls.retrieve('id');\n\nconsole.log(call);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Calls.Get',
+      typescript: {
+        method: 'client.calls.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcall, err := client.Calls.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CallGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", call.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/calls/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst call = await client.calls.retrieve('id');\n\nconsole.log(call.id);",
       },
       python: {
         method: 'calls.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\ncall = client.calls.retrieve(\n    id="id",\n)\nprint(call.id)',
       },
+      go: {
+        method: 'client.Calls.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcall, err := client.Calls.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.CallGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", call.ID)\n}\n',
+      },
       ruby: {
         method: 'calls.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\ncall = moonbase.calls.retrieve("id")\n\nputs(call)',
       },
-      typescript: {
-        method: 'client.calls.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst call = await client.calls.retrieve('id');\n\nconsole.log(call.id);",
+          'curl https://api.moonbase.ai/v0/calls/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1736,28 +1736,28 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.files.list(after?: string, before?: string, limit?: number): { id: string; associations: item_pointer[]; created_at: string; download_url: string; filename: string; name: string; size: number; type: 'file'; updated_at: string; }`\n\n**get** `/files`\n\nReturns a list of files that you have uploaded.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; associations: { id: string; collection: collection_pointer; type: 'item'; }[]; created_at: string; download_url: string; filename: string; name: string; size: number; type: 'file'; updated_at: string; }`\n  The File object represents a file that has been uploaded to your library.\n\n  - `id: string`\n  - `associations: { id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; }[]`\n  - `created_at: string`\n  - `download_url: string`\n  - `filename: string`\n  - `name: string`\n  - `size: number`\n  - `type: 'file'`\n  - `updated_at: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const moonbaseFile of client.files.list()) {\n  console.log(moonbaseFile);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Files.List',
+      typescript: {
+        method: 'client.files.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Files.List(context.TODO(), moonbase.FileListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example: 'curl https://api.moonbase.ai/v0/files \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const moonbaseFile of client.files.list()) {\n  console.log(moonbaseFile.id);\n}",
       },
       python: {
         method: 'files.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.files.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Files.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Files.List(context.TODO(), moonbase.FileListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'files.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.files.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.files.list',
-        example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const moonbaseFile of client.files.list()) {\n  console.log(moonbaseFile.id);\n}",
+      http: {
+        example: 'curl https://api.moonbase.ai/v0/files \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1775,29 +1775,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.files.retrieve(id: string): { id: string; associations: item_pointer[]; created_at: string; download_url: string; filename: string; name: string; size: number; type: 'file'; updated_at: string; }`\n\n**get** `/files/{id}`\n\nRetrieves the details of an existing file.\n\n### Parameters\n\n- `id: string`\n\n### Returns\n\n- `{ id: string; associations: { id: string; collection: collection_pointer; type: 'item'; }[]; created_at: string; download_url: string; filename: string; name: string; size: number; type: 'file'; updated_at: string; }`\n  The File object represents a file that has been uploaded to your library.\n\n  - `id: string`\n  - `associations: { id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; }[]`\n  - `created_at: string`\n  - `download_url: string`\n  - `filename: string`\n  - `name: string`\n  - `size: number`\n  - `type: 'file'`\n  - `updated_at: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst moonbaseFile = await client.files.retrieve('id');\n\nconsole.log(moonbaseFile);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Files.Get',
+      typescript: {
+        method: 'client.files.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmoonbaseFile, err := client.Files.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", moonbaseFile.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/files/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst moonbaseFile = await client.files.retrieve('id');\n\nconsole.log(moonbaseFile.id);",
       },
       python: {
         method: 'files.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nmoonbase_file = client.files.retrieve(\n    "id",\n)\nprint(moonbase_file.id)',
       },
+      go: {
+        method: 'client.Files.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmoonbaseFile, err := client.Files.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", moonbaseFile.ID)\n}\n',
+      },
       ruby: {
         method: 'files.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nmoonbase_file = moonbase.files.retrieve("id")\n\nputs(moonbase_file)',
       },
-      typescript: {
-        method: 'client.files.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst moonbaseFile = await client.files.retrieve('id');\n\nconsole.log(moonbaseFile.id);",
+          'curl https://api.moonbase.ai/v0/files/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1815,29 +1815,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## upload\n\n`client.files.upload(file: string, associations?: { id: string; type: string; }[], name?: string): { id: string; associations: item_pointer[]; created_at: string; download_url: string; filename: string; name: string; size: number; type: 'file'; updated_at: string; }`\n\n**post** `/files`\n\nUpload a file\n\n### Parameters\n\n- `file: string`\n  The File object to be uploaded.\n\n- `associations?: { id: string; type: string; }[]`\n  Link the File to Moonbase items like a person, organization, deal, task, or an item in a custom collection.\n\n- `name?: string`\n  The display name of the file.\n\n### Returns\n\n- `{ id: string; associations: { id: string; collection: collection_pointer; type: 'item'; }[]; created_at: string; download_url: string; filename: string; name: string; size: number; type: 'file'; updated_at: string; }`\n  The File object represents a file that has been uploaded to your library.\n\n  - `id: string`\n  - `associations: { id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; }[]`\n  - `created_at: string`\n  - `download_url: string`\n  - `filename: string`\n  - `name: string`\n  - `size: number`\n  - `type: 'file'`\n  - `updated_at: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst moonbaseFile = await client.files.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(moonbaseFile);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Files.Upload',
+      typescript: {
+        method: 'client.files.upload',
         example:
-          'package main\n\nimport (\n\t"bytes"\n\t"context"\n\t"fmt"\n\t"io"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmoonbaseFile, err := client.Files.Upload(context.TODO(), moonbase.FileUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte("Example data"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", moonbaseFile.ID)\n}\n',
-      },
-      http: {
-        example:
-          "curl https://api.moonbase.ai/v0/files \\\n    -H 'Content-Type: multipart/form-data' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -F 'file=@/path/to/file'",
+          "import fs from 'fs';\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst moonbaseFile = await client.files.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(moonbaseFile.id);",
       },
       python: {
         method: 'files.upload',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nmoonbase_file = client.files.upload(\n    file=b"Example data",\n)\nprint(moonbase_file.id)',
       },
+      go: {
+        method: 'client.Files.Upload',
+        example:
+          'package main\n\nimport (\n\t"bytes"\n\t"context"\n\t"fmt"\n\t"io"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmoonbaseFile, err := client.Files.Upload(context.TODO(), moonbase.FileUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte("Example data"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", moonbaseFile.ID)\n}\n',
+      },
       ruby: {
         method: 'files.upload',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nmoonbase_file = moonbase.files.upload(file: StringIO.new("Example data"))\n\nputs(moonbase_file)',
       },
-      typescript: {
-        method: 'client.files.upload',
+      http: {
         example:
-          "import fs from 'fs';\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst moonbaseFile = await client.files.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(moonbaseFile.id);",
+          "curl https://api.moonbase.ai/v0/files \\\n    -H 'Content-Type: multipart/form-data' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -F 'file=@/path/to/file'",
       },
     },
   },
@@ -1853,29 +1853,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.files.delete(id: string): void`\n\n**delete** `/files/{id}`\n\nPermanently deletes a file.\n\n### Parameters\n\n- `id: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nawait client.files.delete('id')\n```",
     perLanguage: {
-      go: {
-        method: 'client.Files.Delete',
+      typescript: {
+        method: 'client.files.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Files.Delete(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/files/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.files.delete('id');",
       },
       python: {
         method: 'files.delete',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nclient.files.delete(\n    "id",\n)',
       },
+      go: {
+        method: 'client.Files.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Files.Delete(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
       ruby: {
         method: 'files.delete',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nresult = moonbase.files.delete("id")\n\nputs(result)',
       },
-      typescript: {
-        method: 'client.files.delete',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.files.delete('id');",
+          'curl https://api.moonbase.ai/v0/files/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1898,29 +1898,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.meetings.list(after?: string, before?: string, filter?: { i_cal_uid?: { eq?: string; }; }, limit?: number): { id: string; created_at: string; end_at: string; i_cal_uid: string; provider_id: string; start_at: string; time_zone: string; type: 'meeting'; updated_at: string; attendees?: attendee[]; description?: string; duration?: number; location?: string; note?: note; organizer?: organizer; provider_uri?: string; recording_url?: string; summary?: note; title?: string; transcript?: object; }`\n\n**get** `/meetings`\n\nReturns a list of meetings.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `filter?: { i_cal_uid?: { eq?: string; }; }`\n  - `i_cal_uid?: { eq?: string; }`\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; created_at: string; end_at: string; i_cal_uid: string; provider_id: string; start_at: string; time_zone: string; type: 'meeting'; updated_at: string; attendees?: { id: string; email: string; type: 'meeting_attendee'; organization?: pointer; person?: pointer; }[]; description?: string; duration?: number; location?: string; note?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; organizer?: { id: string; email: string; type: 'meeting_organizer'; organization?: pointer; person?: pointer; }; provider_uri?: string; recording_url?: string; summary?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; title?: string; transcript?: { cues: { from: number; speaker: object; text: string; to: number; }[]; }; }`\n  The Meeting object represents a calendar event. It includes details about the participants, timing, and associated content like summaries and recordings.\n\n  - `id: string`\n  - `created_at: string`\n  - `end_at: string`\n  - `i_cal_uid: string`\n  - `provider_id: string`\n  - `start_at: string`\n  - `time_zone: string`\n  - `type: 'meeting'`\n  - `updated_at: string`\n  - `attendees?: { id: string; email: string; type: 'meeting_attendee'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `description?: string`\n  - `duration?: number`\n  - `location?: string`\n  - `note?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `organizer?: { id: string; email: string; type: 'meeting_organizer'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }`\n  - `provider_uri?: string`\n  - `recording_url?: string`\n  - `summary?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `title?: string`\n  - `transcript?: { cues: { from: number; speaker: { attendee_id?: string; label?: string; }; text: string; to: number; }[]; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const meeting of client.meetings.list()) {\n  console.log(meeting);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Meetings.List',
+      typescript: {
+        method: 'client.meetings.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Meetings.List(context.TODO(), moonbase.MeetingListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/meetings \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const meeting of client.meetings.list()) {\n  console.log(meeting.id);\n}",
       },
       python: {
         method: 'meetings.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.meetings.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Meetings.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Meetings.List(context.TODO(), moonbase.MeetingListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'meetings.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.meetings.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.meetings.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const meeting of client.meetings.list()) {\n  console.log(meeting.id);\n}",
+          'curl https://api.moonbase.ai/v0/meetings \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1938,29 +1938,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.meetings.retrieve(id: string, include?: 'organizer' | 'attendees' | 'transcript' | 'note' | 'summary'[]): { id: string; created_at: string; end_at: string; i_cal_uid: string; provider_id: string; start_at: string; time_zone: string; type: 'meeting'; updated_at: string; attendees?: attendee[]; description?: string; duration?: number; location?: string; note?: note; organizer?: organizer; provider_uri?: string; recording_url?: string; summary?: note; title?: string; transcript?: object; }`\n\n**get** `/meetings/{id}`\n\nRetrieves the details of an existing meeting.\n\n### Parameters\n\n- `id: string`\n\n- `include?: 'organizer' | 'attendees' | 'transcript' | 'note' | 'summary'[]`\n  Specifies which related objects to include in the response. Valid options are `organizer`, `attendees`, `transcript`, `note`, and `summary`.\n\n### Returns\n\n- `{ id: string; created_at: string; end_at: string; i_cal_uid: string; provider_id: string; start_at: string; time_zone: string; type: 'meeting'; updated_at: string; attendees?: { id: string; email: string; type: 'meeting_attendee'; organization?: pointer; person?: pointer; }[]; description?: string; duration?: number; location?: string; note?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; organizer?: { id: string; email: string; type: 'meeting_organizer'; organization?: pointer; person?: pointer; }; provider_uri?: string; recording_url?: string; summary?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; title?: string; transcript?: { cues: { from: number; speaker: object; text: string; to: number; }[]; }; }`\n  The Meeting object represents a calendar event. It includes details about the participants, timing, and associated content like summaries and recordings.\n\n  - `id: string`\n  - `created_at: string`\n  - `end_at: string`\n  - `i_cal_uid: string`\n  - `provider_id: string`\n  - `start_at: string`\n  - `time_zone: string`\n  - `type: 'meeting'`\n  - `updated_at: string`\n  - `attendees?: { id: string; email: string; type: 'meeting_attendee'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `description?: string`\n  - `duration?: number`\n  - `location?: string`\n  - `note?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `organizer?: { id: string; email: string; type: 'meeting_organizer'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }`\n  - `provider_uri?: string`\n  - `recording_url?: string`\n  - `summary?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `title?: string`\n  - `transcript?: { cues: { from: number; speaker: { attendee_id?: string; label?: string; }; text: string; to: number; }[]; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst meeting = await client.meetings.retrieve('id');\n\nconsole.log(meeting);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Meetings.Get',
+      typescript: {
+        method: 'client.meetings.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmeeting, err := client.Meetings.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.MeetingGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", meeting.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/meetings/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst meeting = await client.meetings.retrieve('id');\n\nconsole.log(meeting.id);",
       },
       python: {
         method: 'meetings.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nmeeting = client.meetings.retrieve(\n    id="id",\n)\nprint(meeting.id)',
       },
+      go: {
+        method: 'client.Meetings.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmeeting, err := client.Meetings.Get(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.MeetingGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", meeting.ID)\n}\n',
+      },
       ruby: {
         method: 'meetings.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nmeeting = moonbase.meetings.retrieve("id")\n\nputs(meeting)',
       },
-      typescript: {
-        method: 'client.meetings.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst meeting = await client.meetings.retrieve('id');\n\nconsole.log(meeting.id);",
+          'curl https://api.moonbase.ai/v0/meetings/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -1982,29 +1982,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.meetings.update(id: string, recording?: { content_type: 'video/mp4'; provider_id: string; url: string; }, transcript?: { cues: { from: number; speaker: string; text: string; to: number; }[]; provider: string; provider_id: string; }): { id: string; created_at: string; end_at: string; i_cal_uid: string; provider_id: string; start_at: string; time_zone: string; type: 'meeting'; updated_at: string; attendees?: attendee[]; description?: string; duration?: number; location?: string; note?: note; organizer?: organizer; provider_uri?: string; recording_url?: string; summary?: note; title?: string; transcript?: object; }`\n\n**patch** `/meetings/{id}`\n\nAdds a transcript or recording to an existing meeting.\n\n### Parameters\n\n- `id: string`\n\n- `recording?: { content_type: 'video/mp4'; provider_id: string; url: string; }`\n  A video recording of the meeting.\n  - `content_type: 'video/mp4'`\n    The content type of the recording. Note that only `video/mp4` is supported at this time.\n  - `provider_id: string`\n    The unique identifier for the recording from the provider's system.\n  - `url: string`\n    The URL pointing to the recording.\n\n- `transcript?: { cues: { from: number; speaker: string; text: string; to: number; }[]; provider: string; provider_id: string; }`\n  The meeting transcript.\n  - `cues: { from: number; speaker: string; text: string; to: number; }[]`\n    A list of cues that identify the text spoken in specific time slices of the meeting.\n  - `provider: string`\n    Identifies the source of the transcript.\n  - `provider_id: string`\n    The unique identifier for the transcript from the provider's system.\n\n### Returns\n\n- `{ id: string; created_at: string; end_at: string; i_cal_uid: string; provider_id: string; start_at: string; time_zone: string; type: 'meeting'; updated_at: string; attendees?: { id: string; email: string; type: 'meeting_attendee'; organization?: pointer; person?: pointer; }[]; description?: string; duration?: number; location?: string; note?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; organizer?: { id: string; email: string; type: 'meeting_organizer'; organization?: pointer; person?: pointer; }; provider_uri?: string; recording_url?: string; summary?: { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }; title?: string; transcript?: { cues: { from: number; speaker: object; text: string; to: number; }[]; }; }`\n  The Meeting object represents a calendar event. It includes details about the participants, timing, and associated content like summaries and recordings.\n\n  - `id: string`\n  - `created_at: string`\n  - `end_at: string`\n  - `i_cal_uid: string`\n  - `provider_id: string`\n  - `start_at: string`\n  - `time_zone: string`\n  - `type: 'meeting'`\n  - `updated_at: string`\n  - `attendees?: { id: string; email: string; type: 'meeting_attendee'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }[]`\n  - `description?: string`\n  - `duration?: number`\n  - `location?: string`\n  - `note?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `organizer?: { id: string; email: string; type: 'meeting_organizer'; organization?: { id: string; type: string; }; person?: { id: string; type: string; }; }`\n  - `provider_uri?: string`\n  - `recording_url?: string`\n  - `summary?: { id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  - `title?: string`\n  - `transcript?: { cues: { from: number; speaker: { attendee_id?: string; label?: string; }; text: string; to: number; }[]; }`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst meeting = await client.meetings.update('id');\n\nconsole.log(meeting);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Meetings.Update',
+      typescript: {
+        method: 'client.meetings.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmeeting, err := client.Meetings.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.MeetingUpdateParams{\n\t\t\tRecording: moonbase.MeetingUpdateParamsRecording{\n\t\t\t\tProviderID:  "abc123",\n\t\t\t\tContentType: "video/mp4",\n\t\t\t\tURL:         "https://example.com/recording.mp4",\n\t\t\t},\n\t\t\tTranscript: moonbase.MeetingUpdateParamsTranscript{\n\t\t\t\tProvider:   "example",\n\t\t\t\tProviderID: "def456",\n\t\t\t\tCues: []moonbase.MeetingUpdateParamsTranscriptCue{{\n\t\t\t\t\tFrom:    0.71999997,\n\t\t\t\t\tTo:      1.22,\n\t\t\t\t\tText:    "Hello.",\n\t\t\t\t\tSpeaker: "Jony Appleseed",\n\t\t\t\t}, {\n\t\t\t\t\tFrom:    1.52,\n\t\t\t\t\tTo:      3.22,\n\t\t\t\t\tText:    "Hey! It\'s been too long.",\n\t\t\t\t\tSpeaker: "Jane Doe",\n\t\t\t\t}},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", meeting.ID)\n}\n',
-      },
-      http: {
-        example:
-          "curl https://api.moonbase.ai/v0/meetings/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst meeting = await client.meetings.update('id', {\n  recording: {\n    provider_id: 'abc123',\n    content_type: 'video/mp4',\n    url: 'https://example.com/recording.mp4',\n  },\n  transcript: {\n    provider: 'example',\n    provider_id: 'def456',\n    cues: [\n      {\n        from: 0.71999997,\n        to: 1.22,\n        text: 'Hello.',\n        speaker: 'Jony Appleseed',\n      },\n      {\n        from: 1.52,\n        to: 3.22,\n        text: \"Hey! It's been too long.\",\n        speaker: 'Jane Doe',\n      },\n    ],\n  },\n});\n\nconsole.log(meeting.id);",
       },
       python: {
         method: 'meetings.update',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nmeeting = client.meetings.update(\n    id="id",\n    recording={\n        "provider_id": "abc123",\n        "content_type": "video/mp4",\n        "url": "https://example.com/recording.mp4",\n    },\n    transcript={\n        "provider": "example",\n        "provider_id": "def456",\n        "cues": [{\n            "from": 0.71999997,\n            "to": 1.22,\n            "text": "Hello.",\n            "speaker": "Jony Appleseed",\n        }, {\n            "from": 1.52,\n            "to": 3.22,\n            "text": "Hey! It\'s been too long.",\n            "speaker": "Jane Doe",\n        }],\n    },\n)\nprint(meeting.id)',
       },
+      go: {
+        method: 'client.Meetings.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmeeting, err := client.Meetings.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.MeetingUpdateParams{\n\t\t\tRecording: moonbase.MeetingUpdateParamsRecording{\n\t\t\t\tProviderID:  "abc123",\n\t\t\t\tContentType: "video/mp4",\n\t\t\t\tURL:         "https://example.com/recording.mp4",\n\t\t\t},\n\t\t\tTranscript: moonbase.MeetingUpdateParamsTranscript{\n\t\t\t\tProvider:   "example",\n\t\t\t\tProviderID: "def456",\n\t\t\t\tCues: []moonbase.MeetingUpdateParamsTranscriptCue{{\n\t\t\t\t\tFrom:    0.71999997,\n\t\t\t\t\tTo:      1.22,\n\t\t\t\t\tText:    "Hello.",\n\t\t\t\t\tSpeaker: "Jony Appleseed",\n\t\t\t\t}, {\n\t\t\t\t\tFrom:    1.52,\n\t\t\t\t\tTo:      3.22,\n\t\t\t\t\tText:    "Hey! It\'s been too long.",\n\t\t\t\t\tSpeaker: "Jane Doe",\n\t\t\t\t}},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", meeting.ID)\n}\n',
+      },
       ruby: {
         method: 'meetings.update',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nmeeting = moonbase.meetings.update("id")\n\nputs(meeting)',
       },
-      typescript: {
-        method: 'client.meetings.update',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst meeting = await client.meetings.update('id', {\n  recording: {\n    provider_id: 'abc123',\n    content_type: 'video/mp4',\n    url: 'https://example.com/recording.mp4',\n  },\n  transcript: {\n    provider: 'example',\n    provider_id: 'def456',\n    cues: [\n      {\n        from: 0.71999997,\n        to: 1.22,\n        text: 'Hello.',\n        speaker: 'Jony Appleseed',\n      },\n      {\n        from: 1.52,\n        to: 3.22,\n        text: \"Hey! It's been too long.\",\n        speaker: 'Jane Doe',\n      },\n    ],\n  },\n});\n\nconsole.log(meeting.id);",
+          "curl https://api.moonbase.ai/v0/meetings/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
       },
     },
   },
@@ -2022,28 +2022,28 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.notes.list(after?: string, before?: string, limit?: number): { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }`\n\n**get** `/notes`\n\nReturns a list of your notes.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  The Note object represents a block of text content, often used for meeting notes or summaries.\n\n  - `id: string`\n  - `associations: { id: string; type: string; }[]`\n  - `body: { markdown?: string; }`\n  - `created_at: string`\n  - `lock_version: number`\n  - `type: 'note'`\n  - `updated_at: string`\n  - `creator?: { id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; }`\n  - `summary?: string`\n  - `title?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const note of client.notes.list()) {\n  console.log(note);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.Notes.List',
+      typescript: {
+        method: 'client.notes.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Notes.List(context.TODO(), moonbase.NoteListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example: 'curl https://api.moonbase.ai/v0/notes \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const note of client.notes.list()) {\n  console.log(note.id);\n}",
       },
       python: {
         method: 'notes.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.notes.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.Notes.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Notes.List(context.TODO(), moonbase.NoteListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'notes.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.notes.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.notes.list',
-        example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const note of client.notes.list()) {\n  console.log(note.id);\n}",
+      http: {
+        example: 'curl https://api.moonbase.ai/v0/notes \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -2061,29 +2061,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.notes.retrieve(id: string): { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }`\n\n**get** `/notes/{id}`\n\nRetrieves the details of an existing note.\n\n### Parameters\n\n- `id: string`\n\n### Returns\n\n- `{ id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  The Note object represents a block of text content, often used for meeting notes or summaries.\n\n  - `id: string`\n  - `associations: { id: string; type: string; }[]`\n  - `body: { markdown?: string; }`\n  - `created_at: string`\n  - `lock_version: number`\n  - `type: 'note'`\n  - `updated_at: string`\n  - `creator?: { id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; }`\n  - `summary?: string`\n  - `title?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst note = await client.notes.retrieve('id');\n\nconsole.log(note);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Notes.Get',
+      typescript: {
+        method: 'client.notes.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tnote, err := client.Notes.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", note.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/notes/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst note = await client.notes.retrieve('id');\n\nconsole.log(note.id);",
       },
       python: {
         method: 'notes.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nnote = client.notes.retrieve(\n    "id",\n)\nprint(note.id)',
       },
+      go: {
+        method: 'client.Notes.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tnote, err := client.Notes.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", note.ID)\n}\n',
+      },
       ruby: {
         method: 'notes.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nnote = moonbase.notes.retrieve("id")\n\nputs(note)',
       },
-      typescript: {
-        method: 'client.notes.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst note = await client.notes.retrieve('id');\n\nconsole.log(note.id);",
+          'curl https://api.moonbase.ai/v0/notes/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -2101,29 +2101,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.notes.create(body: { markdown?: string; }, associations?: { id: string; type: string; }[]): { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }`\n\n**post** `/notes`\n\nCreate a new note.\n\n### Parameters\n\n- `body: { markdown?: string; }`\n  The main content of the note.\n  - `markdown?: string`\n    The content formatted as Markdown text.\n\n- `associations?: { id: string; type: string; }[]`\n  Link the Note to Moonbase items (person, organization, deal, task, or an item in a custom collection), meetings, or calls.\n\n### Returns\n\n- `{ id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  The Note object represents a block of text content, often used for meeting notes or summaries.\n\n  - `id: string`\n  - `associations: { id: string; type: string; }[]`\n  - `body: { markdown?: string; }`\n  - `created_at: string`\n  - `lock_version: number`\n  - `type: 'note'`\n  - `updated_at: string`\n  - `creator?: { id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; }`\n  - `summary?: string`\n  - `title?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst note = await client.notes.create({ body: {} });\n\nconsole.log(note);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Notes.New',
+      typescript: {
+        method: 'client.notes.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tnote, err := client.Notes.New(context.TODO(), moonbase.NoteNewParams{\n\t\tBody: shared.FormattedTextParam{\n\t\t\tMarkdown: moonbase.String("# A note title\\n\\nHere\'s a note for me! Yay!"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", note.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/notes \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d "{\n          \\"body\\": {\n            \\"markdown\\": \\"# A note title\\\\n\\\\nHere\'s a note for me! Yay!\\"\n          }\n        }"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst note = await client.notes.create({\n  body: { markdown: \"# A note title\\n\\nHere's a note for me! Yay!\" },\n});\n\nconsole.log(note.id);",
       },
       python: {
         method: 'notes.create',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nnote = client.notes.create(\n    body={\n        "markdown": "# A note title\\n\\nHere\'s a note for me! Yay!"\n    },\n)\nprint(note.id)',
       },
+      go: {
+        method: 'client.Notes.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tnote, err := client.Notes.New(context.TODO(), moonbase.NoteNewParams{\n\t\tBody: shared.FormattedTextParam{\n\t\t\tMarkdown: moonbase.String("# A note title\\n\\nHere\'s a note for me! Yay!"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", note.ID)\n}\n',
+      },
       ruby: {
         method: 'notes.create',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nnote = moonbase.notes.create(body: {})\n\nputs(note)',
       },
-      typescript: {
-        method: 'client.notes.create',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst note = await client.notes.create({\n  body: { markdown: \"# A note title\\n\\nHere's a note for me! Yay!\" },\n});\n\nconsole.log(note.id);",
+          'curl https://api.moonbase.ai/v0/notes \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d "{\n          \\"body\\": {\n            \\"markdown\\": \\"# A note title\\\\n\\\\nHere\'s a note for me! Yay!\\"\n          }\n        }"',
       },
     },
   },
@@ -2141,29 +2141,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.notes.update(id: string, body: { markdown?: string; }, lock_version: number): { id: string; associations: pointer[]; body: formatted_text; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: item_pointer; summary?: string; title?: string; }`\n\n**patch** `/notes/{id}`\n\nUpdate an existing note.\n\n### Parameters\n\n- `id: string`\n\n- `body: { markdown?: string; }`\n  The main content of the note.\n  - `markdown?: string`\n    The content formatted as Markdown text.\n\n- `lock_version: number`\n  The current lock version of the note for optimistic concurrency control.\n\n### Returns\n\n- `{ id: string; associations: { id: string; type: string; }[]; body: { markdown?: string; }; created_at: string; lock_version: number; type: 'note'; updated_at: string; creator?: { id: string; collection: collection_pointer; type: 'item'; }; summary?: string; title?: string; }`\n  The Note object represents a block of text content, often used for meeting notes or summaries.\n\n  - `id: string`\n  - `associations: { id: string; type: string; }[]`\n  - `body: { markdown?: string; }`\n  - `created_at: string`\n  - `lock_version: number`\n  - `type: 'note'`\n  - `updated_at: string`\n  - `creator?: { id: string; collection: { id: string; ref: string; type: 'collection'; }; type: 'item'; }`\n  - `summary?: string`\n  - `title?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst note = await client.notes.update('id', {\n  body: {},\n  lock_version: 0,\n});\n\nconsole.log(note);\n```",
     perLanguage: {
-      go: {
-        method: 'client.Notes.Update',
+      typescript: {
+        method: 'client.notes.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tnote, err := client.Notes.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.NoteUpdateParams{\n\t\t\tBody: shared.FormattedTextParam{\n\t\t\t\tMarkdown: moonbase.String("# A note title\\n\\nHere\'s a note for me! Yay!"),\n\t\t\t},\n\t\t\tLockVersion: 0,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", note.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/notes/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d "{\n          \\"body\\": {\n            \\"markdown\\": \\"# A note title\\\\n\\\\nHere\'s a note for me! Yay!\\"\n          },\n          \\"lock_version\\": 0\n        }"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst note = await client.notes.update('id', {\n  body: { markdown: \"# A note title\\n\\nHere's a note for me! Yay!\" },\n  lock_version: 0,\n});\n\nconsole.log(note.id);",
       },
       python: {
         method: 'notes.update',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nnote = client.notes.update(\n    id="id",\n    body={\n        "markdown": "# A note title\\n\\nHere\'s a note for me! Yay!"\n    },\n    lock_version=0,\n)\nprint(note.id)',
       },
+      go: {
+        method: 'client.Notes.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n\t"github.com/moonbaseai/moonbase-sdk-go/shared"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tnote, err := client.Notes.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.NoteUpdateParams{\n\t\t\tBody: shared.FormattedTextParam{\n\t\t\t\tMarkdown: moonbase.String("# A note title\\n\\nHere\'s a note for me! Yay!"),\n\t\t\t},\n\t\t\tLockVersion: 0,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", note.ID)\n}\n',
+      },
       ruby: {
         method: 'notes.update',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nnote = moonbase.notes.update("id", body: {}, lock_version: 0)\n\nputs(note)',
       },
-      typescript: {
-        method: 'client.notes.update',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst note = await client.notes.update('id', {\n  body: { markdown: \"# A note title\\n\\nHere's a note for me! Yay!\" },\n  lock_version: 0,\n});\n\nconsole.log(note.id);",
+          'curl https://api.moonbase.ai/v0/notes/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d "{\n          \\"body\\": {\n            \\"markdown\\": \\"# A note title\\\\n\\\\nHere\'s a note for me! Yay!\\"\n          },\n          \\"lock_version\\": 0\n        }"',
       },
     },
   },
@@ -2179,29 +2179,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.notes.delete(id: string): void`\n\n**delete** `/notes/{id}`\n\nPermanently deletes a note.\n\n### Parameters\n\n- `id: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nawait client.notes.delete('id')\n```",
     perLanguage: {
-      go: {
-        method: 'client.Notes.Delete',
+      typescript: {
+        method: 'client.notes.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Notes.Delete(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/notes/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.notes.delete('id');",
       },
       python: {
         method: 'notes.delete',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nclient.notes.delete(\n    "id",\n)',
       },
+      go: {
+        method: 'client.Notes.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Notes.Delete(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
       ruby: {
         method: 'notes.delete',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nresult = moonbase.notes.delete("id")\n\nputs(result)',
       },
-      typescript: {
-        method: 'client.notes.delete',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.notes.delete('id');",
+          'curl https://api.moonbase.ai/v0/notes/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -2219,29 +2219,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.webhookEndpoints.list(after?: string, before?: string, limit?: number): { id: string; created_at: string; status: 'disabled' | 'enabled'; subscriptions: subscription[]; type: 'webhook_endpoint'; updated_at: string; url: string; secret?: string; }`\n\n**get** `/webhook_endpoints`\n\nReturns a list of endpoints.\n\n### Parameters\n\n- `after?: string`\n  When specified, returns results starting immediately after the item identified by this cursor. Use the cursor value from the previous response's metadata to fetch the next page of results.\n\n- `before?: string`\n  When specified, returns results starting immediately before the item identified by this cursor. Use the cursor value from the response's metadata to fetch the previous page of results.\n\n- `limit?: number`\n  Maximum number of items to return per page. Must be between 1 and 100. Defaults to 20 if not specified.\n\n### Returns\n\n- `{ id: string; created_at: string; status: 'disabled' | 'enabled'; subscriptions: { event_type: string; type: 'webhook_subscription'; }[]; type: 'webhook_endpoint'; updated_at: string; url: string; secret?: string; }`\n  A Webhook Endpoint is an HTTP endpoint that receives webhooks. You can configure which events are sent to each endpoint by creating `WebhookSubscription` objects.\n\n  - `id: string`\n  - `created_at: string`\n  - `status: 'disabled' | 'enabled'`\n  - `subscriptions: { event_type: string; type: 'webhook_subscription'; }[]`\n  - `type: 'webhook_endpoint'`\n  - `updated_at: string`\n  - `url: string`\n  - `secret?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\n// Automatically fetches more pages as needed.\nfor await (const endpoint of client.webhookEndpoints.list()) {\n  console.log(endpoint);\n}\n```",
     perLanguage: {
-      go: {
-        method: 'client.WebhookEndpoints.List',
+      typescript: {
+        method: 'client.webhookEndpoints.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.WebhookEndpoints.List(context.TODO(), moonbase.WebhookEndpointListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/webhook_endpoints \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const endpoint of client.webhookEndpoints.list()) {\n  console.log(endpoint.id);\n}",
       },
       python: {
         method: 'webhook_endpoints.list',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.webhook_endpoints.list()\npage = page.data[0]\nprint(page.id)',
       },
+      go: {
+        method: 'client.WebhookEndpoints.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.WebhookEndpoints.List(context.TODO(), moonbase.WebhookEndpointListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
       ruby: {
         method: 'webhook_endpoints.list',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\npage = moonbase.webhook_endpoints.list\n\nputs(page)',
       },
-      typescript: {
-        method: 'client.webhookEndpoints.list',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const endpoint of client.webhookEndpoints.list()) {\n  console.log(endpoint.id);\n}",
+          'curl https://api.moonbase.ai/v0/webhook_endpoints \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -2259,29 +2259,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.webhookEndpoints.create(status: 'disabled' | 'enabled', url: string, subscriptions?: { event_type: string; }[]): { id: string; created_at: string; status: 'disabled' | 'enabled'; subscriptions: subscription[]; type: 'webhook_endpoint'; updated_at: string; url: string; secret?: string; }`\n\n**post** `/webhook_endpoints`\n\nCreate a new endpoint.\n\n### Parameters\n\n- `status: 'disabled' | 'enabled'`\n  Indicates whether the endpoint is enabled.\n\n- `url: string`\n  The HTTPS URL where webhook events will be sent.\n\n- `subscriptions?: { event_type: string; }[]`\n  An array of event types that this endpoint should receive notifications for.\n\n### Returns\n\n- `{ id: string; created_at: string; status: 'disabled' | 'enabled'; subscriptions: { event_type: string; type: 'webhook_subscription'; }[]; type: 'webhook_endpoint'; updated_at: string; url: string; secret?: string; }`\n  A Webhook Endpoint is an HTTP endpoint that receives webhooks. You can configure which events are sent to each endpoint by creating `WebhookSubscription` objects.\n\n  - `id: string`\n  - `created_at: string`\n  - `status: 'disabled' | 'enabled'`\n  - `subscriptions: { event_type: string; type: 'webhook_subscription'; }[]`\n  - `type: 'webhook_endpoint'`\n  - `updated_at: string`\n  - `url: string`\n  - `secret?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst endpoint = await client.webhookEndpoints.create({ status: 'enabled', url: 'https://example.com/webhook' });\n\nconsole.log(endpoint);\n```",
     perLanguage: {
-      go: {
-        method: 'client.WebhookEndpoints.New',
+      typescript: {
+        method: 'client.webhookEndpoints.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tendpoint, err := client.WebhookEndpoints.New(context.TODO(), moonbase.WebhookEndpointNewParams{\n\t\tStatus: moonbase.WebhookEndpointNewParamsStatusEnabled,\n\t\tURL:    "https://example.com/webhook",\n\t\tSubscriptions: []moonbase.WebhookEndpointNewParamsSubscription{{\n\t\t\tEventType: "activity/item_created",\n\t\t}, {\n\t\t\tEventType: "activity/item_mentioned",\n\t\t}},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", endpoint.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/webhook_endpoints \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "status": "enabled",\n          "url": "https://example.com/webhook"\n        }\'',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst endpoint = await client.webhookEndpoints.create({\n  status: 'enabled',\n  url: 'https://example.com/webhook',\n  subscriptions: [\n    { event_type: 'activity/item_created' },\n    { event_type: 'activity/item_mentioned' },\n  ],\n});\n\nconsole.log(endpoint.id);",
       },
       python: {
         method: 'webhook_endpoints.create',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nendpoint = client.webhook_endpoints.create(\n    status="enabled",\n    url="https://example.com/webhook",\n    subscriptions=[{\n        "event_type": "activity/item_created"\n    }, {\n        "event_type": "activity/item_mentioned"\n    }],\n)\nprint(endpoint.id)',
       },
+      go: {
+        method: 'client.WebhookEndpoints.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tendpoint, err := client.WebhookEndpoints.New(context.TODO(), moonbase.WebhookEndpointNewParams{\n\t\tStatus: moonbase.WebhookEndpointNewParamsStatusEnabled,\n\t\tURL:    "https://example.com/webhook",\n\t\tSubscriptions: []moonbase.WebhookEndpointNewParamsSubscription{{\n\t\t\tEventType: "activity/item_created",\n\t\t}, {\n\t\t\tEventType: "activity/item_mentioned",\n\t\t}},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", endpoint.ID)\n}\n',
+      },
       ruby: {
         method: 'webhook_endpoints.create',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nendpoint = moonbase.webhook_endpoints.create(status: :enabled, url: "https://example.com/webhook")\n\nputs(endpoint)',
       },
-      typescript: {
-        method: 'client.webhookEndpoints.create',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst endpoint = await client.webhookEndpoints.create({\n  status: 'enabled',\n  url: 'https://example.com/webhook',\n  subscriptions: [\n    { event_type: 'activity/item_created' },\n    { event_type: 'activity/item_mentioned' },\n  ],\n});\n\nconsole.log(endpoint.id);",
+          'curl https://api.moonbase.ai/v0/webhook_endpoints \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "status": "enabled",\n          "url": "https://example.com/webhook"\n        }\'',
       },
     },
   },
@@ -2299,29 +2299,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.webhookEndpoints.retrieve(id: string): { id: string; created_at: string; status: 'disabled' | 'enabled'; subscriptions: subscription[]; type: 'webhook_endpoint'; updated_at: string; url: string; secret?: string; }`\n\n**get** `/webhook_endpoints/{id}`\n\nRetrieves the details of an existing endpoint.\n\n### Parameters\n\n- `id: string`\n\n### Returns\n\n- `{ id: string; created_at: string; status: 'disabled' | 'enabled'; subscriptions: { event_type: string; type: 'webhook_subscription'; }[]; type: 'webhook_endpoint'; updated_at: string; url: string; secret?: string; }`\n  A Webhook Endpoint is an HTTP endpoint that receives webhooks. You can configure which events are sent to each endpoint by creating `WebhookSubscription` objects.\n\n  - `id: string`\n  - `created_at: string`\n  - `status: 'disabled' | 'enabled'`\n  - `subscriptions: { event_type: string; type: 'webhook_subscription'; }[]`\n  - `type: 'webhook_endpoint'`\n  - `updated_at: string`\n  - `url: string`\n  - `secret?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst endpoint = await client.webhookEndpoints.retrieve('id');\n\nconsole.log(endpoint);\n```",
     perLanguage: {
-      go: {
-        method: 'client.WebhookEndpoints.Get',
+      typescript: {
+        method: 'client.webhookEndpoints.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tendpoint, err := client.WebhookEndpoints.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", endpoint.ID)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/webhook_endpoints/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst endpoint = await client.webhookEndpoints.retrieve('id');\n\nconsole.log(endpoint.id);",
       },
       python: {
         method: 'webhook_endpoints.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nendpoint = client.webhook_endpoints.retrieve(\n    "id",\n)\nprint(endpoint.id)',
       },
+      go: {
+        method: 'client.WebhookEndpoints.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tendpoint, err := client.WebhookEndpoints.Get(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", endpoint.ID)\n}\n',
+      },
       ruby: {
         method: 'webhook_endpoints.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nendpoint = moonbase.webhook_endpoints.retrieve("id")\n\nputs(endpoint)',
       },
-      typescript: {
-        method: 'client.webhookEndpoints.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst endpoint = await client.webhookEndpoints.retrieve('id');\n\nconsole.log(endpoint.id);",
+          'curl https://api.moonbase.ai/v0/webhook_endpoints/$ID \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -2344,29 +2344,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.webhookEndpoints.update(id: string, status?: 'disabled' | 'enabled', subscriptions?: { event_type: string; id?: string; }[], url?: string): { id: string; created_at: string; status: 'disabled' | 'enabled'; subscriptions: subscription[]; type: 'webhook_endpoint'; updated_at: string; url: string; secret?: string; }`\n\n**patch** `/webhook_endpoints/{id}`\n\nUpdates an endpoint.\n\n### Parameters\n\n- `id: string`\n\n- `status?: 'disabled' | 'enabled'`\n  Indicates whether the endpoint is enabled.\n\n- `subscriptions?: { event_type: string; id?: string; }[]`\n  An array of event types that this endpoint should receive notifications for.\n\n- `url?: string`\n  The HTTPS URL where webhook events will be sent.\n\n### Returns\n\n- `{ id: string; created_at: string; status: 'disabled' | 'enabled'; subscriptions: { event_type: string; type: 'webhook_subscription'; }[]; type: 'webhook_endpoint'; updated_at: string; url: string; secret?: string; }`\n  A Webhook Endpoint is an HTTP endpoint that receives webhooks. You can configure which events are sent to each endpoint by creating `WebhookSubscription` objects.\n\n  - `id: string`\n  - `created_at: string`\n  - `status: 'disabled' | 'enabled'`\n  - `subscriptions: { event_type: string; type: 'webhook_subscription'; }[]`\n  - `type: 'webhook_endpoint'`\n  - `updated_at: string`\n  - `url: string`\n  - `secret?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst endpoint = await client.webhookEndpoints.update('id');\n\nconsole.log(endpoint);\n```",
     perLanguage: {
-      go: {
-        method: 'client.WebhookEndpoints.Update',
+      typescript: {
+        method: 'client.webhookEndpoints.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tendpoint, err := client.WebhookEndpoints.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.WebhookEndpointUpdateParams{\n\t\t\tStatus: moonbase.WebhookEndpointUpdateParamsStatusDisabled,\n\t\t\tURL:    moonbase.String("https://updated.example.com"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", endpoint.ID)\n}\n',
-      },
-      http: {
-        example:
-          "curl https://api.moonbase.ai/v0/webhook_endpoints/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst endpoint = await client.webhookEndpoints.update('id', {\n  status: 'disabled',\n  url: 'https://updated.example.com',\n});\n\nconsole.log(endpoint.id);",
       },
       python: {
         method: 'webhook_endpoints.update',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nendpoint = client.webhook_endpoints.update(\n    id="id",\n    status="disabled",\n    url="https://updated.example.com",\n)\nprint(endpoint.id)',
       },
+      go: {
+        method: 'client.WebhookEndpoints.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tendpoint, err := client.WebhookEndpoints.Update(\n\t\tcontext.TODO(),\n\t\t"id",\n\t\tmoonbase.WebhookEndpointUpdateParams{\n\t\t\tStatus: moonbase.WebhookEndpointUpdateParamsStatusDisabled,\n\t\t\tURL:    moonbase.String("https://updated.example.com"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", endpoint.ID)\n}\n',
+      },
       ruby: {
         method: 'webhook_endpoints.update',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nendpoint = moonbase.webhook_endpoints.update("id")\n\nputs(endpoint)',
       },
-      typescript: {
-        method: 'client.webhookEndpoints.update',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst endpoint = await client.webhookEndpoints.update('id', {\n  status: 'disabled',\n  url: 'https://updated.example.com',\n});\n\nconsole.log(endpoint.id);",
+          "curl https://api.moonbase.ai/v0/webhook_endpoints/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
       },
     },
   },
@@ -2382,29 +2382,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.webhookEndpoints.delete(id: string): void`\n\n**delete** `/webhook_endpoints/{id}`\n\nPermanently deletes an endpoint.\n\n### Parameters\n\n- `id: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nawait client.webhookEndpoints.delete('id')\n```",
     perLanguage: {
-      go: {
-        method: 'client.WebhookEndpoints.Delete',
+      typescript: {
+        method: 'client.webhookEndpoints.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.WebhookEndpoints.Delete(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/webhook_endpoints/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.webhookEndpoints.delete('id');",
       },
       python: {
         method: 'webhook_endpoints.delete',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nclient.webhook_endpoints.delete(\n    "id",\n)',
       },
+      go: {
+        method: 'client.WebhookEndpoints.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.WebhookEndpoints.Delete(context.TODO(), "id")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
       ruby: {
         method: 'webhook_endpoints.delete',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nresult = moonbase.webhook_endpoints.delete("id")\n\nputs(result)',
       },
-      typescript: {
-        method: 'client.webhookEndpoints.delete',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.webhookEndpoints.delete('id');",
+          'curl https://api.moonbase.ai/v0/webhook_endpoints/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
@@ -2421,29 +2421,29 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.agentSettings.retrieve(): { created_at: string; type: 'agent_settings'; updated_at: string; deal_summary_model?: string; deal_summary_prompt?: string; meeting_agent_model?: string; meeting_prebrief_prompt?: string; meeting_summary_prompt?: string; meeting_web_search?: boolean; organization_info?: string; }`\n\n**get** `/agent_settings`\n\n### Returns\n\n- `{ created_at: string; type: 'agent_settings'; updated_at: string; deal_summary_model?: string; deal_summary_prompt?: string; meeting_agent_model?: string; meeting_prebrief_prompt?: string; meeting_summary_prompt?: string; meeting_web_search?: boolean; organization_info?: string; }`\n\n  - `created_at: string`\n  - `type: 'agent_settings'`\n  - `updated_at: string`\n  - `deal_summary_model?: string`\n  - `deal_summary_prompt?: string`\n  - `meeting_agent_model?: string`\n  - `meeting_prebrief_prompt?: string`\n  - `meeting_summary_prompt?: string`\n  - `meeting_web_search?: boolean`\n  - `organization_info?: string`\n\n### Example\n\n```typescript\nimport Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase();\n\nconst agentSetting = await client.agentSettings.retrieve();\n\nconsole.log(agentSetting);\n```",
     perLanguage: {
-      go: {
-        method: 'client.AgentSettings.Get',
+      typescript: {
+        method: 'client.agentSettings.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tagentSetting, err := client.AgentSettings.Get(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", agentSetting.CreatedAt)\n}\n',
-      },
-      http: {
-        example:
-          'curl https://api.moonbase.ai/v0/agent_settings \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
+          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst agentSetting = await client.agentSettings.retrieve();\n\nconsole.log(agentSetting.created_at);",
       },
       python: {
         method: 'agent_settings.retrieve',
         example:
           'import os\nfrom moonbase import Moonbase\n\nclient = Moonbase(\n    api_key=os.environ.get("MOONBASE_API_KEY"),  # This is the default and can be omitted\n)\nagent_setting = client.agent_settings.retrieve()\nprint(agent_setting.created_at)',
       },
+      go: {
+        method: 'client.AgentSettings.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/moonbaseai/moonbase-sdk-go"\n\t"github.com/moonbaseai/moonbase-sdk-go/option"\n)\n\nfunc main() {\n\tclient := moonbase.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tagentSetting, err := client.AgentSettings.Get(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", agentSetting.CreatedAt)\n}\n',
+      },
       ruby: {
         method: 'agent_settings.retrieve',
         example:
           'require "moonbase"\n\nmoonbase = Moonbase::Client.new(api_key: "My API Key")\n\nagent_setting = moonbase.agent_settings.retrieve\n\nputs(agent_setting)',
       },
-      typescript: {
-        method: 'client.agentSettings.retrieve',
+      http: {
         example:
-          "import Moonbase from '@moonbaseai/sdk';\n\nconst client = new Moonbase({\n  apiKey: process.env['MOONBASE_API_KEY'], // This is the default and can be omitted\n});\n\nconst agentSetting = await client.agentSettings.retrieve();\n\nconsole.log(agentSetting.created_at);",
+          'curl https://api.moonbase.ai/v0/agent_settings \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY"',
       },
     },
   },
