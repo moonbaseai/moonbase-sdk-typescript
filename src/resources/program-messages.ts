@@ -15,7 +15,7 @@ export class ProgramMessages extends APIResource {
    * @example
    * ```ts
    * const programMessage = await client.programMessages.send({
-   *   person: { email: 'person-132@example-132.com' },
+   *   person: { email: 'person-175@example-175.com' },
    *   program_template_id: '1CLJt2v6ZuRbtwPhmQtzxa',
    *   custom_variables: { coupon_code: 'HOWDY' },
    * });
@@ -57,6 +57,12 @@ export interface ProgramMessage {
   updated_at: string;
 }
 
+export interface ProgramMessagePointer {
+  id: string;
+
+  type: 'program_message';
+}
+
 export interface ProgramMessageSendParams {
   /**
    * The person to send the message to.
@@ -84,5 +90,9 @@ export namespace ProgramMessageSendParams {
 }
 
 export declare namespace ProgramMessages {
-  export { type ProgramMessage as ProgramMessage, type ProgramMessageSendParams as ProgramMessageSendParams };
+  export {
+    type ProgramMessage as ProgramMessage,
+    type ProgramMessagePointer as ProgramMessagePointer,
+    type ProgramMessageSendParams as ProgramMessageSendParams,
+  };
 }

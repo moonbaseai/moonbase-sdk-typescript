@@ -7,9 +7,9 @@ const client = new Moonbase({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource forms', () => {
+describe('resource funnels', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.forms.create({ name: 'Contact Us' });
+    const responsePromise = client.funnels.create({ name: 'Sales Pipeline' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,16 +20,35 @@ describe('resource forms', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.forms.create({
-      name: 'Contact Us',
-      business_email_required: true,
-      pages_enabled: true,
-      redirect_url: 'https://example.com/thanks',
+    const response = await client.funnels.create({
+      name: 'Sales Pipeline',
+      steps: [
+        {
+          color: 'blue',
+          name: 'New Lead',
+          step_type: 'active',
+        },
+        {
+          color: 'cyan',
+          name: 'Qualified',
+          step_type: 'active',
+        },
+        {
+          color: 'green',
+          name: 'Won',
+          step_type: 'success',
+        },
+        {
+          color: 'red',
+          name: 'Lost',
+          step_type: 'failure',
+        },
+      ],
     });
   });
 
   test('retrieve', async () => {
-    const responsePromise = client.forms.retrieve('id');
+    const responsePromise = client.funnels.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -40,7 +59,7 @@ describe('resource forms', () => {
   });
 
   test('update', async () => {
-    const responsePromise = client.forms.update('id', {});
+    const responsePromise = client.funnels.update('id', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -51,7 +70,7 @@ describe('resource forms', () => {
   });
 
   test('list', async () => {
-    const responsePromise = client.forms.list();
+    const responsePromise = client.funnels.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -64,7 +83,7 @@ describe('resource forms', () => {
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.forms.list(
+      client.funnels.list(
         {
           after: 'after',
           before: 'before',
@@ -76,7 +95,7 @@ describe('resource forms', () => {
   });
 
   test('delete', async () => {
-    const responsePromise = client.forms.delete('id');
+    const responsePromise = client.funnels.delete('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

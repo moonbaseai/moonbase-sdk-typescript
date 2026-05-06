@@ -2,7 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import * as CollectionsAPI from './collections';
-import { ItemsCursorPage } from './collections';
+import { ItemPointersCursorPage } from './collections';
 import { APIPromise } from '../../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagination';
 import { buildHeaders } from '../../internal/headers';
@@ -106,12 +106,13 @@ export class Items extends APIResource {
   }
 
   /**
-   * Returns a list of items that are part of the collection.
+   * Returns a paginated list of item pointers in a collection. Use the retrieve
+   * endpoint to get full item details including field values.
    *
    * @example
    * ```ts
    * // Automatically fetches more pages as needed.
-   * for await (const item of client.collections.items.list(
+   * for await (const itemPointer of client.collections.items.list(
    *   'collection_id',
    * )) {
    *   // ...
@@ -122,10 +123,10 @@ export class Items extends APIResource {
     collectionID: string,
     query: ItemListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<ItemsCursorPage, CollectionsAPI.Item> {
+  ): PagePromise<ItemPointersCursorPage, CollectionsAPI.ItemPointer> {
     return this._client.getAPIList(
       path`/collections/${collectionID}/items`,
-      CursorPage<CollectionsAPI.Item>,
+      CursorPage<CollectionsAPI.ItemPointer>,
       { query, ...options },
     );
   }
@@ -146,6 +147,31 @@ export class Items extends APIResource {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
+  }
+
+  /**
+   * Merges two items into a single item.
+   *
+   * @example
+   * ```ts
+   * const item = await client.collections.items.merge(
+   *   'collection_id',
+   *   {
+   *     destination: {
+   *       type: 'item',
+   *       id: '1CLJt2v7opRhSWqVEtHwYT',
+   *     },
+   *     source: { type: 'item', id: '1CLJt2v5aNd8G5SGzEaeVU' },
+   *   },
+   * );
+   * ```
+   */
+  merge(
+    collectionID: string,
+    body: ItemMergeParams,
+    options?: RequestOptions,
+  ): APIPromise<CollectionsAPI.Item> {
+    return this._client.post(path`/collections/${collectionID}/items/merge`, { body, ...options });
   }
 
   /**
@@ -243,7 +269,7 @@ export class Items extends APIResource {
 export type ItemSearchResponsesCursorPage = CursorPage<ItemSearchResponse>;
 
 /**
- * A search result entry
+ * A collection search result entry containing an item.
  */
 export interface ItemSearchResponse {
   /**
@@ -251,6 +277,8 @@ export interface ItemSearchResponse {
    * `values` corresponding to the Collection's `fields`.
    */
   data: CollectionsAPI.Item;
+
+  type: 'search_result';
 }
 
 export interface ItemCreateParams {
@@ -303,11 +331,6 @@ export interface ItemListParams extends CursorPageParams {
   before?: string;
 
   /**
-   * Include only specific fields in the returned items. Specify fields by id or key.
-   */
-  include?: Array<string>;
-
-  /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
    * to 20 if not specified.
    */
@@ -322,6 +345,18 @@ export interface ItemListParams extends CursorPageParams {
 
 export interface ItemDeleteParams {
   collection_id: string;
+}
+
+export interface ItemMergeParams {
+  /**
+   * The destination item pointer. This will be the remaining merged item.
+   */
+  destination: CollectionsAPI.ItemPointerParam;
+
+  /**
+   * The source item pointer. This item will be deleted.
+   */
+  source: CollectionsAPI.ItemPointerParam;
 }
 
 export interface ItemSearchParams extends CursorPageParams {
@@ -396,9 +431,10 @@ export declare namespace Items {
     type ItemUpdateParams as ItemUpdateParams,
     type ItemListParams as ItemListParams,
     type ItemDeleteParams as ItemDeleteParams,
+    type ItemMergeParams as ItemMergeParams,
     type ItemSearchParams as ItemSearchParams,
     type ItemUpsertParams as ItemUpsertParams,
   };
 }
 
-export { type ItemsCursorPage };
+export { type ItemPointersCursorPage };

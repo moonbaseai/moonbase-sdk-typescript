@@ -3,6 +3,7 @@
 import { APIResource } from '../core/resource';
 import * as NotesAPI from './notes';
 import * as Shared from './shared';
+import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -24,7 +25,7 @@ export class Calls extends APIResource {
    *     { phone: '+16505551212', role: 'callee' },
    *   ],
    *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000001',
+   *   provider_id: 'openphone_id_000000000006',
    *   provider_status: 'completed',
    *   start_at: '2025-02-17T15:00:00.000Z',
    *   answered_at: '2025-02-17T15:01:00Z',
@@ -88,7 +89,7 @@ export class Calls extends APIResource {
    *     { phone: '+16505551212', role: 'callee' },
    *   ],
    *   provider: 'openphone',
-   *   provider_id: 'openphone_id_000000000006',
+   *   provider_id: 'openphone_id_000000000005',
    *   provider_status: 'completed',
    *   start_at: '2025-02-17T15:00:00.000Z',
    *   answered_at: '2025-02-17T15:01:00Z',
@@ -132,7 +133,7 @@ export interface Call {
   /**
    * The participants involved in the call.
    */
-  participants: Array<Call.Participant>;
+  participants: Array<CallParticipant>;
 
   /**
    * The name of the phone provider that handled the call.
@@ -153,6 +154,11 @@ export interface Call {
    * The time the call started, as an ISO 8601 timestamp in UTC.
    */
   start_at: string;
+
+  /**
+   * The tags currently applied to this call.
+   */
+  tags: Array<Shared.Tag>;
 
   /**
    * String representing the object’s type. Always `call` for this object.
@@ -191,69 +197,71 @@ export interface Call {
    */
   summary?: NotesAPI.Note | null;
 
-  transcript?: Call.Transcript | null;
+  transcript?: CallTranscript | null;
 }
 
-export namespace Call {
+/**
+ * Represents a participant in a call.
+ */
+export interface CallParticipant {
   /**
-   * Represents a participant in a call.
+   * Unique identifier for the object.
    */
-  export interface Participant {
-    /**
-     * Unique identifier for the object.
-     */
-    id: string;
+  id: string;
 
-    /**
-     * The E.164 formatted phone number of the participant.
-     */
-    phone: string;
+  /**
+   * The E.164 formatted phone number of the participant.
+   */
+  phone: string;
 
-    /**
-     * The role of the participant in the call. Can be `caller`, `callee`, or `other`.
-     */
-    role: 'caller' | 'callee' | 'other';
+  /**
+   * The role of the participant in the call. Can be `caller`, `callee`, or `other`.
+   */
+  role: 'caller' | 'callee' | 'other';
 
-    /**
-     * String representing the object’s type. Always `call_participant` for this
-     * object.
-     */
-    type: 'call_participant';
+  /**
+   * String representing the object’s type. Always `call_participant` for this
+   * object.
+   */
+  type: 'call_participant';
 
-    /**
-     * A lightweight reference to another resource.
-     */
-    organization?: Shared.Pointer;
+  /**
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
+   */
+  organization?: CollectionsAPI.ItemPointer;
 
-    /**
-     * A lightweight reference to another resource.
-     */
-    person?: Shared.Pointer;
-  }
+  /**
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
+   */
+  person?: CollectionsAPI.ItemPointer;
+}
 
-  export interface Transcript {
-    cues: Array<Transcript.Cue>;
-  }
+export interface CallPointer {
+  id: string;
 
-  export namespace Transcript {
-    export interface Cue {
-      from: number;
+  type: 'call';
+}
 
-      speaker: Cue.Speaker;
+export interface CallTranscript {
+  cues: Array<CallTranscriptCue>;
+}
 
-      text: string;
+export interface CallTranscriptCue {
+  from: number;
 
-      to: number;
-    }
+  speaker: CallTranscriptSpeaker;
 
-    export namespace Cue {
-      export interface Speaker {
-        attendee_id?: string;
+  text: string;
 
-        label?: string;
-      }
-    }
-  }
+  to: number;
+}
+
+export interface CallTranscriptSpeaker {
+  attendee_id?: string;
+
+  label?: string;
 }
 
 export interface CallCreateParams {
@@ -306,6 +314,11 @@ export interface CallCreateParams {
    * Any recordings associated with the call.
    */
   recordings?: Array<CallCreateParams.Recording>;
+
+  /**
+   * Optional list of tag pointers to assign to the call.
+   */
+  tags?: Array<Shared.TagPointerParam>;
 
   /**
    * A transcript of the call.
@@ -465,6 +478,12 @@ export interface CallUpsertParams {
   recordings?: Array<CallUpsertParams.Recording>;
 
   /**
+   * Optional list of tag pointers to assign to the call. If omitted, existing tags
+   * are unchanged. Pass an empty array to clear tags.
+   */
+  tags?: Array<Shared.TagPointerParam>;
+
+  /**
    * A transcript of the call.
    */
   transcript?: CallUpsertParams.Transcript;
@@ -550,6 +569,11 @@ export namespace CallUpsertParams {
 export declare namespace Calls {
   export {
     type Call as Call,
+    type CallParticipant as CallParticipant,
+    type CallPointer as CallPointer,
+    type CallTranscript as CallTranscript,
+    type CallTranscriptCue as CallTranscriptCue,
+    type CallTranscriptSpeaker as CallTranscriptSpeaker,
     type CallsCursorPage as CallsCursorPage,
     type CallCreateParams as CallCreateParams,
     type CallRetrieveParams as CallRetrieveParams,

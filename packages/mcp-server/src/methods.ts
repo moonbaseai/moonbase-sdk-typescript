@@ -17,9 +17,51 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/search',
   },
   {
+    clientCallName: 'client.funnels.create',
+    fullyQualifiedName: 'funnels.create',
+    httpMethod: 'post',
+    httpPath: '/funnels',
+  },
+  {
+    clientCallName: 'client.funnels.retrieve',
+    fullyQualifiedName: 'funnels.retrieve',
+    httpMethod: 'get',
+    httpPath: '/funnels/{id}',
+  },
+  {
+    clientCallName: 'client.funnels.update',
+    fullyQualifiedName: 'funnels.update',
+    httpMethod: 'patch',
+    httpPath: '/funnels/{id}',
+  },
+  {
+    clientCallName: 'client.funnels.list',
+    fullyQualifiedName: 'funnels.list',
+    httpMethod: 'get',
+    httpPath: '/funnels',
+  },
+  {
+    clientCallName: 'client.funnels.delete',
+    fullyQualifiedName: 'funnels.delete',
+    httpMethod: 'delete',
+    httpPath: '/funnels/{id}',
+  },
+  {
+    clientCallName: 'client.collections.create',
+    fullyQualifiedName: 'collections.create',
+    httpMethod: 'post',
+    httpPath: '/collections',
+  },
+  {
     clientCallName: 'client.collections.retrieve',
     fullyQualifiedName: 'collections.retrieve',
     httpMethod: 'get',
+    httpPath: '/collections/{id}',
+  },
+  {
+    clientCallName: 'client.collections.update',
+    fullyQualifiedName: 'collections.update',
+    httpMethod: 'patch',
     httpPath: '/collections/{id}',
   },
   {
@@ -29,9 +71,27 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/collections',
   },
   {
+    clientCallName: 'client.collections.fields.create',
+    fullyQualifiedName: 'collections.fields.create',
+    httpMethod: 'post',
+    httpPath: '/collections/{collection_id}/fields',
+  },
+  {
     clientCallName: 'client.collections.fields.retrieve',
     fullyQualifiedName: 'collections.fields.retrieve',
     httpMethod: 'get',
+    httpPath: '/collections/{collection_id}/fields/{id}',
+  },
+  {
+    clientCallName: 'client.collections.fields.update',
+    fullyQualifiedName: 'collections.fields.update',
+    httpMethod: 'patch',
+    httpPath: '/collections/{collection_id}/fields/{id}',
+  },
+  {
+    clientCallName: 'client.collections.fields.delete',
+    fullyQualifiedName: 'collections.fields.delete',
+    httpMethod: 'delete',
     httpPath: '/collections/{collection_id}/fields/{id}',
   },
   {
@@ -63,6 +123,12 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'collections.items.delete',
     httpMethod: 'delete',
     httpPath: '/collections/{collection_id}/items/{id}',
+  },
+  {
+    clientCallName: 'client.collections.items.merge',
+    fullyQualifiedName: 'collections.items.merge',
+    httpMethod: 'post',
+    httpPath: '/collections/{collection_id}/items/merge',
   },
   {
     clientCallName: 'client.collections.items.search',
@@ -143,9 +209,33 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/inbox_messages/{id}',
   },
   {
+    clientCallName: 'client.inboxMessages.attachments.create',
+    fullyQualifiedName: 'inboxMessages.attachments.create',
+    httpMethod: 'post',
+    httpPath: '/inbox_messages/{inbox_message_id}/attachments',
+  },
+  {
+    clientCallName: 'client.inboxMessages.attachments.delete',
+    fullyQualifiedName: 'inboxMessages.attachments.delete',
+    httpMethod: 'delete',
+    httpPath: '/inbox_messages/{inbox_message_id}/attachments/{id}',
+  },
+  {
+    clientCallName: 'client.tagsets.create',
+    fullyQualifiedName: 'tagsets.create',
+    httpMethod: 'post',
+    httpPath: '/tagsets',
+  },
+  {
     clientCallName: 'client.tagsets.retrieve',
     fullyQualifiedName: 'tagsets.retrieve',
     httpMethod: 'get',
+    httpPath: '/tagsets/{id}',
+  },
+  {
+    clientCallName: 'client.tagsets.update',
+    fullyQualifiedName: 'tagsets.update',
+    httpMethod: 'patch',
     httpPath: '/tagsets/{id}',
   },
   {
@@ -153,6 +243,12 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'tagsets.list',
     httpMethod: 'get',
     httpPath: '/tagsets',
+  },
+  {
+    clientCallName: 'client.tagsets.delete',
+    fullyQualifiedName: 'tagsets.delete',
+    httpMethod: 'delete',
+    httpPath: '/tagsets/{id}',
   },
   {
     clientCallName: 'client.programs.retrieve',
@@ -185,9 +281,21 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/program_messages',
   },
   {
+    clientCallName: 'client.forms.create',
+    fullyQualifiedName: 'forms.create',
+    httpMethod: 'post',
+    httpPath: '/forms',
+  },
+  {
     clientCallName: 'client.forms.retrieve',
     fullyQualifiedName: 'forms.retrieve',
     httpMethod: 'get',
+    httpPath: '/forms/{id}',
+  },
+  {
+    clientCallName: 'client.forms.update',
+    fullyQualifiedName: 'forms.update',
+    httpMethod: 'patch',
     httpPath: '/forms/{id}',
   },
   {
@@ -195,6 +303,12 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'forms.list',
     httpMethod: 'get',
     httpPath: '/forms',
+  },
+  {
+    clientCallName: 'client.forms.delete',
+    fullyQualifiedName: 'forms.delete',
+    httpMethod: 'delete',
+    httpPath: '/forms/{id}',
   },
   {
     clientCallName: 'client.unsubscribes.create',
@@ -356,6 +470,12 @@ export const sdkMethods: SdkMethod[] = [
     clientCallName: 'client.agentSettings.retrieve',
     fullyQualifiedName: 'agentSettings.retrieve',
     httpMethod: 'get',
+    httpPath: '/agent_settings',
+  },
+  {
+    clientCallName: 'client.agentSettings.update',
+    fullyQualifiedName: 'agentSettings.update',
+    httpMethod: 'patch',
     httpPath: '/agent_settings',
   },
 ];

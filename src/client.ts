@@ -43,82 +43,126 @@ import {
   ActivityProgramMessageSent,
   ActivityProgramMessageShielded,
   ActivityProgramMessageUnsubscribed,
+  Constituent,
+  ConstituentEntityPointer,
 } from './resources/activities';
-import { AgentSettingRetrieveResponse, AgentSettings } from './resources/agent-settings';
+import {
+  AgentSettingRetrieveResponse,
+  AgentSettingUpdateParams,
+  AgentSettingUpdateResponse,
+  AgentSettings,
+} from './resources/agent-settings';
 import {
   Call,
   CallCreateParams,
   CallListParams,
+  CallParticipant,
+  CallPointer,
   CallRetrieveParams,
+  CallTranscript,
+  CallTranscriptCue,
+  CallTranscriptSpeaker,
   CallUpsertParams,
   Calls,
   CallsCursorPage,
 } from './resources/calls';
 import {
   FileListParams,
+  FilePointer,
   FileUploadParams,
   Files,
   MoonbaseFile,
   MoonbaseFilesCursorPage,
 } from './resources/files';
-import { Form, FormListParams, Forms, FormsCursorPage } from './resources/forms';
-import { Funnel, FunnelStep, Funnels } from './resources/funnels';
+import {
+  Form,
+  FormCreateParams,
+  FormListParams,
+  FormUpdateParams,
+  Forms,
+  FormsCursorPage,
+} from './resources/forms';
+import {
+  Funnel,
+  FunnelCreateParams,
+  FunnelListParams,
+  FunnelStep,
+  FunnelStepPointer,
+  FunnelUpdateParams,
+  Funnels,
+  FunnelsCursorPage,
+} from './resources/funnels';
 import {
   InboxConversation,
   InboxConversationListParams,
+  InboxConversationListResponse,
+  InboxConversationListResponsesCursorPage,
   InboxConversationRetrieveParams,
   InboxConversations,
-  InboxConversationsCursorPage,
 } from './resources/inbox-conversations';
-import {
-  Address,
-  EmailMessage,
-  EmailMessagesCursorPage,
-  InboxMessageCreateParams,
-  InboxMessageListParams,
-  InboxMessageRetrieveParams,
-  InboxMessageUpdateParams,
-  InboxMessages,
-} from './resources/inbox-messages';
-import { Inbox, InboxListParams, InboxRetrieveParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
+import { Inbox, InboxListParams, Inboxes, InboxesCursorPage } from './resources/inboxes';
 import {
   Attendee,
   Meeting,
   MeetingListParams,
+  MeetingPointer,
+  MeetingPointersCursorPage,
   MeetingRetrieveParams,
+  MeetingTranscript,
+  MeetingTranscriptCue,
+  MeetingTranscriptSpeaker,
   MeetingUpdateParams,
   Meetings,
-  MeetingsCursorPage,
   Organizer,
 } from './resources/meetings';
 import {
   Note,
+  NoteAssociationParamPointer,
+  NoteAssociationPointer,
   NoteCreateParams,
   NoteListParams,
+  NotePointer,
   NoteUpdateParams,
   Notes,
   NotesCursorPage,
 } from './resources/notes';
-import { ProgramMessage, ProgramMessageSendParams, ProgramMessages } from './resources/program-messages';
+import {
+  ProgramMessage,
+  ProgramMessagePointer,
+  ProgramMessageSendParams,
+  ProgramMessages,
+} from './resources/program-messages';
 import {
   ProgramTemplate,
   ProgramTemplateListParams,
+  ProgramTemplatePointer,
   ProgramTemplateRetrieveParams,
   ProgramTemplates,
   ProgramTemplatesCursorPage,
 } from './resources/program-templates';
 import {
   Program,
+  ProgramActivityMetrics,
   ProgramListParams,
+  ProgramPointer,
   ProgramRetrieveParams,
   Programs,
   ProgramsCursorPage,
 } from './resources/programs';
-import { Tagset, TagsetListParams, Tagsets, TagsetsCursorPage } from './resources/tagsets';
+import {
+  Tagset,
+  TagsetCreateParams,
+  TagsetListParams,
+  TagsetPointer,
+  TagsetUpdateParams,
+  Tagsets,
+  TagsetsCursorPage,
+} from './resources/tagsets';
 import {
   Unsubscribe,
   UnsubscribeCreateParams,
   UnsubscribeListParams,
+  UnsubscribePointer,
   Unsubscribes,
   UnsubscribesCursorPage,
 } from './resources/unsubscribes';
@@ -136,27 +180,38 @@ import {
   BooleanValue,
   ChoiceField,
   ChoiceFieldOption,
+  ChoiceFieldOptionPointer,
   ChoiceValue,
   ChoiceValueParam,
   Collection,
+  CollectionCreateParams,
   CollectionListParams,
+  CollectionListResponse,
+  CollectionListResponsesCursorPage,
   CollectionPointer,
-  CollectionRetrieveParams,
+  CollectionUpdateParams,
   Collections,
-  CollectionsCursorPage,
+  CurrentDate,
+  CurrentDatetime,
+  CurrentMember,
   DateField,
+  DateFieldDefaultValueParam,
   DateValue,
   DatetimeField,
+  DatetimeFieldDefaultValueParam,
   DatetimeValue,
   DomainField,
   DomainValue,
   EmailField,
   EmailValue,
   Field,
+  FieldDefaultValue,
+  FieldPointer,
   FieldValue,
   FieldValueParam,
   FloatField,
   FloatValue,
+  FunnelPointerParam,
   FunnelStepValue,
   FunnelStepValueParam,
   GeoField,
@@ -165,6 +220,7 @@ import {
   IntegerValue,
   Item,
   ItemPointer,
+  ItemPointerParam,
   ItemsFilter,
   ItemsFilterAndGroup,
   ItemsFilterNotGroup,
@@ -178,15 +234,22 @@ import {
   PercentageField,
   PercentageValue,
   RelationField,
+  RelationFieldDefaultValueParam,
   RelationValue,
   RelationValueParam,
   SingleLineTextField,
   SingleLineTextValue,
   SocialLinkedInField,
   SocialLinkedInValue,
+  SocialLinkedInValueParam,
+  SocialProfileLinkedInParam,
+  SocialProfileXParam,
   SocialXField,
   SocialXValue,
+  SocialXValueParam,
   StageField,
+  StageFieldCreateParams,
+  StageFieldUpdateParams,
   TelephoneNumber,
   TelephoneNumberField,
   URLField,
@@ -194,6 +257,20 @@ import {
   Value,
   ValueParam,
 } from './resources/collections/collections';
+import {
+  Address,
+  EmailMessage,
+  EmailMessageAddressParams,
+  EmailMessagePointer,
+  EmailMessagePointersCursorPage,
+  InboxMessageCreateParams,
+  InboxMessageListParams,
+  InboxMessageRetrieveParams,
+  InboxMessageUpdateParams,
+  InboxMessages,
+  MessageAttachment,
+  MessageAttachmentCreateParams,
+} from './resources/inbox-messages/inbox-messages';
 import { View, ViewRetrieveParams, Views } from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
 import { isRunningInBrowser } from './internal/detect-platform';
@@ -396,7 +473,7 @@ export class Moonbase {
   }
 
   /**
-   * Returns items that match the search query.
+   * Returns items and files that match the search query.
    */
   search(params: TopLevelAPI.SearchParams, options?: RequestOptions): APIPromise<TopLevelAPI.SearchResponse> {
     const { query } = params;
@@ -943,6 +1020,9 @@ export class Moonbase {
 
   static toFile = Uploads.toFile;
 
+  /**
+   * Manage your collections and items
+   */
   funnels: API.Funnels = new API.Funnels(this);
   /**
    * Manage your collections and items
@@ -965,7 +1045,7 @@ export class Moonbase {
    */
   inboxMessages: API.InboxMessages = new API.InboxMessages(this);
   /**
-   * Manage your inboxes, conversations, and messages
+   * Manage your meetings, files, and notes
    */
   tagsets: API.Tagsets = new API.Tagsets(this);
   /**
@@ -1040,7 +1120,16 @@ export declare namespace Moonbase {
 
   export { type SearchResponse as SearchResponse, type SearchParams as SearchParams };
 
-  export { Funnels as Funnels, type Funnel as Funnel, type FunnelStep as FunnelStep };
+  export {
+    Funnels as Funnels,
+    type Funnel as Funnel,
+    type FunnelStep as FunnelStep,
+    type FunnelStepPointer as FunnelStepPointer,
+    type FunnelsCursorPage as FunnelsCursorPage,
+    type FunnelCreateParams as FunnelCreateParams,
+    type FunnelUpdateParams as FunnelUpdateParams,
+    type FunnelListParams as FunnelListParams,
+  };
 
   export {
     Collections as Collections,
@@ -1048,23 +1137,32 @@ export declare namespace Moonbase {
     type BooleanValue as BooleanValue,
     type ChoiceField as ChoiceField,
     type ChoiceFieldOption as ChoiceFieldOption,
+    type ChoiceFieldOptionPointer as ChoiceFieldOptionPointer,
     type ChoiceValue as ChoiceValue,
     type ChoiceValueParam as ChoiceValueParam,
     type Collection as Collection,
     type CollectionPointer as CollectionPointer,
+    type CurrentDate as CurrentDate,
+    type CurrentDatetime as CurrentDatetime,
+    type CurrentMember as CurrentMember,
     type DateField as DateField,
+    type DateFieldDefaultValueParam as DateFieldDefaultValueParam,
     type DateValue as DateValue,
     type DatetimeField as DatetimeField,
+    type DatetimeFieldDefaultValueParam as DatetimeFieldDefaultValueParam,
     type DatetimeValue as DatetimeValue,
     type DomainField as DomainField,
     type DomainValue as DomainValue,
     type EmailField as EmailField,
     type EmailValue as EmailValue,
     type Field as Field,
+    type FieldDefaultValue as FieldDefaultValue,
+    type FieldPointer as FieldPointer,
     type FieldValue as FieldValue,
     type FieldValueParam as FieldValueParam,
     type FloatField as FloatField,
     type FloatValue as FloatValue,
+    type FunnelPointerParam as FunnelPointerParam,
     type FunnelStepValue as FunnelStepValue,
     type FunnelStepValueParam as FunnelStepValueParam,
     type GeoField as GeoField,
@@ -1073,6 +1171,7 @@ export declare namespace Moonbase {
     type IntegerValue as IntegerValue,
     type Item as Item,
     type ItemPointer as ItemPointer,
+    type ItemPointerParam as ItemPointerParam,
     type ItemsFilter as ItemsFilter,
     type ItemsFilterAndGroup as ItemsFilterAndGroup,
     type ItemsFilterNotGroup as ItemsFilterNotGroup,
@@ -1086,23 +1185,32 @@ export declare namespace Moonbase {
     type PercentageField as PercentageField,
     type PercentageValue as PercentageValue,
     type RelationField as RelationField,
+    type RelationFieldDefaultValueParam as RelationFieldDefaultValueParam,
     type RelationValue as RelationValue,
     type RelationValueParam as RelationValueParam,
     type SingleLineTextField as SingleLineTextField,
     type SingleLineTextValue as SingleLineTextValue,
     type SocialLinkedInField as SocialLinkedInField,
     type SocialLinkedInValue as SocialLinkedInValue,
+    type SocialLinkedInValueParam as SocialLinkedInValueParam,
+    type SocialProfileLinkedInParam as SocialProfileLinkedInParam,
+    type SocialProfileXParam as SocialProfileXParam,
     type SocialXField as SocialXField,
     type SocialXValue as SocialXValue,
+    type SocialXValueParam as SocialXValueParam,
     type StageField as StageField,
+    type StageFieldCreateParams as StageFieldCreateParams,
+    type StageFieldUpdateParams as StageFieldUpdateParams,
     type TelephoneNumber as TelephoneNumber,
     type TelephoneNumberField as TelephoneNumberField,
     type URLField as URLField,
     type URLValue as URLValue,
     type Value as Value,
     type ValueParam as ValueParam,
-    type CollectionsCursorPage as CollectionsCursorPage,
-    type CollectionRetrieveParams as CollectionRetrieveParams,
+    type CollectionListResponse as CollectionListResponse,
+    type CollectionListResponsesCursorPage as CollectionListResponsesCursorPage,
+    type CollectionCreateParams as CollectionCreateParams,
+    type CollectionUpdateParams as CollectionUpdateParams,
     type CollectionListParams as CollectionListParams,
   };
 
@@ -1112,14 +1220,14 @@ export declare namespace Moonbase {
     Inboxes as Inboxes,
     type Inbox as Inbox,
     type InboxesCursorPage as InboxesCursorPage,
-    type InboxRetrieveParams as InboxRetrieveParams,
     type InboxListParams as InboxListParams,
   };
 
   export {
     InboxConversations as InboxConversations,
     type InboxConversation as InboxConversation,
-    type InboxConversationsCursorPage as InboxConversationsCursorPage,
+    type InboxConversationListResponse as InboxConversationListResponse,
+    type InboxConversationListResponsesCursorPage as InboxConversationListResponsesCursorPage,
     type InboxConversationRetrieveParams as InboxConversationRetrieveParams,
     type InboxConversationListParams as InboxConversationListParams,
   };
@@ -1128,7 +1236,11 @@ export declare namespace Moonbase {
     InboxMessages as InboxMessages,
     type Address as Address,
     type EmailMessage as EmailMessage,
-    type EmailMessagesCursorPage as EmailMessagesCursorPage,
+    type EmailMessageAddressParams as EmailMessageAddressParams,
+    type EmailMessagePointer as EmailMessagePointer,
+    type MessageAttachment as MessageAttachment,
+    type MessageAttachmentCreateParams as MessageAttachmentCreateParams,
+    type EmailMessagePointersCursorPage as EmailMessagePointersCursorPage,
     type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
     type InboxMessageUpdateParams as InboxMessageUpdateParams,
@@ -1138,13 +1250,18 @@ export declare namespace Moonbase {
   export {
     Tagsets as Tagsets,
     type Tagset as Tagset,
+    type TagsetPointer as TagsetPointer,
     type TagsetsCursorPage as TagsetsCursorPage,
+    type TagsetCreateParams as TagsetCreateParams,
+    type TagsetUpdateParams as TagsetUpdateParams,
     type TagsetListParams as TagsetListParams,
   };
 
   export {
     Programs as Programs,
     type Program as Program,
+    type ProgramActivityMetrics as ProgramActivityMetrics,
+    type ProgramPointer as ProgramPointer,
     type ProgramsCursorPage as ProgramsCursorPage,
     type ProgramRetrieveParams as ProgramRetrieveParams,
     type ProgramListParams as ProgramListParams,
@@ -1153,6 +1270,7 @@ export declare namespace Moonbase {
   export {
     ProgramTemplates as ProgramTemplates,
     type ProgramTemplate as ProgramTemplate,
+    type ProgramTemplatePointer as ProgramTemplatePointer,
     type ProgramTemplatesCursorPage as ProgramTemplatesCursorPage,
     type ProgramTemplateRetrieveParams as ProgramTemplateRetrieveParams,
     type ProgramTemplateListParams as ProgramTemplateListParams,
@@ -1161,6 +1279,7 @@ export declare namespace Moonbase {
   export {
     ProgramMessages as ProgramMessages,
     type ProgramMessage as ProgramMessage,
+    type ProgramMessagePointer as ProgramMessagePointer,
     type ProgramMessageSendParams as ProgramMessageSendParams,
   };
 
@@ -1168,12 +1287,15 @@ export declare namespace Moonbase {
     Forms as Forms,
     type Form as Form,
     type FormsCursorPage as FormsCursorPage,
+    type FormCreateParams as FormCreateParams,
+    type FormUpdateParams as FormUpdateParams,
     type FormListParams as FormListParams,
   };
 
   export {
     Unsubscribes as Unsubscribes,
     type Unsubscribe as Unsubscribe,
+    type UnsubscribePointer as UnsubscribePointer,
     type UnsubscribesCursorPage as UnsubscribesCursorPage,
     type UnsubscribeCreateParams as UnsubscribeCreateParams,
     type UnsubscribeListParams as UnsubscribeListParams,
@@ -1199,6 +1321,8 @@ export declare namespace Moonbase {
     type ActivityProgramMessageSent as ActivityProgramMessageSent,
     type ActivityProgramMessageShielded as ActivityProgramMessageShielded,
     type ActivityProgramMessageUnsubscribed as ActivityProgramMessageUnsubscribed,
+    type Constituent as Constituent,
+    type ConstituentEntityPointer as ConstituentEntityPointer,
     type ActivitiesCursorPage as ActivitiesCursorPage,
     type ActivityListParams as ActivityListParams,
   };
@@ -1206,6 +1330,11 @@ export declare namespace Moonbase {
   export {
     Calls as Calls,
     type Call as Call,
+    type CallParticipant as CallParticipant,
+    type CallPointer as CallPointer,
+    type CallTranscript as CallTranscript,
+    type CallTranscriptCue as CallTranscriptCue,
+    type CallTranscriptSpeaker as CallTranscriptSpeaker,
     type CallsCursorPage as CallsCursorPage,
     type CallCreateParams as CallCreateParams,
     type CallRetrieveParams as CallRetrieveParams,
@@ -1215,6 +1344,7 @@ export declare namespace Moonbase {
 
   export {
     Files as Files,
+    type FilePointer as FilePointer,
     type MoonbaseFile as MoonbaseFile,
     type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
     type FileListParams as FileListParams,
@@ -1225,8 +1355,12 @@ export declare namespace Moonbase {
     Meetings as Meetings,
     type Attendee as Attendee,
     type Meeting as Meeting,
+    type MeetingPointer as MeetingPointer,
+    type MeetingTranscript as MeetingTranscript,
+    type MeetingTranscriptCue as MeetingTranscriptCue,
+    type MeetingTranscriptSpeaker as MeetingTranscriptSpeaker,
     type Organizer as Organizer,
-    type MeetingsCursorPage as MeetingsCursorPage,
+    type MeetingPointersCursorPage as MeetingPointersCursorPage,
     type MeetingRetrieveParams as MeetingRetrieveParams,
     type MeetingUpdateParams as MeetingUpdateParams,
     type MeetingListParams as MeetingListParams,
@@ -1235,6 +1369,9 @@ export declare namespace Moonbase {
   export {
     Notes as Notes,
     type Note as Note,
+    type NoteAssociationParamPointer as NoteAssociationParamPointer,
+    type NoteAssociationPointer as NoteAssociationPointer,
+    type NotePointer as NotePointer,
     type NotesCursorPage as NotesCursorPage,
     type NoteCreateParams as NoteCreateParams,
     type NoteUpdateParams as NoteUpdateParams,
@@ -1254,9 +1391,12 @@ export declare namespace Moonbase {
   export {
     AgentSettings as AgentSettings,
     type AgentSettingRetrieveResponse as AgentSettingRetrieveResponse,
+    type AgentSettingUpdateResponse as AgentSettingUpdateResponse,
+    type AgentSettingUpdateParams as AgentSettingUpdateParams,
   };
 
   export type Error = API.Error;
   export type FormattedText = API.FormattedText;
-  export type Pointer = API.Pointer;
+  export type Tag = API.Tag;
+  export type TagPointerParam = API.TagPointerParam;
 }

@@ -104,11 +104,8 @@ describe('resource inboxMessages', () => {
         {
           after: 'after',
           before: 'before',
-          filter: {
-            conversation_id: { eq: 'eq' },
-            inbox_id: { eq: 'eq' },
-          },
-          include: ['addresses'],
+          conversation_id: { eq: 'eq' },
+          inbox_id: { eq: 'eq' },
           limit: 1,
         },
         { path: '/_stainless_unknown_path' },

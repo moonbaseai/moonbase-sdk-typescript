@@ -96,7 +96,6 @@ describe('resource items', () => {
         {
           after: 'after',
           before: 'before',
-          include: ['string'],
           limit: 1,
           sort: ['string'],
         },
@@ -118,6 +117,27 @@ describe('resource items', () => {
 
   test('delete: required and optional params', async () => {
     const response = await client.collections.items.delete('id', { collection_id: 'collection_id' });
+  });
+
+  test('merge: only required params', async () => {
+    const responsePromise = client.collections.items.merge('collection_id', {
+      destination: { id: '1CLJt2v7opRhSWqVEtHwYT', type: 'item' },
+      source: { id: '1CLJt2v5aNd8G5SGzEaeVU', type: 'item' },
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('merge: required and optional params', async () => {
+    const response = await client.collections.items.merge('collection_id', {
+      destination: { id: '1CLJt2v7opRhSWqVEtHwYT', type: 'item' },
+      source: { id: '1CLJt2v5aNd8G5SGzEaeVU', type: 'item' },
+    });
   });
 
   test('search', async () => {
