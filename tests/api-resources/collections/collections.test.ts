@@ -8,6 +8,24 @@ const client = new Moonbase({
 });
 
 describe('resource collections', () => {
+  test('create: only required params', async () => {
+    const responsePromise = client.collections.create({ name: 'Leads' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('create: required and optional params', async () => {
+    const response = await client.collections.create({
+      name: 'Leads',
+      description: 'Inbound leads from marketing',
+    });
+  });
+
   test('retrieve', async () => {
     const responsePromise = client.collections.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
@@ -19,11 +37,15 @@ describe('resource collections', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.collections.retrieve('id', { include: ['views'] }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Moonbase.NotFoundError);
+  test('update', async () => {
+    const responsePromise = client.collections.update('id', {});
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 
   test('list', async () => {

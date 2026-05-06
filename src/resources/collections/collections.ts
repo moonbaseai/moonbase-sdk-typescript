@@ -2,14 +2,20 @@
 
 import { APIResource } from '../../core/resource';
 import * as FunnelsAPI from '../funnels';
-import * as Shared from '../shared';
 import * as FieldsAPI from './fields';
-import { FieldRetrieveParams, Fields } from './fields';
+import {
+  FieldCreateParams,
+  FieldDeleteParams,
+  FieldRetrieveParams,
+  FieldUpdateParams,
+  Fields,
+} from './fields';
 import * as ItemsAPI from './items';
 import {
   ItemCreateParams,
   ItemDeleteParams,
   ItemListParams,
+  ItemMergeParams,
   ItemRetrieveParams,
   ItemSearchParams,
   ItemSearchResponse,
@@ -32,6 +38,22 @@ export class Collections extends APIResource {
   items: ItemsAPI.Items = new ItemsAPI.Items(this._client);
 
   /**
+   * Creates a new collection with default fields (name, created_at, updated_at) and
+   * a default view.
+   *
+   * @example
+   * ```ts
+   * const collection = await client.collections.create({
+   *   name: 'Leads',
+   *   description: 'Inbound leads from marketing',
+   * });
+   * ```
+   */
+  create(body: CollectionCreateParams, options?: RequestOptions): APIPromise<Collection> {
+    return this._client.post('/collections', { body, ...options });
+  }
+
+  /**
    * Retrieves the details of an existing collection.
    *
    * @example
@@ -39,12 +61,23 @@ export class Collections extends APIResource {
    * const collection = await client.collections.retrieve('id');
    * ```
    */
-  retrieve(
-    id: string,
-    query: CollectionRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<Collection> {
-    return this._client.get(path`/collections/${id}`, { query, ...options });
+  retrieve(id: string, options?: RequestOptions): APIPromise<Collection> {
+    return this._client.get(path`/collections/${id}`, options);
+  }
+
+  /**
+   * Updates an existing collection.
+   *
+   * @example
+   * ```ts
+   * const collection = await client.collections.update('id', {
+   *   description: 'Qualified inbound leads',
+   *   name: 'Hot Leads',
+   * });
+   * ```
+   */
+  update(id: string, body: CollectionUpdateParams, options?: RequestOptions): APIPromise<Collection> {
+    return this._client.patch(path`/collections/${id}`, { body, ...options });
   }
 
   /**
@@ -53,7 +86,7 @@ export class Collections extends APIResource {
    * @example
    * ```ts
    * // Automatically fetches more pages as needed.
-   * for await (const collection of client.collections.list()) {
+   * for await (const collectionListResponse of client.collections.list()) {
    *   // ...
    * }
    * ```
@@ -61,12 +94,14 @@ export class Collections extends APIResource {
   list(
     query: CollectionListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<CollectionsCursorPage, Collection> {
-    return this._client.getAPIList('/collections', CursorPage<Collection>, { query, ...options });
+  ): PagePromise<CollectionListResponsesCursorPage, CollectionListResponse> {
+    return this._client.getAPIList('/collections', CursorPage<CollectionListResponse>, { query, ...options });
   }
 }
 
-export type CollectionsCursorPage = CursorPage<Collection>;
+export type CollectionListResponsesCursorPage = CursorPage<CollectionListResponse>;
+
+export type ItemPointersCursorPage = CursorPage<ItemPointer>;
 
 export type ItemsCursorPage = CursorPage<Item>;
 
@@ -86,14 +121,17 @@ export interface BooleanField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Is Active").
@@ -164,14 +202,17 @@ export interface ChoiceField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Priority").
@@ -233,6 +274,29 @@ export interface ChoiceFieldOption {
   id: string;
 
   /**
+   * The color of the option.
+   */
+  color:
+    | 'amber'
+    | 'blue'
+    | 'cyan'
+    | 'emerald'
+    | 'fuchsia'
+    | 'green'
+    | 'indigo'
+    | 'lime'
+    | 'lunar'
+    | 'orange'
+    | 'pink'
+    | 'purple'
+    | 'red'
+    | 'rose'
+    | 'sky'
+    | 'teal'
+    | 'violet'
+    | 'yellow';
+
+  /**
    * The human-readable text displayed for this option.
    */
   name: string;
@@ -241,6 +305,12 @@ export interface ChoiceFieldOption {
    * String representing the object’s type. Always `choice_field_option` for this
    * object.
    */
+  type: 'choice_field_option';
+}
+
+export interface ChoiceFieldOptionPointer {
+  id: string;
+
   type: 'choice_field_option';
 }
 
@@ -263,7 +333,7 @@ export interface ChoiceValueParam {
   /**
    * An option that must match one of the predefined options for the field.
    */
-  data: ChoiceFieldOption | Shared.Pointer;
+  data: ChoiceFieldOptionPointer;
 
   type: 'value/choice';
 }
@@ -280,12 +350,6 @@ export interface Collection {
   id: string;
 
   /**
-   * If `true`, this is one of the foundational collections (People, Organizations,
-   * Deals, or Tasks).
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -294,6 +358,12 @@ export interface Collection {
    * A list of `Field` objects that define the schema for items in this collection.
    */
   fields: Array<Field>;
+
+  /**
+   * `system` collections are managed by Moonbase (e.g., People, Organizations),
+   * `form` collections back a Form, and `custom` collections are user-created.
+   */
+  kind: 'system' | 'form' | 'custom';
 
   /**
    * The user-facing name of the collection (e.g., “Organizations”).
@@ -351,6 +421,27 @@ export interface CollectionPointer {
 }
 
 /**
+ * Resolves to today's date at the time the record is created.
+ */
+export interface CurrentDate {
+  type: 'current_date';
+}
+
+/**
+ * Resolves to the current date and time at the time the record is created.
+ */
+export interface CurrentDatetime {
+  type: 'current_datetime';
+}
+
+/**
+ * Resolves to the team member who creates the record.
+ */
+export interface CurrentMember {
+  type: 'current_member';
+}
+
+/**
  * A field that stores dates without time information.
  */
 export interface DateField {
@@ -366,14 +457,17 @@ export interface DateField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Due Date").
@@ -422,6 +516,11 @@ export interface DateField {
 /**
  * Date without time
  */
+export type DateFieldDefaultValueParam = DateValue | CurrentDate;
+
+/**
+ * Date without time
+ */
 export interface DateValue {
   data: string;
 
@@ -444,14 +543,17 @@ export interface DatetimeField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Meeting Time").
@@ -500,6 +602,11 @@ export interface DatetimeField {
 /**
  * Date and time value
  */
+export type DatetimeFieldDefaultValueParam = DatetimeValue | CurrentDatetime;
+
+/**
+ * Date and time value
+ */
 export interface DatetimeValue {
   data: string;
 
@@ -522,14 +629,17 @@ export interface DomainField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Company Domain").
@@ -603,14 +713,17 @@ export interface EmailField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Work Email").
@@ -693,6 +806,61 @@ export type Field =
   | RelationField;
 
 /**
+ * A default value for a field. Can be a static value (e.g., `value/date`) or a
+ * server-resolved value (e.g., `current_date`). Static values use the same shape
+ * as item values. Server-resolved values are computed when an item is created.
+ */
+export type FieldDefaultValue =
+  | SingleLineTextValue
+  | MultiLineTextValue
+  | IntegerValue
+  | FloatValue
+  | MonetaryValue
+  | PercentageValue
+  | BooleanValue
+  | EmailValue
+  | URLValue
+  | DomainValue
+  | SocialXValue
+  | SocialLinkedInValue
+  | TelephoneNumber
+  | GeoValue
+  | DateValue
+  | CurrentDate
+  | DatetimeValue
+  | CurrentDatetime
+  | ChoiceValue
+  | FunnelStepValue
+  | RelationValue
+  | CurrentMember;
+
+/**
+ * A lightweight reference to a `Field`, containing the minimal information needed
+ * to identify it.
+ */
+export interface FieldPointer {
+  /**
+   * Unique identifier of the field.
+   */
+  id: string;
+
+  /**
+   * A reference to the `Collection` containing this field.
+   */
+  collection: CollectionPointer;
+
+  /**
+   * The stable, machine-readable reference identifier of the field.
+   */
+  ref: string;
+
+  /**
+   * String representing the object’s type. Always `field` for this object.
+   */
+  type: 'field';
+}
+
+/**
  * A field can be null, a single value, or an array of values
  */
 export type FieldValue =
@@ -731,8 +899,8 @@ export type FieldValueParam =
   | EmailValue
   | URLValue
   | DomainValue
-  | FieldValueParam.SocialXValueParam
-  | FieldValueParam.SocialLinkedInValueParam
+  | SocialXValueParam
+  | SocialLinkedInValueParam
   | TelephoneNumber
   | GeoValue
   | DateValue
@@ -741,71 +909,6 @@ export type FieldValueParam =
   | FunnelStepValueParam
   | RelationValueParam
   | Array<ValueParam>;
-
-export namespace FieldValueParam {
-  /**
-   * The social media profile for the X (formerly Twitter) platform
-   */
-  export interface SocialXValueParam {
-    /**
-     * Social media profile information including both the full URL and extracted
-     * username.
-     */
-    data: SocialXValueParam.Data;
-
-    type: 'value/uri/social_x';
-  }
-
-  export namespace SocialXValueParam {
-    /**
-     * Social media profile information including both the full URL and extracted
-     * username.
-     */
-    export interface Data {
-      /**
-       * The full URL to the X profile, starting with 'https://x.com/'
-       */
-      url?: string;
-
-      /**
-       * The X username, up to 15 characters long, containing only lowercase letters
-       * (a-z), uppercase letters (A-Z), numbers (0-9), and underscores (\_). Does not
-       * include the '@' symbol prefix.
-       */
-      username?: string;
-    }
-  }
-
-  /**
-   * The social media profile for the LinkedIn platform
-   */
-  export interface SocialLinkedInValueParam {
-    /**
-     * The social media profile for the LinkedIn platform
-     */
-    data: SocialLinkedInValueParam.Data;
-
-    type: 'value/uri/social_linked_in';
-  }
-
-  export namespace SocialLinkedInValueParam {
-    /**
-     * The social media profile for the LinkedIn platform
-     */
-    export interface Data {
-      /**
-       * The full URL to the LinkedIn profile.
-       */
-      url?: string;
-
-      /**
-       * The LinkedIn username, including the prefix 'company/' for company pages or
-       * 'in/' for personal profiles.
-       */
-      username?: string;
-    }
-  }
-}
 
 /**
  * A field that stores decimal numbers with floating-point precision.
@@ -823,14 +926,17 @@ export interface FloatField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Rating").
@@ -886,11 +992,26 @@ export interface FloatValue {
 }
 
 /**
+ * A pointer to a Funnel, used as a parameter.
+ */
+export interface FunnelPointerParam {
+  /**
+   * The ID of the funnel.
+   */
+  id: string;
+
+  /**
+   * String representing the object's type. Always `funnel` for this parameter.
+   */
+  type: 'funnel';
+}
+
+/**
  * Funnel step value
  */
 export interface FunnelStepValue {
   /**
-   * A specific funnel step, as configured on the Funnel
+   * A specific funnel step, as configured on the Funnel.
    */
   data: FunnelsAPI.FunnelStep;
 
@@ -902,9 +1023,9 @@ export interface FunnelStepValue {
  */
 export interface FunnelStepValueParam {
   /**
-   * A specific funnel step, as configured on the Funnel
+   * A specific funnel step, as configured on the Funnel.
    */
-  data: FunnelsAPI.FunnelStep | Shared.Pointer;
+  data: FunnelsAPI.FunnelStepPointer;
 
   type: 'value/funnel_step';
 }
@@ -925,14 +1046,17 @@ export interface GeoField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Location").
@@ -1007,14 +1131,17 @@ export interface IntegerField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Employee Count").
@@ -1112,6 +1239,21 @@ export interface ItemPointer {
    * A reference to the `Collection` containing this item.
    */
   collection: CollectionPointer;
+
+  /**
+   * String representing the object’s type. Always `item` for this object.
+   */
+  type: 'item';
+}
+
+/**
+ * A lightweight reference to an `Item` used in request bodies.
+ */
+export interface ItemPointerParam {
+  /**
+   * Unique identifier of the item.
+   */
+  id: string;
 
   /**
    * String representing the object’s type. Always `item` for this object.
@@ -1227,14 +1369,23 @@ export interface MonetaryField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  /**
+   * The default currency for the field, as a 3-letter ISO 4217 code (e.g., `USD`,
+   * `EUR`, `GBP`).
+   */
+  default_unit: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Deal Value").
@@ -1328,14 +1479,17 @@ export interface MultiLineTextField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Description").
@@ -1410,14 +1564,17 @@ export interface PercentageField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Win Probability").
@@ -1498,14 +1655,17 @@ export interface RelationField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Account").
@@ -1555,7 +1715,30 @@ export interface RelationField {
    * An optional, longer-form description of the field's purpose.
    */
   description?: string;
+
+  /**
+   * The name given to auto-created reverse fields on target collections. Only
+   * present on `two_way` source fields.
+   */
+  reverse_field_name?: string;
+
+  /**
+   * A list of reverse fields created on each target collection. Only present on
+   * `two_way` source fields.
+   */
+  reverse_fields?: Array<FieldPointer>;
+
+  /**
+   * A reference to the source field that manages this reverse field. Only present on
+   * reverse (contingent) fields.
+   */
+  source_field?: FieldPointer;
 }
+
+/**
+ * Related item reference
+ */
+export type RelationFieldDefaultValueParam = RelationValueParam | CurrentMember;
 
 /**
  * Related item reference
@@ -1576,7 +1759,7 @@ export interface RelationValueParam {
   /**
    * A reference to another Moonbase item.
    */
-  data: ItemPointer | Shared.Pointer;
+  data: ItemPointerParam;
 
   type: 'value/relation';
 }
@@ -1597,14 +1780,17 @@ export interface SingleLineTextField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Company Name").
@@ -1679,14 +1865,17 @@ export interface SocialLinkedInField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "LinkedIn Profile").
@@ -1763,6 +1952,53 @@ export namespace SocialLinkedInValue {
 }
 
 /**
+ * The social media profile for the LinkedIn platform
+ */
+export interface SocialLinkedInValueParam {
+  /**
+   * The social media profile for the LinkedIn platform
+   */
+  data: SocialProfileLinkedInParam;
+
+  type: 'value/uri/social_linked_in';
+}
+
+/**
+ * Social media profile information including both the full URL and extracted
+ * username.
+ */
+export interface SocialProfileLinkedInParam {
+  /**
+   * The full URL to the LinkedIn profile.
+   */
+  url?: string;
+
+  /**
+   * The LinkedIn username, including the prefix 'company/' for company pages or
+   * 'in/' for personal profiles.
+   */
+  username?: string;
+}
+
+/**
+ * Social media profile information including both the full URL and extracted
+ * username.
+ */
+export interface SocialProfileXParam {
+  /**
+   * The full URL to the X profile, starting with 'https://x.com/'
+   */
+  url?: string;
+
+  /**
+   * The X username, up to 15 characters long, containing only lowercase letters
+   * (a-z), uppercase letters (A-Z), numbers (0-9), and underscores (\_). Does not
+   * include the '@' symbol prefix.
+   */
+  username?: string;
+}
+
+/**
  * A field that stores X (formerly Twitter) profile information.
  */
 export interface SocialXField {
@@ -1778,14 +2014,17 @@ export interface SocialXField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "X Profile").
@@ -1865,6 +2104,19 @@ export namespace SocialXValue {
 }
 
 /**
+ * The social media profile for the X (formerly Twitter) platform
+ */
+export interface SocialXValueParam {
+  /**
+   * Social media profile information including both the full URL and extracted
+   * username.
+   */
+  data: SocialProfileXParam;
+
+  type: 'value/uri/social_x';
+}
+
+/**
  * A field that tracks an item's position in a funnel or pipeline workflow.
  */
 export interface StageField {
@@ -1880,19 +2132,22 @@ export interface StageField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
 
   /**
    * The `Funnel` object that defines the available stages for this field.
    */
   funnel: FunnelsAPI.Funnel;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Sales Stage").
@@ -1939,6 +2194,91 @@ export interface StageField {
 }
 
 /**
+ * Parameters for creating a stage field.
+ */
+export interface StageFieldCreateParams {
+  /**
+   * The funnel that defines the available stages for this field.
+   */
+  funnel: FunnelPointerParam;
+
+  /**
+   * The human-readable name for the field.
+   */
+  name: string;
+
+  /**
+   * The field type. Must be `field/stage`.
+   */
+  type: 'field/stage';
+
+  /**
+   * Whether the field holds a single value (`one`) or multiple values (`many`).
+   * Defaults to `one`.
+   */
+  cardinality?: 'one' | 'many';
+
+  default_values?: Array<FunnelStepValueParam>;
+
+  /**
+   * An optional description of the field's purpose.
+   */
+  description?: string;
+
+  /**
+   * If `true`, items must have a value for this field. Defaults to `false`.
+   */
+  required?: boolean;
+
+  /**
+   * If `true`, values must be unique across all items. Defaults to `false`.
+   */
+  unique?: boolean;
+}
+
+/**
+ * Parameters for updating a stage field.
+ */
+export interface StageFieldUpdateParams {
+  /**
+   * The field type. Must be `field/stage`.
+   */
+  type: 'field/stage';
+
+  /**
+   * Updated cardinality: `one` or `many`.
+   */
+  cardinality?: 'one' | 'many';
+
+  default_values?: Array<FunnelStepValueParam> | null;
+
+  /**
+   * An updated description, or `null` to clear it.
+   */
+  description?: string | null;
+
+  /**
+   * A new funnel to use for this field, or omit to keep the current funnel.
+   */
+  funnel?: FunnelPointerParam;
+
+  /**
+   * The new name for the field.
+   */
+  name?: string;
+
+  /**
+   * If `true`, items must have a value for this field.
+   */
+  required?: boolean;
+
+  /**
+   * If `true`, values must be unique across all items.
+   */
+  unique?: boolean;
+}
+
+/**
  * Telephone number value
  */
 export interface TelephoneNumber {
@@ -1967,14 +2307,17 @@ export interface TelephoneNumberField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Phone").
@@ -2036,14 +2379,17 @@ export interface URLField {
   cardinality: 'one' | 'many';
 
   /**
-   * If `true`, this is a built-in field included by default.
-   */
-  core: boolean;
-
-  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  /**
+   * `system` fields are managed by Moonbase, `inverse` fields are the reverse side
+   * of a two-way relation, and `custom` fields are user-created.
+   */
+  kind: 'system' | 'inverse' | 'custom';
 
   /**
    * The human-readable name of the field (e.g., "Website").
@@ -2141,8 +2487,8 @@ export type ValueParam =
   | EmailValue
   | URLValue
   | DomainValue
-  | ValueParam.SocialXValueParam
-  | ValueParam.SocialLinkedInValueParam
+  | SocialXValueParam
+  | SocialLinkedInValueParam
   | TelephoneNumber
   | GeoValue
   | DateValue
@@ -2151,76 +2497,51 @@ export type ValueParam =
   | FunnelStepValueParam
   | RelationValueParam;
 
-export namespace ValueParam {
-  /**
-   * The social media profile for the X (formerly Twitter) platform
-   */
-  export interface SocialXValueParam {
-    /**
-     * Social media profile information including both the full URL and extracted
-     * username.
-     */
-    data: SocialXValueParam.Data;
+/**
+ * Information about the most essential attributes of a Collection (does not
+ * include the collection's field definitions).
+ */
+export interface CollectionListResponse {
+  id: string;
 
-    type: 'value/uri/social_x';
-  }
+  created_at: string;
 
-  export namespace SocialXValueParam {
-    /**
-     * Social media profile information including both the full URL and extracted
-     * username.
-     */
-    export interface Data {
-      /**
-       * The full URL to the X profile, starting with 'https://x.com/'
-       */
-      url?: string;
+  kind: 'system' | 'form' | 'custom';
 
-      /**
-       * The X username, up to 15 characters long, containing only lowercase letters
-       * (a-z), uppercase letters (A-Z), numbers (0-9), and underscores (\_). Does not
-       * include the '@' symbol prefix.
-       */
-      username?: string;
-    }
-  }
+  name: string;
 
-  /**
-   * The social media profile for the LinkedIn platform
-   */
-  export interface SocialLinkedInValueParam {
-    /**
-     * The social media profile for the LinkedIn platform
-     */
-    data: SocialLinkedInValueParam.Data;
+  ref: string;
 
-    type: 'value/uri/social_linked_in';
-  }
+  type: 'collection';
 
-  export namespace SocialLinkedInValueParam {
-    /**
-     * The social media profile for the LinkedIn platform
-     */
-    export interface Data {
-      /**
-       * The full URL to the LinkedIn profile.
-       */
-      url?: string;
+  updated_at: string;
 
-      /**
-       * The LinkedIn username, including the prefix 'company/' for company pages or
-       * 'in/' for personal profiles.
-       */
-      username?: string;
-    }
-  }
+  description?: string;
 }
 
-export interface CollectionRetrieveParams {
+export interface CollectionCreateParams {
   /**
-   * Specifies which related objects to include in the response.
+   * The user-facing name of the collection (e.g., "Leads"). A `ref` is automatically
+   * derived from the name.
    */
-  include?: Array<'views'>;
+  name: string;
+
+  /**
+   * An optional, longer-form description of the collection's purpose.
+   */
+  description?: string;
+}
+
+export interface CollectionUpdateParams {
+  /**
+   * An optional, longer-form description of the collection's purpose.
+   */
+  description?: string;
+
+  /**
+   * The user-facing name of the collection.
+   */
+  name?: string;
 }
 
 export interface CollectionListParams extends CursorPageParams {
@@ -2247,23 +2568,32 @@ export declare namespace Collections {
     type BooleanValue as BooleanValue,
     type ChoiceField as ChoiceField,
     type ChoiceFieldOption as ChoiceFieldOption,
+    type ChoiceFieldOptionPointer as ChoiceFieldOptionPointer,
     type ChoiceValue as ChoiceValue,
     type ChoiceValueParam as ChoiceValueParam,
     type Collection as Collection,
     type CollectionPointer as CollectionPointer,
+    type CurrentDate as CurrentDate,
+    type CurrentDatetime as CurrentDatetime,
+    type CurrentMember as CurrentMember,
     type DateField as DateField,
+    type DateFieldDefaultValueParam as DateFieldDefaultValueParam,
     type DateValue as DateValue,
     type DatetimeField as DatetimeField,
+    type DatetimeFieldDefaultValueParam as DatetimeFieldDefaultValueParam,
     type DatetimeValue as DatetimeValue,
     type DomainField as DomainField,
     type DomainValue as DomainValue,
     type EmailField as EmailField,
     type EmailValue as EmailValue,
     type Field as Field,
+    type FieldDefaultValue as FieldDefaultValue,
+    type FieldPointer as FieldPointer,
     type FieldValue as FieldValue,
     type FieldValueParam as FieldValueParam,
     type FloatField as FloatField,
     type FloatValue as FloatValue,
+    type FunnelPointerParam as FunnelPointerParam,
     type FunnelStepValue as FunnelStepValue,
     type FunnelStepValueParam as FunnelStepValueParam,
     type GeoField as GeoField,
@@ -2272,6 +2602,7 @@ export declare namespace Collections {
     type IntegerValue as IntegerValue,
     type Item as Item,
     type ItemPointer as ItemPointer,
+    type ItemPointerParam as ItemPointerParam,
     type ItemsFilter as ItemsFilter,
     type ItemsFilterAndGroup as ItemsFilterAndGroup,
     type ItemsFilterNotGroup as ItemsFilterNotGroup,
@@ -2285,27 +2616,42 @@ export declare namespace Collections {
     type PercentageField as PercentageField,
     type PercentageValue as PercentageValue,
     type RelationField as RelationField,
+    type RelationFieldDefaultValueParam as RelationFieldDefaultValueParam,
     type RelationValue as RelationValue,
     type RelationValueParam as RelationValueParam,
     type SingleLineTextField as SingleLineTextField,
     type SingleLineTextValue as SingleLineTextValue,
     type SocialLinkedInField as SocialLinkedInField,
     type SocialLinkedInValue as SocialLinkedInValue,
+    type SocialLinkedInValueParam as SocialLinkedInValueParam,
+    type SocialProfileLinkedInParam as SocialProfileLinkedInParam,
+    type SocialProfileXParam as SocialProfileXParam,
     type SocialXField as SocialXField,
     type SocialXValue as SocialXValue,
+    type SocialXValueParam as SocialXValueParam,
     type StageField as StageField,
+    type StageFieldCreateParams as StageFieldCreateParams,
+    type StageFieldUpdateParams as StageFieldUpdateParams,
     type TelephoneNumber as TelephoneNumber,
     type TelephoneNumberField as TelephoneNumberField,
     type URLField as URLField,
     type URLValue as URLValue,
     type Value as Value,
     type ValueParam as ValueParam,
-    type CollectionsCursorPage as CollectionsCursorPage,
-    type CollectionRetrieveParams as CollectionRetrieveParams,
+    type CollectionListResponse as CollectionListResponse,
+    type CollectionListResponsesCursorPage as CollectionListResponsesCursorPage,
+    type CollectionCreateParams as CollectionCreateParams,
+    type CollectionUpdateParams as CollectionUpdateParams,
     type CollectionListParams as CollectionListParams,
   };
 
-  export { Fields as Fields, type FieldRetrieveParams as FieldRetrieveParams };
+  export {
+    Fields as Fields,
+    type FieldCreateParams as FieldCreateParams,
+    type FieldRetrieveParams as FieldRetrieveParams,
+    type FieldUpdateParams as FieldUpdateParams,
+    type FieldDeleteParams as FieldDeleteParams,
+  };
 
   export {
     Items as Items,
@@ -2316,6 +2662,7 @@ export declare namespace Collections {
     type ItemUpdateParams as ItemUpdateParams,
     type ItemListParams as ItemListParams,
     type ItemDeleteParams as ItemDeleteParams,
+    type ItemMergeParams as ItemMergeParams,
     type ItemSearchParams as ItemSearchParams,
     type ItemUpsertParams as ItemUpsertParams,
   };

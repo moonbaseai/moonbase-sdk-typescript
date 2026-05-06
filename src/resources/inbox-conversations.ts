@@ -1,8 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as InboxMessagesAPI from './inbox-messages';
 import * as InboxesAPI from './inboxes';
+import * as Shared from './shared';
+import * as InboxMessagesAPI from './inbox-messages/inbox-messages';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -29,15 +30,15 @@ export class InboxConversations extends APIResource {
   list(
     query: InboxConversationListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<InboxConversationsCursorPage, InboxConversation> {
-    return this._client.getAPIList('/inbox_conversations', CursorPage<InboxConversation>, {
+  ): PagePromise<InboxConversationListResponsesCursorPage, InboxConversationListResponse> {
+    return this._client.getAPIList('/inbox_conversations', CursorPage<InboxConversationListResponse>, {
       query,
       ...options,
     });
   }
 }
 
-export type InboxConversationsCursorPage = CursorPage<InboxConversation>;
+export type InboxConversationListResponsesCursorPage = CursorPage<InboxConversationListResponse>;
 
 /**
  * The Conversation object represents a thread of related messages.
@@ -92,7 +93,7 @@ export interface InboxConversation {
   /**
    * A list of `Tag` objects applied to this conversation.
    */
-  tags: Array<InboxConversation.Tag>;
+  tags: Array<Shared.Tag>;
 
   /**
    * `true` if the conversation is in the trash.
@@ -136,27 +137,10 @@ export interface InboxConversation {
   unsnooze_at?: string;
 }
 
-export namespace InboxConversation {
-  /**
-   * A Tag is a label that can be applied to `Conversation` objects for organization
-   * and filtering.
-   */
-  export interface Tag {
-    /**
-     * Unique identifier for the object.
-     */
-    id: string;
+export interface InboxConversationListResponse {
+  id: string;
 
-    /**
-     * The name of the tag.
-     */
-    name: string;
-
-    /**
-     * String representing the object’s type. Always `tag` for this object.
-     */
-    type: 'tag';
-  }
+  type: 'inbox_conversation';
 }
 
 export interface InboxConversationRetrieveParams {
@@ -175,13 +159,7 @@ export interface InboxConversationListParams extends CursorPageParams {
    */
   before?: string;
 
-  filter?: InboxConversationListParams.Filter;
-
-  /**
-   * Specifies which related objects to include in the response. Valid options are
-   * `inbox`, `messages`, and `messages.addresses`.
-   */
-  include?: Array<'inbox' | 'messages' | 'messages.addresses'>;
+  inbox_id?: InboxConversationListParams.InboxID;
 
   /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
@@ -191,27 +169,16 @@ export interface InboxConversationListParams extends CursorPageParams {
 }
 
 export namespace InboxConversationListParams {
-  export interface Filter {
-    conversation_id?: Filter.ConversationID;
-
-    inbox_id?: Filter.InboxID;
-  }
-
-  export namespace Filter {
-    export interface ConversationID {
-      eq?: string;
-    }
-
-    export interface InboxID {
-      eq?: string;
-    }
+  export interface InboxID {
+    eq?: string;
   }
 }
 
 export declare namespace InboxConversations {
   export {
     type InboxConversation as InboxConversation,
-    type InboxConversationsCursorPage as InboxConversationsCursorPage,
+    type InboxConversationListResponse as InboxConversationListResponse,
+    type InboxConversationListResponsesCursorPage as InboxConversationListResponsesCursorPage,
     type InboxConversationRetrieveParams as InboxConversationRetrieveParams,
     type InboxConversationListParams as InboxConversationListParams,
   };

@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as Shared from './shared';
 import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
@@ -51,6 +50,12 @@ export class Files extends APIResource {
 }
 
 export type MoonbaseFilesCursorPage = CursorPage<MoonbaseFile>;
+
+export interface FilePointer {
+  id: string;
+
+  type: 'file';
+}
 
 /**
  * The File object represents a file that has been uploaded to your library.
@@ -128,7 +133,7 @@ export interface FileUploadParams {
    * Link the File to Moonbase items like a person, organization, deal, task, or an
    * item in a custom collection.
    */
-  associations?: Array<Shared.Pointer>;
+  associations?: Array<CollectionsAPI.ItemPointerParam>;
 
   /**
    * The display name of the file.
@@ -138,6 +143,7 @@ export interface FileUploadParams {
 
 export declare namespace Files {
   export {
+    type FilePointer as FilePointer,
     type MoonbaseFile as MoonbaseFile,
     type MoonbaseFilesCursorPage as MoonbaseFilesCursorPage,
     type FileListParams as FileListParams,

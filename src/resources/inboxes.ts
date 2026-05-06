@@ -14,12 +14,8 @@ export class Inboxes extends APIResource {
   /**
    * Retrieves the details of an existing inbox.
    */
-  retrieve(
-    id: string,
-    query: InboxRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<Inbox> {
-    return this._client.get(path`/inboxes/${id}`, { query, ...options });
+  retrieve(id: string, options?: RequestOptions): APIPromise<Inbox> {
+    return this._client.get(path`/inboxes/${id}`, options);
   }
 
   /**
@@ -55,6 +51,12 @@ export interface Inbox {
   name: string;
 
   /**
+   * A list of `TagsetPointer` objects referring to the Tagsets associated with this
+   * inbox, which defines the tags available for its conversations.
+   */
+  tagsets: Array<TagsetsAPI.TagsetPointer>;
+
+  /**
    * String representing the object’s type. Always `inbox` for this object.
    */
   type: 'inbox';
@@ -65,22 +67,6 @@ export interface Inbox {
   updated_at: string;
 
   can_read?: boolean;
-
-  /**
-   * The list of `Tagset` objects associated with this inbox, which defines the tags
-   * available for its conversations.
-   *
-   * **Note:** Only present when requested using the `include` query parameter.
-   */
-  tagsets?: Array<TagsetsAPI.Tagset>;
-}
-
-export interface InboxRetrieveParams {
-  /**
-   * Specifies which related objects to include in the response. Valid option is
-   * `tagsets`.
-   */
-  include?: Array<'tagsets'>;
 }
 
 export interface InboxListParams extends CursorPageParams {
@@ -90,8 +76,6 @@ export interface InboxListParams extends CursorPageParams {
    * previous page of results.
    */
   before?: string;
-
-  include?: Array<'tagsets'>;
 
   /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
@@ -104,7 +88,6 @@ export declare namespace Inboxes {
   export {
     type Inbox as Inbox,
     type InboxesCursorPage as InboxesCursorPage,
-    type InboxRetrieveParams as InboxRetrieveParams,
     type InboxListParams as InboxListParams,
   };
 }

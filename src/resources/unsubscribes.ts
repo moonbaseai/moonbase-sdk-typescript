@@ -61,10 +61,19 @@ export class Unsubscribes extends APIResource {
 
 export type UnsubscribesCursorPage = CursorPage<Unsubscribe>;
 
+/**
+ * A record of an unsubscribed email address.
+ */
 export interface Unsubscribe {
   created_at: string;
 
   email: string;
+
+  type: 'unsubscribe';
+}
+
+export interface UnsubscribePointer {
+  id: string;
 
   type: 'unsubscribe';
 }
@@ -91,6 +100,7 @@ export interface UnsubscribeListParams extends CursorPageParams {
 export declare namespace Unsubscribes {
   export {
     type Unsubscribe as Unsubscribe,
+    type UnsubscribePointer as UnsubscribePointer,
     type UnsubscribesCursorPage as UnsubscribesCursorPage,
     type UnsubscribeCreateParams as UnsubscribeCreateParams,
     type UnsubscribeListParams as UnsubscribeListParams,

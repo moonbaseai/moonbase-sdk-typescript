@@ -1,24 +1,74 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
+import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
 /**
- * Manage your inboxes, conversations, and messages
+ * Manage your meetings, files, and notes
  */
 export class Tagsets extends APIResource {
   /**
+   * Create a new tagset.
+   *
+   * @example
+   * ```ts
+   * const tagset = await client.tagsets.create({
+   *   name: 'Support',
+   *   description: 'Tags for our support inbox',
+   *   tags: [
+   *     { name: 'Bug', color: 'red' },
+   *     { name: 'Feature Request', color: 'purple' },
+   *     { name: 'Billing', color: 'amber' },
+   *   ],
+   * });
+   * ```
+   */
+  create(body: TagsetCreateParams, options?: RequestOptions): APIPromise<Tagset> {
+    return this._client.post('/tagsets', { body, ...options });
+  }
+
+  /**
    * Retrieves the details of an existing tagset.
+   *
+   * @example
+   * ```ts
+   * const tagset = await client.tagsets.retrieve('id');
+   * ```
    */
   retrieve(id: string, options?: RequestOptions): APIPromise<Tagset> {
     return this._client.get(path`/tagsets/${id}`, options);
   }
 
   /**
+   * Updates an existing tagset.
+   *
+   * @example
+   * ```ts
+   * const tagset = await client.tagsets.update('id', {
+   *   description: 'Updated description',
+   *   name: 'Customer Support',
+   * });
+   * ```
+   */
+  update(id: string, body: TagsetUpdateParams, options?: RequestOptions): APIPromise<Tagset> {
+    return this._client.patch(path`/tagsets/${id}`, { body, ...options });
+  }
+
+  /**
    * Returns a list of your tagsets.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const tagset of client.tagsets.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     query: TagsetListParams | null | undefined = {},
@@ -26,13 +76,28 @@ export class Tagsets extends APIResource {
   ): PagePromise<TagsetsCursorPage, Tagset> {
     return this._client.getAPIList('/tagsets', CursorPage<Tagset>, { query, ...options });
   }
+
+  /**
+   * Permanently deletes a tagset.
+   *
+   * @example
+   * ```ts
+   * await client.tagsets.delete('id');
+   * ```
+   */
+  delete(id: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.delete(path`/tagsets/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
+  }
 }
 
 export type TagsetsCursorPage = CursorPage<Tagset>;
 
 /**
- * A Tagset is a collection of `Tag` objects that can be applied within a specific
- * `Inbox`.
+ * A Tagset is a collection of `Tag` objects whose tags can be applied to
+ * conversations, calls, and meetings.
  */
 export interface Tagset {
   /**
@@ -53,7 +118,7 @@ export interface Tagset {
   /**
    * A list of `Tag` objects belonging to this tagset.
    */
-  tags: Array<Tagset.Tag>;
+  tags: Array<Shared.Tag>;
 
   /**
    * String representing the object’s type. Always `tagset` for this object.
@@ -71,16 +136,57 @@ export interface Tagset {
   description?: string;
 }
 
-export namespace Tagset {
+export interface TagsetPointer {
+  id: string;
+
+  type: 'tagset';
+}
+
+export interface TagsetCreateParams {
   /**
-   * A Tag is a label that can be applied to `Conversation` objects for organization
-   * and filtering.
+   * The name of the tagset.
+   */
+  name: string;
+
+  /**
+   * An optional description of the tagset's purpose.
+   */
+  description?: string;
+
+  /**
+   * Optional list of tags to create with this tagset. Tags are ordered by their
+   * position in the list.
+   */
+  tags?: Array<TagsetCreateParams.Tag>;
+}
+
+export namespace TagsetCreateParams {
+  /**
+   * Parameters for creating or updating a tag within a tagset.
    */
   export interface Tag {
     /**
-     * Unique identifier for the object.
+     * The color for the tag.
      */
-    id: string;
+    color:
+      | 'amber'
+      | 'blue'
+      | 'cyan'
+      | 'emerald'
+      | 'fuchsia'
+      | 'green'
+      | 'indigo'
+      | 'lime'
+      | 'lunar'
+      | 'orange'
+      | 'pink'
+      | 'purple'
+      | 'red'
+      | 'rose'
+      | 'sky'
+      | 'teal'
+      | 'violet'
+      | 'yellow';
 
     /**
      * The name of the tag.
@@ -88,9 +194,69 @@ export namespace Tagset {
     name: string;
 
     /**
-     * String representing the object’s type. Always `tag` for this object.
+     * Existing tag identifier. Include to update an existing tag, omit to create a new
+     * tag.
      */
-    type: 'tag';
+    id?: string;
+  }
+}
+
+export interface TagsetUpdateParams {
+  /**
+   * An updated description of the tagset.
+   */
+  description?: string;
+
+  /**
+   * The new name of the tagset.
+   */
+  name?: string;
+
+  /**
+   * Optional full list of tags for this tagset. If provided, tags are ordered by
+   * array position.
+   */
+  tags?: Array<TagsetUpdateParams.Tag>;
+}
+
+export namespace TagsetUpdateParams {
+  /**
+   * Parameters for creating or updating a tag within a tagset.
+   */
+  export interface Tag {
+    /**
+     * The color for the tag.
+     */
+    color:
+      | 'amber'
+      | 'blue'
+      | 'cyan'
+      | 'emerald'
+      | 'fuchsia'
+      | 'green'
+      | 'indigo'
+      | 'lime'
+      | 'lunar'
+      | 'orange'
+      | 'pink'
+      | 'purple'
+      | 'red'
+      | 'rose'
+      | 'sky'
+      | 'teal'
+      | 'violet'
+      | 'yellow';
+
+    /**
+     * The name of the tag.
+     */
+    name: string;
+
+    /**
+     * Existing tag identifier. Include to update an existing tag, omit to create a new
+     * tag.
+     */
+    id?: string;
   }
 }
 
@@ -112,7 +278,10 @@ export interface TagsetListParams extends CursorPageParams {
 export declare namespace Tagsets {
   export {
     type Tagset as Tagset,
+    type TagsetPointer as TagsetPointer,
     type TagsetsCursorPage as TagsetsCursorPage,
+    type TagsetCreateParams as TagsetCreateParams,
+    type TagsetUpdateParams as TagsetUpdateParams,
     type TagsetListParams as TagsetListParams,
   };
 }
