@@ -168,7 +168,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/funnels \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Sales Pipeline"\n        }\'',
+          'curl https://api.moonbase.ai/v0/funnels \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Sales Pipeline",\n          "steps": [\n            {\n              "color": "blue",\n              "name": "New Lead",\n              "step_type": "active"\n            },\n            {\n              "color": "cyan",\n              "name": "Qualified",\n              "step_type": "active"\n            },\n            {\n              "color": "green",\n              "name": "Won",\n              "step_type": "success"\n            },\n            {\n              "color": "red",\n              "name": "Lost",\n              "step_type": "failure"\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -252,7 +252,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://api.moonbase.ai/v0/funnels/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          'curl https://api.moonbase.ai/v0/funnels/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Revenue Pipeline"\n        }\'',
       },
     },
   },
@@ -411,7 +411,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/collections \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Leads"\n        }\'',
+          'curl https://api.moonbase.ai/v0/collections \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Leads",\n          "description": "Inbound leads from marketing"\n        }\'',
       },
     },
   },
@@ -451,7 +451,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://api.moonbase.ai/v0/collections/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          'curl https://api.moonbase.ai/v0/collections/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "description": "Qualified inbound leads",\n          "name": "Hot Leads"\n        }\'',
       },
     },
   },
@@ -1336,7 +1336,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/inbox_messages \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "body": {\n            "markdown": "This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."\n          },\n          "inbox_id": "1CLJt2v6KXDyzDuM57pQqo"\n        }\'',
+          'curl https://api.moonbase.ai/v0/inbox_messages \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "body": {\n            "markdown": "This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."\n          },\n          "inbox_id": "1CLJt2v6KXDyzDuM57pQqo",\n          "bcc": [\n            {\n              "email": "steve@example.com",\n              "name": "Steve"\n            }\n          ],\n          "cc": [\n            {\n              "email": "joe@example.com",\n              "name": "Joe"\n            }\n          ],\n          "subject": "Test Subject",\n          "to": [\n            {\n              "email": "bob@example.com",\n              "name": "Bob"\n            },\n            {\n              "email": "jack@example.com"\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -1384,7 +1384,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/inbox_messages/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "lock_version": 0\n        }\'',
+          'curl https://api.moonbase.ai/v0/inbox_messages/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "lock_version": 0,\n          "bcc": [\n            {\n              "email": "steve@example.com",\n              "name": "Steve"\n            }\n          ],\n          "body": {\n            "markdown": "This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown)."\n          },\n          "cc": [\n            {\n              "email": "joe@example.com",\n              "name": "Joe"\n            }\n          ],\n          "subject": "Test Subject",\n          "to": [\n            {\n              "email": "bob@example.com",\n              "name": "Bob"\n            },\n            {\n              "email": "jack@example.com"\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -1585,7 +1585,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/tagsets \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Support"\n        }\'',
+          'curl https://api.moonbase.ai/v0/tagsets \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Support",\n          "description": "Tags for our support inbox",\n          "tags": [\n            {\n              "color": "red",\n              "name": "Bug"\n            },\n            {\n              "color": "purple",\n              "name": "Feature Request"\n            },\n            {\n              "color": "amber",\n              "name": "Billing"\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -1670,7 +1670,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://api.moonbase.ai/v0/tagsets/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          'curl https://api.moonbase.ai/v0/tagsets/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "description": "Updated description",\n          "name": "Customer Support"\n        }\'',
       },
     },
   },
@@ -1908,7 +1908,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/program_messages \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "person": {\n            "email": "person-175@example-175.com"\n          },\n          "program_template_id": "1CLJt2v6ZuRbtwPhmQtzxa"\n        }\'',
+          'curl https://api.moonbase.ai/v0/program_messages \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "person": {\n            "email": "person-175@example-175.com"\n          },\n          "program_template_id": "1CLJt2v6ZuRbtwPhmQtzxa",\n          "custom_variables": {\n            "coupon_code": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -1992,7 +1992,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/forms \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Contact Us"\n        }\'',
+          'curl https://api.moonbase.ai/v0/forms \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "name": "Contact Us",\n          "pages_enabled": true,\n          "redirect_url": "https://example.com/thanks"\n        }\'',
       },
     },
   },
@@ -2078,7 +2078,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://api.moonbase.ai/v0/forms/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          'curl https://api.moonbase.ai/v0/forms/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "business_email_required": true,\n          "name": "Updated Form"\n        }\'',
       },
     },
   },
@@ -2374,7 +2374,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/calls \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "direction": "incoming",\n          "participants": [\n            {\n              "phone": "+14155551212",\n              "role": "caller"\n            },\n            {\n              "phone": "+16505551212",\n              "role": "callee"\n            }\n          ],\n          "provider": "openphone",\n          "provider_id": "openphone_id_000000000006",\n          "provider_status": "completed",\n          "start_at": "2025-02-17T15:00:00.000Z"\n        }\'',
+          'curl https://api.moonbase.ai/v0/calls \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "direction": "incoming",\n          "participants": [\n            {\n              "phone": "+14155551212",\n              "role": "caller"\n            },\n            {\n              "phone": "+16505551212",\n              "role": "callee"\n            }\n          ],\n          "provider": "openphone",\n          "provider_id": "openphone_id_000000000006",\n          "provider_status": "completed",\n          "start_at": "2025-02-17T15:00:00.000Z",\n          "answered_at": "2025-02-17T15:01:00Z",\n          "end_at": "2025-02-17T15:30:00.000Z",\n          "provider_metadata": {\n            "answered_by": "bar",\n            "user_id": "bar",\n            "phone_number_id": "bar",\n            "conversation_id": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -2427,7 +2427,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/calls/upsert \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "direction": "incoming",\n          "participants": [\n            {\n              "phone": "+14155551212",\n              "role": "caller"\n            },\n            {\n              "phone": "+16505551212",\n              "role": "callee"\n            }\n          ],\n          "provider": "openphone",\n          "provider_id": "openphone_id_000000000005",\n          "provider_status": "completed",\n          "start_at": "2025-02-17T15:00:00.000Z"\n        }\'',
+          'curl https://api.moonbase.ai/v0/calls/upsert \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "direction": "incoming",\n          "participants": [\n            {\n              "phone": "+14155551212",\n              "role": "caller"\n            },\n            {\n              "phone": "+16505551212",\n              "role": "callee"\n            }\n          ],\n          "provider": "openphone",\n          "provider_id": "openphone_id_000000000005",\n          "provider_status": "completed",\n          "start_at": "2025-02-17T15:00:00.000Z",\n          "answered_at": "2025-02-17T15:01:00Z",\n          "end_at": "2025-02-17T15:30:00.000Z",\n          "provider_metadata": {\n            "answered_by": "bar",\n            "user_id": "bar",\n            "phone_number_id": "bar",\n            "conversation_id": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -2787,7 +2787,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://api.moonbase.ai/v0/meetings/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          'curl https://api.moonbase.ai/v0/meetings/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d "{\n          \\"recording\\": {\n            \\"content_type\\": \\"video/mp4\\",\n            \\"provider_id\\": \\"abc123\\",\n            \\"url\\": \\"https://example.com/recording.mp4\\"\n          },\n          \\"tags\\": [\n            {\n              \\"id\\": \\"1CLJt2vYMiFzRLEp238B7G\\",\n              \\"type\\": \\"tag\\"\n            }\n          ],\n          \\"transcript\\": {\n            \\"cues\\": [\n              {\n                \\"from\\": 0.71999997,\n                \\"speaker\\": \\"Jony Appleseed\\",\n                \\"text\\": \\"Hello.\\",\n                \\"to\\": 1.22\n              },\n              {\n                \\"from\\": 1.52,\n                \\"speaker\\": \\"Jane Doe\\",\n                \\"text\\": \\"Hey! It\'s been too long.\\",\n                \\"to\\": 3.22\n              }\n            ],\n            \\"provider\\": \\"example\\",\n            \\"provider_id\\": \\"def456\\"\n          }\n        }"',
       },
     },
   },
@@ -3067,7 +3067,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.moonbase.ai/v0/webhook_endpoints \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "status": "enabled",\n          "url": "https://example.com/webhook"\n        }\'',
+          'curl https://api.moonbase.ai/v0/webhook_endpoints \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "status": "enabled",\n          "url": "https://example.com/webhook",\n          "subscriptions": [\n            {\n              "event_type": "activity/item_created"\n            },\n            {\n              "event_type": "activity/item_mentioned"\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -3152,7 +3152,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://api.moonbase.ai/v0/webhook_endpoints/$ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          'curl https://api.moonbase.ai/v0/webhook_endpoints/$ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "status": "disabled",\n          "url": "https://updated.example.com"\n        }\'',
       },
     },
   },
@@ -3275,7 +3275,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://api.moonbase.ai/v0/agent_settings \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $MOONBASE_API_KEY\" \\\n    -d '{}'",
+          'curl https://api.moonbase.ai/v0/agent_settings \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $MOONBASE_API_KEY" \\\n    -d \'{\n          "deal_summary_prompt": "Instructions for the agent to help generate the deal summary",\n          "meeting_prebrief_prompt": "Instructions for the agent to help generate the meeting prebrief note",\n          "meeting_summary_prompt": "Instructions for the agent to help generate the meeting summary note",\n          "meeting_web_search": false,\n          "organization_info": "Information about the organization using Moonbase"\n        }\'',
       },
     },
   },
