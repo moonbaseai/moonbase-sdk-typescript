@@ -1,5 +1,128 @@
 # Changelog
 
+## 0.1.0-alpha.15 (2026-05-08)
+
+Full Changelog: [v0.1.0-alpha.14...v0.1.0-alpha.15](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.14...v0.1.0-alpha.15)
+
+### ⚠ BREAKING CHANGES
+
+* **api:** return PartialCollection from collections list, remove include param
+* **api:** return ItemPointer from items list, remove include param
+* **api:** return InboxConversationPointer and EmailMessagePointer from inbox list endpoints, flatten filter params
+* **api:** return MeetingPointer from meetings list, flatten filter param
+* **api:** rename LlmProfile to AgentSettings, remove model fields
+* **api:** add File results to search response, change data to Item | File union
+* **api:** replace Collection core field with kind enum (system, form, custom)
+* **api:** unified activity response with constituents array, restructured activity filters
+
+### Features
+
+* **api:** add agent settings update method ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add attachments subresource to inbox_messages (create, delete) ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add collection create and update methods ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add default_values support on all field types ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add field create, update, and delete methods on collections.fields ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add File results to search response, change data to Item | File union ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add form create, update, and delete methods ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add funnels CRUD methods (list, retrieve, create, update, delete) ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add identifier field type to collections ([f439d8d](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/f439d8d2b182c26dbaa6bd91170f6b5c4efa0713))
+* **api:** add merge method to collections.items ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add stage field create/update support via funnel pointer ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add Tag color field and business_email_required to Form ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add tags param to calls.create, calls.upsert, meetings.update ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** add tagset create, update, and delete methods with tag color ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** change related_item to related_items array in activities ([c53286b](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c53286b7d159baa2250f6ca5fe54d0b4db34c652))
+* **api:** rename LlmProfile to AgentSettings, remove model fields ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** replace Collection core field with kind enum (system, form, custom) ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** return InboxConversationPointer and EmailMessagePointer from inbox list endpoints, flatten filter params ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** return ItemPointer from items list, remove include param ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** return MeetingPointer from meetings list, flatten filter param ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** return PartialCollection from collections list, remove include param ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **api:** unified activity response with constituents array, restructured activity filters ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **mcp:** add an option to disable code tool ([3cbef18](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/3cbef18125fe0ff486ee359f600e835ce20c275e))
+* support setting headers via env ([f144125](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/f144125950c8599f4019956622683879475cc780))
+
+
+### Bug Fixes
+
+* **client:** preserve URL params already embedded in path ([828e3c6](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/828e3c68e6a7f4cbbd1f86dd22672cbf0f9e2d7e))
+* **internal:** gitignore generated `oidc` dir ([941a6a2](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/941a6a26b86b4bf9cdbc38a9935e9d862f89468c))
+* **mcp:** update prompt ([c8e8468](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c8e84688643e420ed8d1428af9af5dc289b9780f))
+* **types:** make note and summary fields nullable in Call and Meeting models ([e67ad83](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/e67ad838e6a0334eeca96912bd460fcbabdce8a4))
+* **types:** remove MessageAttachmentCreateParams from inbox messages ([903c1de](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/903c1dedaffe6327bfe7eb726624ad1b41971f94))
+
+
+### Chores
+
+* avoid formatting file that gets changed during releases ([f5ccfed](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/f5ccfedf3af901910f3b312f0d14008f540f79ab))
+* **ci:** escape input path in publish-npm workflow ([2a31eff](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/2a31eff141aa3298289ee1a089c704332c7709e6))
+* **ci:** skip lint on metadata-only changes ([cf0a4bc](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/cf0a4bcae6880446f11fbe24acae2f67d642dc7b))
+* **ci:** skip uploading artifacts on stainless-internal branches ([b002040](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b002040b4cf0dd992ddf9ad5b6ea17d29a1cc4e9))
+* **docs:** add missing descriptions ([065bb17](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/065bb178fbfa9a1b4258da028e2273621b9778c7))
+* fix example snippet imports ([efc9f91](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/efc9f91171d6491deb2d70b223454d4e87c5af18))
+* **format:** run eslint and prettier separately ([c05c9ab](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c05c9abc16af91b69406ed0021069ca3675221c2))
+* **internal:** bump @modelcontextprotocol/sdk, @hono/node-server, and minimatch ([4c5f8e0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/4c5f8e062e48073b2af34450909a55e92276f1da))
+* **internal:** codegen related update ([fb516bf](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/fb516bf104e4daad4033e54e76d612da37cd5e36))
+* **internal:** codegen related update ([ac3159b](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ac3159b80f16fa574cd67823518d48b9b12eb15b))
+* **internal:** codegen related update ([628bd10](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/628bd108297e81e5f8fe8ddfea22f676c4127978))
+* **internal:** codegen related update ([68190d2](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/68190d25f40ec4b3088eb2c52692b6c2016865ca))
+* **internal:** codegen related update ([ee6d8e0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ee6d8e07658d0894d2870ba8dcbbf466bf58b708))
+* **internal:** fix MCP docker image builds in yarn projects ([8459497](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/8459497620d10b9e103d093fd4634b84606e7eb1))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([9683974](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/9683974fec2fd9c02448dce2b0f669df2a51d413))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([feca6a1](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/feca6a14e31380f71ff1cf8f9267483b039b6664))
+* **internal:** fix MCP server import ordering ([eae80ae](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/eae80aeacf8516039d9c7d9621538e9fa4d2fd77))
+* **internal:** fix MCP server TS errors that occur with required client options ([651a0d4](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/651a0d4d69132b7bf157929167ca211ed3735fdf))
+* **internal:** improve local docs search for MCP servers ([f1ca94f](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/f1ca94f5a09ed4dec1ed2eec699f2b4e41326704))
+* **internal:** improve local docs search for MCP servers ([b78c9a0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b78c9a0827ff3f2fef832a94f8a5826cc73fcdba))
+* **internal:** make generated MCP servers compatible with Cloudflare worker environments ([84657c8](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/84657c806f5069ef2f05c677c80a89be82fa60fe))
+* **internal:** more robust bootstrap script ([be9d171](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/be9d171516e128c2addca692499ff64c2b28300c))
+* **internal:** move stringifyQuery implementation to internal function ([25464d4](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/25464d442a079a8def348c88c251aef6715e2d5c))
+* **internal:** promote 13 inline schemas to named types ([75dc1d5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/75dc1d56036f00a87fbbdb7ae6ecf274156f8648))
+* **internal:** regenerate SDK with no functional changes ([7d1e2f1](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/7d1e2f1dc43b92fcb279c76e515de08ddd78d10a))
+* **internal:** regenerate SDK with no functional changes ([b4981ad](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b4981ad865ed86c9f2496888e63f3257a9299528))
+* **internal:** regenerate SDK with no functional changes ([1215702](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/1215702212670bbd6f10c4f4ffbf732f2ee6a53b))
+* **internal:** show error causes in MCP servers when running in local mode ([ab94129](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ab941299f5f390e4b8084076fca247836514643d))
+* **internal:** support custom-instructions-path flag in MCP servers ([b51e746](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b51e74609fd5e3edc3fd7c214e325f293bf26638))
+* **internal:** support local docs search in MCP servers ([13e06a0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/13e06a0b95366215d3c2277e27b803a2bda52ae5))
+* **internal:** support type annotations when running MCP in local execution mode ([f8cb677](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/f8cb6772bdd793b5a7078acd9c10aa963469b674))
+* **internal:** support x-stainless-mcp-client-envs header in MCP servers ([17848bd](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/17848bd2f7a9312e4cc7121f81a471cda6b56dec))
+* **internal:** support x-stainless-mcp-client-permissions headers in MCP servers ([85ffc55](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/85ffc55ac0a531f97623fe83252201a1b9a2e75e))
+* **internal:** switch MCP servers to use pino for logging ([ef5a426](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ef5a426497c4269a4a39634b1902a5448d628d8a))
+* **internal:** tweak CI branches ([680d67c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/680d67caed78643f0f345484655e6f6ebc2c35a7))
+* **internal:** update dependencies to address dependabot vulnerabilities ([8dba200](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/8dba2004ea81e0f0412629eff92dbb6fcb91842e))
+* **internal:** update docs ordering ([fc335c8](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/fc335c8745c2e955236234f901b3f650b860e32d))
+* **internal:** update gitignore ([fa745e5](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/fa745e5d72e5319958ad4abcb79fd08b43719314))
+* **internal:** update multipart form array serialization ([84c112b](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/84c112bed5c14fda59965d6d68b336e28c928948))
+* **internal:** use link instead of file in MCP server package.json files ([cb29dee](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/cb29deefbe0de5088e6f16bd4406a45cccbde3f3))
+* **internal:** use x-stainless-mcp-client-envs header for MCP remote code tool calls ([ee2adca](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ee2adca4e452d9af4f97054e4b79e08a5de222c6))
+* **mcp-server:** add support for session id, forward client info ([1d2a422](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/1d2a422405bc85d5c30478d49dc0d8d0c22ecb7b))
+* **mcp-server:** improve instructions ([33e4d1b](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/33e4d1b6a9de6d487945dce97a5110ebd7d69736))
+* **mcp-server:** increase local docs search result count from 5 to 10 ([c522b65](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c522b65df2c40478869cfc4ac167a4c70463340c))
+* **mcp-server:** log client info ([3106a20](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/3106a20823eda784065872685bcb2dd55765d074))
+* **mcp-server:** return access instructions for 404 without API key ([954e333](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/954e333b97c42ef81924d429199253a81d1c493d))
+* redact api-key headers in debug logs ([e7fb206](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/e7fb206e2e36d53798c48cbdc974b2a2e7cdcadb))
+* restructure docs search code ([c9225aa](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c9225aada2159aec31376b9af14314e9cb27c19a))
+* **test:** do not count install time for mock server timeout ([125e9dd](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/125e9dd6065e285ff87f77e02064a73366999fb3))
+* **tests:** bump steady to v0.19.4 ([cff41cc](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/cff41ccd405eb12b37d6517613fe5757a88f0d6d))
+* **tests:** bump steady to v0.19.5 ([fd447a3](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/fd447a39bb5bc11e3f124952baf656c90dd05996))
+* **tests:** bump steady to v0.19.6 ([e980ad6](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/e980ad62b6490251366b09b57860abd8332efcc6))
+* **tests:** bump steady to v0.19.7 ([502fca2](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/502fca2059072d8cfed7581b32093f01e648500a))
+* **tests:** bump steady to v0.20.1 ([8cbb259](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/8cbb259ef5bc80eb1c4affc2a212b2fc7f5dc930))
+* **tests:** bump steady to v0.20.2 ([bc2e305](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/bc2e3055b550a599945466323baf7bc39e952bb1))
+* **tests:** bump steady to v0.22.1 ([a9424e3](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/a9424e38806498b958446f9e09ba28d0a9985e4d))
+* update placeholder string ([6e309da](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/6e309da29a8b9457fd47ddfccf51fbc05c342c87))
+
+
+### Documentation
+
+* **api:** add search method docs, update SearchResponse/SearchParams descriptions ([f2d6e5a](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/f2d6e5a3aaf923a8bcb277a697f3856d48331f99))
+* update http mcp docs ([edf22ee](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/edf22eea265de9ed0797740a50a05fa075eebe85))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([444e925](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/444e925c5fd134a4174f7a4da92021bcd3e4b19e))
+
 ## 0.1.0-alpha.14 (2026-02-26)
 
 Full Changelog: [v0.1.0-alpha.13...v0.1.0-alpha.14](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.13...v0.1.0-alpha.14)
