@@ -7,6 +7,9 @@ import { CursorPage, type CursorPageParams, PagePromise } from '../core/paginati
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage your marketing campaigns and forms
+ */
 export class Programs extends APIResource {
   /**
    * Retrieves the details of an existing program.
@@ -84,7 +87,7 @@ export interface Program {
    *
    * **Note:** Only present when requested using the `include` query parameter.
    */
-  activity_metrics?: Program.ActivityMetrics;
+  activity_metrics?: ProgramActivityMetrics;
 
   /**
    * The user-facing name of the program.
@@ -105,53 +108,56 @@ export interface Program {
   scheduled_at?: string;
 }
 
-export namespace Program {
+/**
+ * The ProgramActivityMetrics object provides a summary of engagement and delivery
+ * statistics for a marketing program.
+ */
+export interface ProgramActivityMetrics {
   /**
-   * A `ProgramActivityMetrics` object summarizing engagement for this program.
-   *
-   * **Note:** Only present when requested using the `include` query parameter.
+   * The number of emails that could not be delivered.
    */
-  export interface ActivityMetrics {
-    /**
-     * The number of emails that could not be delivered.
-     */
-    bounced: number;
+  bounced: number;
 
-    /**
-     * The number of recipients who clicked at least one link.
-     */
-    clicked: number;
+  /**
+   * The number of recipients who clicked at least one link.
+   */
+  clicked: number;
 
-    /**
-     * The number of recipients who marked the email as spam.
-     */
-    complained: number;
+  /**
+   * The number of recipients who marked the email as spam.
+   */
+  complained: number;
 
-    /**
-     * The number of emails that failed to send due to a technical issue.
-     */
-    failed: number;
+  /**
+   * The number of emails that failed to send due to a technical issue.
+   */
+  failed: number;
 
-    /**
-     * The number of recipients who opened the email.
-     */
-    opened: number;
+  /**
+   * The number of recipients who opened the email.
+   */
+  opened: number;
 
-    /**
-     * The total number of emails successfully sent.
-     */
-    sent: number;
+  /**
+   * The total number of emails successfully sent.
+   */
+  sent: number;
 
-    /**
-     * The number of emails blocked by delivery protection rules.
-     */
-    shielded: number;
+  /**
+   * The number of emails blocked by delivery protection rules.
+   */
+  shielded: number;
 
-    /**
-     * The number of recipients who unsubscribed.
-     */
-    unsubscribed: number;
-  }
+  /**
+   * The number of recipients who unsubscribed.
+   */
+  unsubscribed: number;
+}
+
+export interface ProgramPointer {
+  id: string;
+
+  type: 'program';
 }
 
 export interface ProgramRetrieveParams {
@@ -180,6 +186,8 @@ export interface ProgramListParams extends CursorPageParams {
 export declare namespace Programs {
   export {
     type Program as Program,
+    type ProgramActivityMetrics as ProgramActivityMetrics,
+    type ProgramPointer as ProgramPointer,
     type ProgramsCursorPage as ProgramsCursorPage,
     type ProgramRetrieveParams as ProgramRetrieveParams,
     type ProgramListParams as ProgramListParams,

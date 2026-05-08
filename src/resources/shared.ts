@@ -73,16 +73,60 @@ export interface FormattedText {
 }
 
 /**
- * A lightweight reference to another resource.
+ * A Tag is a label that can be applied to supported resources (such as
+ * conversations, calls, and meetings) for organization and filtering.
  */
-export interface Pointer {
+export interface Tag {
   /**
-   * Unique identifier for the referenced object.
+   * Unique identifier for the object.
    */
   id: string;
 
   /**
-   * String indicating the type of the referenced object.
+   * The color for the tag.
    */
-  type: string;
+  color:
+    | 'amber'
+    | 'blue'
+    | 'cyan'
+    | 'emerald'
+    | 'fuchsia'
+    | 'green'
+    | 'indigo'
+    | 'lime'
+    | 'lunar'
+    | 'orange'
+    | 'pink'
+    | 'purple'
+    | 'red'
+    | 'rose'
+    | 'sky'
+    | 'teal'
+    | 'violet'
+    | 'yellow';
+
+  /**
+   * The name of the tag.
+   */
+  name: string;
+
+  /**
+   * String representing the object’s type. Always `tag` for this object.
+   */
+  type: 'tag';
+}
+
+/**
+ * A lightweight reference to a `Tag` used in request bodies.
+ */
+export interface TagPointerParam {
+  /**
+   * Unique identifier of the tag.
+   */
+  id: string;
+
+  /**
+   * String representing the object’s type. Always `tag` for this object.
+   */
+  type: 'tag';
 }

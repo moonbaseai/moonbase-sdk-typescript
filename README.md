@@ -73,17 +73,27 @@ import Moonbase, { toFile } from '@moonbaseai/sdk';
 const client = new Moonbase();
 
 // If you have access to Node `fs` we recommend using `fs.createReadStream()`:
-await client.files.upload({ file: fs.createReadStream('/path/to/file') });
+await client.inboxMessages.attachments.create('inbox_message_id', {
+  file: fs.createReadStream('/path/to/file'),
+});
 
 // Or if you have the web `File` API you can pass a `File` instance:
-await client.files.upload({ file: new File(['my bytes'], 'file') });
+await client.inboxMessages.attachments.create('inbox_message_id', {
+  file: new File(['my bytes'], 'file'),
+});
 
 // You can also pass a `fetch` `Response`:
-await client.files.upload({ file: await fetch('https://somesite/file') });
+await client.inboxMessages.attachments.create('inbox_message_id', {
+  file: await fetch('https://somesite/file'),
+});
 
 // Finally, if none of the above are convenient, you can use our `toFile` helper:
-await client.files.upload({ file: await toFile(Buffer.from('my bytes'), 'file') });
-await client.files.upload({ file: await toFile(new Uint8Array([0, 1, 2]), 'file') });
+await client.inboxMessages.attachments.create('inbox_message_id', {
+  file: await toFile(Buffer.from('my bytes'), 'file'),
+});
+await client.inboxMessages.attachments.create('inbox_message_id', {
+  file: await toFile(new Uint8Array([0, 1, 2]), 'file'),
+});
 ```
 
 ## Handling errors
@@ -166,13 +176,13 @@ List methods in the Moonbase API are paginated.
 You can use the `for await … of` syntax to iterate through items across all pages:
 
 ```ts
-async function fetchAllItems(params) {
-  const allItems = [];
+async function fetchAllItemPointers(params) {
+  const allItemPointers = [];
   // Automatically fetches more pages as needed.
-  for await (const item of client.collections.items.list('people', { limit: 5 })) {
-    allItems.push(item);
+  for await (const itemPointer of client.collections.items.list('people', { limit: 5 })) {
+    allItemPointers.push(itemPointer);
   }
-  return allItems;
+  return allItemPointers;
 }
 ```
 
@@ -180,8 +190,8 @@ Alternatively, you can request a single page at a time:
 
 ```ts
 let page = await client.collections.items.list('people', { limit: 5 });
-for (const item of page.data) {
-  console.log(item);
+for (const itemPointer of page.data) {
+  console.log(itemPointer);
 }
 
 // Convenience methods are provided for manually paginating:

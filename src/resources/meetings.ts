@@ -3,11 +3,15 @@
 import { APIResource } from '../core/resource';
 import * as NotesAPI from './notes';
 import * as Shared from './shared';
+import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage your meetings, files, and notes
+ */
 export class Meetings extends APIResource {
   /**
    * Retrieves the details of an existing meeting.
@@ -26,7 +30,7 @@ export class Meetings extends APIResource {
   }
 
   /**
-   * Adds a transcript or recording to an existing meeting.
+   * Adds a transcript, recording, or tags to an existing meeting.
    *
    * @example
    * ```ts
@@ -36,6 +40,7 @@ export class Meetings extends APIResource {
    *     content_type: 'video/mp4',
    *     url: 'https://example.com/recording.mp4',
    *   },
+   *   tags: [{ id: '1CLJt2vYMiFzRLEp238B7G', type: 'tag' }],
    *   transcript: {
    *     provider: 'example',
    *     provider_id: 'def456',
@@ -67,7 +72,7 @@ export class Meetings extends APIResource {
    * @example
    * ```ts
    * // Automatically fetches more pages as needed.
-   * for await (const meeting of client.meetings.list()) {
+   * for await (const meetingPointer of client.meetings.list()) {
    *   // ...
    * }
    * ```
@@ -75,12 +80,12 @@ export class Meetings extends APIResource {
   list(
     query: MeetingListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<MeetingsCursorPage, Meeting> {
-    return this._client.getAPIList('/meetings', CursorPage<Meeting>, { query, ...options });
+  ): PagePromise<MeetingPointersCursorPage, MeetingPointer> {
+    return this._client.getAPIList('/meetings', CursorPage<MeetingPointer>, { query, ...options });
   }
 }
 
-export type MeetingsCursorPage = CursorPage<Meeting>;
+export type MeetingPointersCursorPage = CursorPage<MeetingPointer>;
 
 /**
  * The Attendee object represents a participant in a meeting. It includes their
@@ -105,14 +110,16 @@ export interface Attendee {
   type: 'meeting_attendee';
 
   /**
-   * A lightweight reference to another resource.
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
    */
-  organization?: Shared.Pointer;
+  organization?: CollectionsAPI.ItemPointer;
 
   /**
-   * A lightweight reference to another resource.
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
    */
-  person?: Shared.Pointer;
+  person?: CollectionsAPI.ItemPointer;
 }
 
 /**
@@ -150,6 +157,11 @@ export interface Meeting {
    * The start time of the meeting, as an ISO 8601 timestamp in UTC.
    */
   start_at: string;
+
+  /**
+   * The tags currently applied to this meeting.
+   */
+  tags: Array<Shared.Tag>;
 
   /**
    * The IANA time zone in which the meeting is scheduled (e.g.,
@@ -190,12 +202,10 @@ export interface Meeting {
   location?: string;
 
   /**
-   * Any personal notes taken during the meeting. It also includes the AI-generated
-   * pre-meeting briefing.
-   *
-   * **Note:** Only present when requested using the `include` query parameter.
+   * The Note object represents a block of text content, often used for meeting notes
+   * or summaries.
    */
-  note?: NotesAPI.Note;
+  note?: NotesAPI.Note | null;
 
   /**
    * The `Organizer` of the meeting.
@@ -216,44 +226,43 @@ export interface Meeting {
   recording_url?: string;
 
   /**
-   * A summary of the meeting.
-   *
-   * **Note:** Only present when requested using the `include` query parameter.
+   * The Note object represents a block of text content, often used for meeting notes
+   * or summaries.
    */
-  summary?: NotesAPI.Note;
+  summary?: NotesAPI.Note | null;
 
   /**
    * The title or subject of the meeting.
    */
   title?: string;
 
-  transcript?: Meeting.Transcript | null;
+  transcript?: MeetingTranscript | null;
 }
 
-export namespace Meeting {
-  export interface Transcript {
-    cues: Array<Transcript.Cue>;
-  }
+export interface MeetingPointer {
+  id: string;
 
-  export namespace Transcript {
-    export interface Cue {
-      from: number;
+  type: 'meeting';
+}
 
-      speaker: Cue.Speaker;
+export interface MeetingTranscript {
+  cues: Array<MeetingTranscriptCue>;
+}
 
-      text: string;
+export interface MeetingTranscriptCue {
+  from: number;
 
-      to: number;
-    }
+  speaker: MeetingTranscriptSpeaker;
 
-    export namespace Cue {
-      export interface Speaker {
-        attendee_id?: string;
+  text: string;
 
-        label?: string;
-      }
-    }
-  }
+  to: number;
+}
+
+export interface MeetingTranscriptSpeaker {
+  attendee_id?: string;
+
+  label?: string;
 }
 
 /**
@@ -277,14 +286,16 @@ export interface Organizer {
   type: 'meeting_organizer';
 
   /**
-   * A lightweight reference to another resource.
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
    */
-  organization?: Shared.Pointer;
+  organization?: CollectionsAPI.ItemPointer;
 
   /**
-   * A lightweight reference to another resource.
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
    */
-  person?: Shared.Pointer;
+  person?: CollectionsAPI.ItemPointer;
 }
 
 export interface MeetingRetrieveParams {
@@ -300,6 +311,12 @@ export interface MeetingUpdateParams {
    * A video recording of the meeting.
    */
   recording?: MeetingUpdateParams.Recording;
+
+  /**
+   * Optional list of tag pointers to assign to the meeting. If omitted, existing
+   * tags are unchanged. Pass an empty array to clear tags.
+   */
+  tags?: Array<Shared.TagPointerParam>;
 
   /**
    * The meeting transcript.
@@ -388,7 +405,7 @@ export interface MeetingListParams extends CursorPageParams {
    */
   before?: string;
 
-  filter?: MeetingListParams.Filter;
+  i_cal_uid?: MeetingListParams.ICalUid;
 
   /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
@@ -398,14 +415,8 @@ export interface MeetingListParams extends CursorPageParams {
 }
 
 export namespace MeetingListParams {
-  export interface Filter {
-    i_cal_uid?: Filter.ICalUid;
-  }
-
-  export namespace Filter {
-    export interface ICalUid {
-      eq?: string;
-    }
+  export interface ICalUid {
+    eq?: string;
   }
 }
 
@@ -413,8 +424,12 @@ export declare namespace Meetings {
   export {
     type Attendee as Attendee,
     type Meeting as Meeting,
+    type MeetingPointer as MeetingPointer,
+    type MeetingTranscript as MeetingTranscript,
+    type MeetingTranscriptCue as MeetingTranscriptCue,
+    type MeetingTranscriptSpeaker as MeetingTranscriptSpeaker,
     type Organizer as Organizer,
-    type MeetingsCursorPage as MeetingsCursorPage,
+    type MeetingPointersCursorPage as MeetingPointersCursorPage,
     type MeetingRetrieveParams as MeetingRetrieveParams,
     type MeetingUpdateParams as MeetingUpdateParams,
     type MeetingListParams as MeetingListParams,

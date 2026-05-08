@@ -5,6 +5,9 @@ import * as ProgramTemplatesAPI from './program-templates';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * Manage your marketing campaigns and forms
+ */
 export class ProgramMessages extends APIResource {
   /**
    * Sends a message using a program template.
@@ -12,7 +15,7 @@ export class ProgramMessages extends APIResource {
    * @example
    * ```ts
    * const programMessage = await client.programMessages.send({
-   *   person: { email: 'person-70@example-70.com' },
+   *   person: { email: 'person-175@example-175.com' },
    *   program_template_id: '1CLJt2v6ZuRbtwPhmQtzxa',
    *   custom_variables: { coupon_code: 'HOWDY' },
    * });
@@ -54,6 +57,12 @@ export interface ProgramMessage {
   updated_at: string;
 }
 
+export interface ProgramMessagePointer {
+  id: string;
+
+  type: 'program_message';
+}
+
 export interface ProgramMessageSendParams {
   /**
    * The person to send the message to.
@@ -81,5 +90,9 @@ export namespace ProgramMessageSendParams {
 }
 
 export declare namespace ProgramMessages {
-  export { type ProgramMessage as ProgramMessage, type ProgramMessageSendParams as ProgramMessageSendParams };
+  export {
+    type ProgramMessage as ProgramMessage,
+    type ProgramMessagePointer as ProgramMessagePointer,
+    type ProgramMessageSendParams as ProgramMessageSendParams,
+  };
 }

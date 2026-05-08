@@ -7,6 +7,9 @@ import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagin
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Manage your collections and items
+ */
 export class Items extends APIResource {
   /**
    * Returns a list of items that are part of the specified view.

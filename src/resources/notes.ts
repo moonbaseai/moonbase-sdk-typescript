@@ -1,6 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as CallsAPI from './calls';
+import * as MeetingsAPI from './meetings';
 import * as Shared from './shared';
 import * as CollectionsAPI from './collections/collections';
 import { APIPromise } from '../core/api-promise';
@@ -9,6 +11,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage your meetings, files, and notes
+ */
 export class Notes extends APIResource {
   /**
    * Create a new note.
@@ -106,7 +111,7 @@ export interface Note {
   /**
    * A list of items, meetings or calls this note is associated with.
    */
-  associations: Array<Shared.Pointer>;
+  associations: Array<NoteAssociationPointer>;
 
   /**
    * The main content of the note.
@@ -150,6 +155,28 @@ export interface Note {
   title?: string;
 }
 
+/**
+ * A reference to a call, meeting, or item to be associated with the note.
+ */
+export type NoteAssociationParamPointer =
+  | CallsAPI.CallPointer
+  | CollectionsAPI.ItemPointerParam
+  | MeetingsAPI.MeetingPointer;
+
+/**
+ * A reference to a call, meeting, or item associated with the note.
+ */
+export type NoteAssociationPointer =
+  | CallsAPI.CallPointer
+  | CollectionsAPI.ItemPointer
+  | MeetingsAPI.MeetingPointer;
+
+export interface NotePointer {
+  id: string;
+
+  type: 'note';
+}
+
 export interface NoteCreateParams {
   /**
    * The main content of the note.
@@ -160,7 +187,7 @@ export interface NoteCreateParams {
    * Link the Note to Moonbase items (person, organization, deal, task, or an item in
    * a custom collection), meetings, or calls.
    */
-  associations?: Array<Shared.Pointer>;
+  associations?: Array<NoteAssociationParamPointer>;
 }
 
 export interface NoteUpdateParams {
@@ -193,6 +220,9 @@ export interface NoteListParams extends CursorPageParams {
 export declare namespace Notes {
   export {
     type Note as Note,
+    type NoteAssociationParamPointer as NoteAssociationParamPointer,
+    type NoteAssociationPointer as NoteAssociationPointer,
+    type NotePointer as NotePointer,
     type NotesCursorPage as NotesCursorPage,
     type NoteCreateParams as NoteCreateParams,
     type NoteUpdateParams as NoteUpdateParams,

@@ -1,13 +1,24 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as Shared from './shared';
+import * as CallsAPI from './calls';
+import * as FilesAPI from './files';
+import * as MeetingsAPI from './meetings';
+import * as NotesAPI from './notes';
+import * as ProgramMessagesAPI from './program-messages';
+import * as ProgramTemplatesAPI from './program-templates';
+import * as ProgramsAPI from './programs';
+import * as UnsubscribesAPI from './unsubscribes';
 import * as CollectionsAPI from './collections/collections';
+import * as InboxMessagesAPI from './inbox-messages/inbox-messages';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * View activities and capture calls
+ */
 export class Activities extends APIResource {
   /**
    * Retrieves the details of an existing activity.
@@ -32,63 +43,45 @@ export type ActivitiesCursorPage = CursorPage<Activity>;
 /**
  * The Activity object represents a specific event that has occurred, such as a
  * meeting being scheduled or a form being submitted.
- *
- * Activities are polymorphic; the `type` field indicates the specific activity
- * that occurred, and the object will contain a property with a matching name that
- * holds the details of that event. For example, an `activity/meeting_held`
- * activity will contain a `meeting` property.
  */
-export type Activity =
-  | ActivityCallOccurred
-  | ActivityFormSubmitted
-  | ActivityInboxMessageSent
-  | ActivityItemCreated
-  | ActivityItemMentioned
-  | ActivityItemMerged
-  | Activity.FileCreatedActivity
-  | ActivityMeetingHeld
-  | ActivityMeetingScheduled
-  | ActivityNoteCreated
-  | ActivityProgramMessageBounced
-  | ActivityProgramMessageClicked
-  | ActivityProgramMessageComplained
-  | ActivityProgramMessageFailed
-  | ActivityProgramMessageOpened
-  | ActivityProgramMessageSent
-  | ActivityProgramMessageShielded
-  | ActivityProgramMessageUnsubscribed;
-
-export namespace Activity {
+export interface Activity {
   /**
-   * Represents an event that occurs when a `File` is created.
+   * Unique identifier for the object.
    */
-  export interface FileCreatedActivity {
-    /**
-     * Unique identifier for the object.
-     */
-    id: string;
+  id: string;
 
-    /**
-     * A lightweight reference to another resource.
-     */
-    file: Shared.Pointer | null;
+  /**
+   * An array of entities involved along with each entity's relation to the activity.
+   */
+  constituents: Array<Constituent>;
 
-    /**
-     * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
-     */
-    occurred_at: string;
+  /**
+   * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
+   */
+  occurred_at: string;
 
-    /**
-     * A reference to an `Item` within a specific `Collection`, providing the context
-     * needed to locate the item.
-     */
-    related_item: CollectionsAPI.ItemPointer | null;
-
-    /**
-     * The type of activity. Always `activity/file_created`.
-     */
-    type: 'activity/file_created';
-  }
+  /**
+   * The type of activity.
+   */
+  type:
+    | 'activity/call_occurred'
+    | 'activity/file_created'
+    | 'activity/form_submitted'
+    | 'activity/inbox_message_sent'
+    | 'activity/item_created'
+    | 'activity/item_mentioned'
+    | 'activity/item_merged'
+    | 'activity/meeting_held'
+    | 'activity/meeting_scheduled'
+    | 'activity/note_created'
+    | 'activity/program_message_bounced'
+    | 'activity/program_message_clicked'
+    | 'activity/program_message_complained'
+    | 'activity/program_message_failed'
+    | 'activity/program_message_opened'
+    | 'activity/program_message_sent'
+    | 'activity/program_message_shielded'
+    | 'activity/program_message_unsubscribed';
 }
 
 /**
@@ -101,9 +94,9 @@ export interface ActivityCallOccurred {
   id: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `Call` object associated with this event.
    */
-  call: Shared.Pointer | null;
+  call: CallsAPI.CallPointer | null;
 
   /**
    * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
@@ -152,9 +145,9 @@ export interface ActivityInboxMessageSent {
   id: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `EmailMessage` that was sent.
    */
-  message: Shared.Pointer | null;
+  message: InboxMessagesAPI.EmailMessagePointer | null;
 
   /**
    * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
@@ -215,9 +208,9 @@ export interface ActivityItemMentioned {
   item: CollectionsAPI.ItemPointer | null;
 
   /**
-   * A lightweight reference to another resource.
+   * The `Note` in which the item was mentioned.
    */
-  note: Shared.Pointer | null;
+  note: NotesAPI.NotePointer | null;
 
   /**
    * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
@@ -278,9 +271,9 @@ export interface ActivityMeetingHeld {
   id: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `Meeting` object associated with this event.
    */
-  meeting: Shared.Pointer | null;
+  meeting: MeetingsAPI.MeetingPointer | null;
 
   /**
    * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
@@ -303,9 +296,9 @@ export interface ActivityMeetingScheduled {
   id: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `Meeting` object associated with this event.
    */
-  meeting: Shared.Pointer | null;
+  meeting: MeetingsAPI.MeetingPointer | null;
 
   /**
    * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
@@ -328,9 +321,9 @@ export interface ActivityNoteCreated {
   id: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `Note` object that was created.
    */
-  note: Shared.Pointer | null;
+  note: NotesAPI.NotePointer | null;
 
   /**
    * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
@@ -338,15 +331,14 @@ export interface ActivityNoteCreated {
   occurred_at: string;
 
   /**
-   * A reference to an `Item` within a specific `Collection`, providing the context
-   * needed to locate the item.
+   * An array of `Item` this note is related to, if any.
    */
-  related_item: CollectionsAPI.ItemPointer | null;
+  related_items: Array<CollectionsAPI.ItemPointer>;
 
   /**
-   * A lightweight reference to another resource.
+   * The `Meeting` this note is related to, if any.
    */
-  related_meeting: Shared.Pointer | null;
+  related_meeting: MeetingsAPI.MeetingPointer | null;
 
   /**
    * The type of activity. Always `activity/note_created`.
@@ -369,9 +361,9 @@ export interface ActivityProgramMessageBounced {
   occurred_at: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `ProgramMessage` associated with the event.
    */
-  program_message: Shared.Pointer | null;
+  program_message: ProgramMessagesAPI.ProgramMessagePointer | null;
 
   /**
    * A reference to an `Item` within a specific `Collection`, providing the context
@@ -412,9 +404,9 @@ export interface ActivityProgramMessageClicked {
   occurred_at: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `ProgramMessage` associated with the event.
    */
-  program_message: Shared.Pointer | null;
+  program_message: ProgramMessagesAPI.ProgramMessagePointer | null;
 
   /**
    * A reference to an `Item` within a specific `Collection`, providing the context
@@ -454,9 +446,9 @@ export interface ActivityProgramMessageComplained {
   occurred_at: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `ProgramMessage` associated with the event.
    */
-  program_message: Shared.Pointer | null;
+  program_message: ProgramMessagesAPI.ProgramMessagePointer | null;
 
   /**
    * A reference to an `Item` within a specific `Collection`, providing the context
@@ -486,9 +478,9 @@ export interface ActivityProgramMessageFailed {
   occurred_at: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `ProgramMessage` associated with the event.
    */
-  program_message: Shared.Pointer | null;
+  program_message: ProgramMessagesAPI.ProgramMessagePointer | null;
 
   /**
    * A reference to an `Item` within a specific `Collection`, providing the context
@@ -522,9 +514,9 @@ export interface ActivityProgramMessageOpened {
   occurred_at: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `ProgramMessage` associated with the event.
    */
-  program_message: Shared.Pointer | null;
+  program_message: ProgramMessagesAPI.ProgramMessagePointer | null;
 
   /**
    * A reference to an `Item` within a specific `Collection`, providing the context
@@ -553,9 +545,9 @@ export interface ActivityProgramMessageSent {
   occurred_at: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `ProgramMessage` associated with the event.
    */
-  program_message: Shared.Pointer | null;
+  program_message: ProgramMessagesAPI.ProgramMessagePointer | null;
 
   /**
    * A reference to an `Item` within a specific `Collection`, providing the context
@@ -590,9 +582,9 @@ export interface ActivityProgramMessageShielded {
   occurred_at: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `ProgramMessage` associated with the event.
    */
-  program_message: Shared.Pointer | null;
+  program_message: ProgramMessagesAPI.ProgramMessagePointer | null;
 
   /**
    * A reference to an `Item` within a specific `Collection`, providing the context
@@ -628,9 +620,9 @@ export interface ActivityProgramMessageUnsubscribed {
   occurred_at: string;
 
   /**
-   * A lightweight reference to another resource.
+   * The `ProgramMessage` associated with the event.
    */
-  program_message: Shared.Pointer | null;
+  program_message: ProgramMessagesAPI.ProgramMessagePointer | null;
 
   /**
    * A reference to an `Item` within a specific `Collection`, providing the context
@@ -649,6 +641,39 @@ export interface ActivityProgramMessageUnsubscribed {
   email?: string;
 }
 
+/**
+ * The Constituent object represents information about something that was involved
+ * in a particular activity.
+ */
+export interface Constituent {
+  /**
+   * A lightweight reference to the entity of `Constituent`, containing information
+   * about what type of entity it is as well as the entity's id.
+   */
+  entity: ConstituentEntityPointer;
+
+  relation: 'actor' | 'object' | 'target';
+
+  type: 'constituent';
+}
+
+/**
+ * A lightweight reference to the entity of `Constituent`, containing information
+ * about what type of entity it is as well as the entity's id.
+ */
+export type ConstituentEntityPointer =
+  | CallsAPI.CallPointer
+  | CollectionsAPI.CollectionPointer
+  | CollectionsAPI.ItemPointer
+  | FilesAPI.FilePointer
+  | MeetingsAPI.MeetingPointer
+  | InboxMessagesAPI.EmailMessagePointer
+  | NotesAPI.NotePointer
+  | ProgramsAPI.ProgramPointer
+  | ProgramMessagesAPI.ProgramMessagePointer
+  | ProgramTemplatesAPI.ProgramTemplatePointer
+  | UnsubscribesAPI.UnsubscribePointer;
+
 export interface ActivityListParams extends CursorPageParams {
   /**
    * When specified, returns results starting immediately before the item identified
@@ -658,62 +683,111 @@ export interface ActivityListParams extends CursorPageParams {
   before?: string;
 
   /**
-   * Filter activities by type, date, or item.
+   * Filter activities by which entities were involved. Must be paired with
+   * constituent_entity_type.
    */
-  filter?: ActivityListParams.Filter;
+  constituent_entity_id?: ActivityListParams.ConstituentEntityID;
+
+  /**
+   * Filter activities by which entities were involved. Must be paired with
+   * constituent_entity_id.
+   */
+  constituent_entity_type?: ActivityListParams.ConstituentEntityType;
+
+  /**
+   * Filter activities by which entities were involved via specific relations. Must
+   * be paired with constituent_entity_type and constituent_entity_id.
+   */
+  constituent_relation?: ActivityListParams.ConstituentRelation;
 
   /**
    * Maximum number of items to return per page. Must be between 1 and 100. Defaults
    * to 20 if not specified.
    */
   limit?: number;
+
+  /**
+   * Filter activities by when they occurred.
+   */
+  occurred_at?: ActivityListParams.OccurredAt;
+
+  /**
+   * Filter activities by type.
+   */
+  type?: ActivityListParams.Type;
 }
 
 export namespace ActivityListParams {
   /**
-   * Filter activities by type, date, or item.
+   * Filter activities by which entities were involved. Must be paired with
+   * constituent_entity_type.
    */
-  export interface Filter {
-    item_id?: Filter.ItemID;
-
-    occurred_at?: Filter.OccurredAt;
-
-    type?: Filter.Type;
+  export interface ConstituentEntityID {
+    eq?: string;
   }
 
-  export namespace Filter {
-    export interface ItemID {
-      eq?: string;
-    }
+  /**
+   * Filter activities by which entities were involved. Must be paired with
+   * constituent_entity_id.
+   */
+  export interface ConstituentEntityType {
+    /**
+     * The type of the entity involved as a constituent of the activity.
+     */
+    eq?:
+      | 'call'
+      | 'collection'
+      | 'email_message'
+      | 'file'
+      | 'item'
+      | 'meeting'
+      | 'note'
+      | 'program'
+      | 'program_message'
+      | 'program_template'
+      | 'unsubscribe';
+  }
 
-    export interface OccurredAt {
-      gte?: string;
+  /**
+   * Filter activities by which entities were involved via specific relations. Must
+   * be paired with constituent_entity_type and constituent_entity_id.
+   */
+  export interface ConstituentRelation {
+    eq?: 'actor' | 'object' | 'target';
+  }
 
-      lte?: string;
-    }
+  /**
+   * Filter activities by when they occurred.
+   */
+  export interface OccurredAt {
+    gte?: string;
 
-    export interface Type {
-      in?: Array<
-        | 'activity/call_occurred'
-        | 'activity/form_submitted'
-        | 'activity/inbox_message_sent'
-        | 'activity/item_created'
-        | 'activity/item_mentioned'
-        | 'activity/item_merged'
-        | 'activity/file_created'
-        | 'activity/meeting_held'
-        | 'activity/meeting_scheduled'
-        | 'activity/note_created'
-        | 'activity/program_message_bounced'
-        | 'activity/program_message_clicked'
-        | 'activity/program_message_complained'
-        | 'activity/program_message_failed'
-        | 'activity/program_message_opened'
-        | 'activity/program_message_sent'
-        | 'activity/program_message_shielded'
-        | 'activity/program_message_unsubscribed'
-      >;
-    }
+    lte?: string;
+  }
+
+  /**
+   * Filter activities by type.
+   */
+  export interface Type {
+    eq?:
+      | 'activity/call_occurred'
+      | 'activity/form_submitted'
+      | 'activity/inbox_message_sent'
+      | 'activity/item_created'
+      | 'activity/item_mentioned'
+      | 'activity/item_merged'
+      | 'activity/file_created'
+      | 'activity/meeting_held'
+      | 'activity/meeting_scheduled'
+      | 'activity/note_created'
+      | 'activity/program_message_bounced'
+      | 'activity/program_message_clicked'
+      | 'activity/program_message_complained'
+      | 'activity/program_message_failed'
+      | 'activity/program_message_opened'
+      | 'activity/program_message_sent'
+      | 'activity/program_message_shielded'
+      | 'activity/program_message_unsubscribed';
   }
 }
 
@@ -737,6 +811,8 @@ export declare namespace Activities {
     type ActivityProgramMessageSent as ActivityProgramMessageSent,
     type ActivityProgramMessageShielded as ActivityProgramMessageShielded,
     type ActivityProgramMessageUnsubscribed as ActivityProgramMessageUnsubscribed,
+    type Constituent as Constituent,
+    type ConstituentEntityPointer as ConstituentEntityPointer,
     type ActivitiesCursorPage as ActivitiesCursorPage,
     type ActivityListParams as ActivityListParams,
   };

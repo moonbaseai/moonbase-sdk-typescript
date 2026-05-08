@@ -7,6 +7,10 @@ import ts from 'typescript';
 import { WorkerOutput } from './code-tool-types';
 import { Moonbase, ClientOptions } from '@moonbaseai/sdk';
 
+async function tseval(code: string) {
+  return import('data:application/typescript;charset=utf-8;base64,' + Buffer.from(code).toString('base64'));
+}
+
 function getRunFunctionSource(code: string): {
   type: 'declaration' | 'expression';
   client: string | undefined;
@@ -105,12 +109,23 @@ function getTSDiagnostics(code: string): string[] {
 const fuse = new Fuse(
   [
     'client.search',
+    'client.funnels.create',
+    'client.funnels.delete',
+    'client.funnels.list',
+    'client.funnels.retrieve',
+    'client.funnels.update',
+    'client.collections.create',
     'client.collections.list',
     'client.collections.retrieve',
+    'client.collections.update',
+    'client.collections.fields.create',
+    'client.collections.fields.delete',
     'client.collections.fields.retrieve',
+    'client.collections.fields.update',
     'client.collections.items.create',
     'client.collections.items.delete',
     'client.collections.items.list',
+    'client.collections.items.merge',
     'client.collections.items.retrieve',
     'client.collections.items.search',
     'client.collections.items.update',
@@ -126,15 +141,26 @@ const fuse = new Fuse(
     'client.inboxMessages.list',
     'client.inboxMessages.retrieve',
     'client.inboxMessages.update',
+    'client.inboxMessages.attachments.create',
+    'client.inboxMessages.attachments.delete',
+    'client.tagsets.create',
+    'client.tagsets.delete',
     'client.tagsets.list',
     'client.tagsets.retrieve',
+    'client.tagsets.update',
     'client.programs.list',
     'client.programs.retrieve',
     'client.programTemplates.list',
     'client.programTemplates.retrieve',
     'client.programMessages.send',
+    'client.forms.create',
+    'client.forms.delete',
     'client.forms.list',
     'client.forms.retrieve',
+    'client.forms.update',
+    'client.unsubscribes.create',
+    'client.unsubscribes.delete',
+    'client.unsubscribes.list',
     'client.activities.list',
     'client.activities.retrieve',
     'client.calls.create',
@@ -159,6 +185,7 @@ const fuse = new Fuse(
     'client.webhookEndpoints.retrieve',
     'client.webhookEndpoints.update',
     'client.agentSettings.retrieve',
+    'client.agentSettings.update',
   ],
   { threshold: 1, shouldSort: true },
 );
@@ -235,7 +262,8 @@ function makeSdkProxy<T extends object>(obj: T, { path, isBelievedBad = false }:
 
 function parseError(code: string, error: unknown): string | undefined {
   if (!(error instanceof Error)) return;
-  const message = error.name ? `${error.name}: ${error.message}` : error.message;
+  const cause = error.cause instanceof Error ? `: ${error.cause.message}` : '';
+  const message = error.name ? `${error.name}: ${error.message}${cause}` : `${error.message}${cause}`;
   try {
     // Deno uses V8; the first "<anonymous>:LINE:COLUMN" is the top of stack.
     const lineNumber = error.stack?.match(/<anonymous>:([0-9]+):[0-9]+/)?.[1];
@@ -291,7 +319,9 @@ const fetch = async (req: Request): Promise<Response> => {
 
   const log_lines: string[] = [];
   const err_lines: string[] = [];
-  const console = {
+  const originalConsole = globalThis.console;
+  globalThis.console = {
+    ...originalConsole,
     log: (...args: unknown[]) => {
       log_lines.push(util.format(...args));
     },
@@ -301,7 +331,7 @@ const fetch = async (req: Request): Promise<Response> => {
   };
   try {
     let run_ = async (client: any) => {};
-    eval(`${code}\nrun_ = run;`);
+    run_ = (await tseval(`${code}\nexport default run;`)).default;
     const result = await run_(makeSdkProxy(client, { path: ['client'] }));
     return Response.json({
       is_error: false,
@@ -319,6 +349,8 @@ const fetch = async (req: Request): Promise<Response> => {
       } satisfies WorkerOutput,
       { status: 400, statusText: 'Code execution error' },
     );
+  } finally {
+    globalThis.console = originalConsole;
   }
 };
 

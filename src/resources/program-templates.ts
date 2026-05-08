@@ -8,6 +8,9 @@ import { CursorPage, type CursorPageParams, PagePromise } from '../core/paginati
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage your marketing campaigns and forms
+ */
 export class ProgramTemplates extends APIResource {
   /**
    * Retrieves the details of an existing program template.
@@ -77,6 +80,12 @@ export interface ProgramTemplate {
   program?: ProgramsAPI.Program;
 }
 
+export interface ProgramTemplatePointer {
+  id: string;
+
+  type: 'program_template';
+}
+
 export interface ProgramTemplateRetrieveParams {
   /**
    * Specifies which related objects to include in the response. Valid option is
@@ -109,6 +118,7 @@ export interface ProgramTemplateListParams extends CursorPageParams {
 export declare namespace ProgramTemplates {
   export {
     type ProgramTemplate as ProgramTemplate,
+    type ProgramTemplatePointer as ProgramTemplatePointer,
     type ProgramTemplatesCursorPage as ProgramTemplatesCursorPage,
     type ProgramTemplateRetrieveParams as ProgramTemplateRetrieveParams,
     type ProgramTemplateListParams as ProgramTemplateListParams,

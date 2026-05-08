@@ -55,7 +55,7 @@ describe('resource meetings', () => {
         {
           after: 'after',
           before: 'before',
-          filter: { i_cal_uid: { eq: 'eq' } },
+          i_cal_uid: { eq: 'eq' },
           limit: 1,
         },
         { path: '/_stainless_unknown_path' },
