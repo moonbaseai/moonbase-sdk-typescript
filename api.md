@@ -71,6 +71,8 @@ Types:
 - <code><a href="./src/resources/collections/collections.ts">FunnelStepValueParam</a></code>
 - <code><a href="./src/resources/collections/collections.ts">GeoField</a></code>
 - <code><a href="./src/resources/collections/collections.ts">GeoValue</a></code>
+- <code><a href="./src/resources/collections/collections.ts">IdentifierField</a></code>
+- <code><a href="./src/resources/collections/collections.ts">IdentifierValue</a></code>
 - <code><a href="./src/resources/collections/collections.ts">IntegerField</a></code>
 - <code><a href="./src/resources/collections/collections.ts">IntegerValue</a></code>
 - <code><a href="./src/resources/collections/collections.ts">Item</a></code>
