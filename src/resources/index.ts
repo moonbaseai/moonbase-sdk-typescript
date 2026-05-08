@@ -173,7 +173,6 @@ export {
   type EmailMessageAddressParams,
   type EmailMessagePointer,
   type MessageAttachment,
-  type MessageAttachmentCreateParams,
   type InboxMessageCreateParams,
   type InboxMessageRetrieveParams,
   type InboxMessageUpdateParams,

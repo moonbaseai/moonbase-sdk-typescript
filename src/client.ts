@@ -271,7 +271,6 @@ import {
   InboxMessageUpdateParams,
   InboxMessages,
   MessageAttachment,
-  MessageAttachmentCreateParams,
 } from './resources/inbox-messages/inbox-messages';
 import { View, ViewRetrieveParams, Views } from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
@@ -1243,7 +1242,6 @@ export declare namespace Moonbase {
     type EmailMessageAddressParams as EmailMessageAddressParams,
     type EmailMessagePointer as EmailMessagePointer,
     type MessageAttachment as MessageAttachment,
-    type MessageAttachmentCreateParams as MessageAttachmentCreateParams,
     type EmailMessagePointersCursorPage as EmailMessagePointersCursorPage,
     type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,

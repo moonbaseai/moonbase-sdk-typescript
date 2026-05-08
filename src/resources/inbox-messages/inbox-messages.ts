@@ -8,7 +8,6 @@ import * as AttachmentsAPI from './attachments';
 import { AttachmentCreateParams, AttachmentDeleteParams, Attachments } from './attachments';
 import { APIPromise } from '../../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagination';
-import { type Uploadable } from '../../core/uploads';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -309,12 +308,6 @@ export interface MessageAttachment {
   type: 'message_attachment';
 }
 
-export interface MessageAttachmentCreateParams {
-  file?: Uploadable;
-
-  file_id?: string;
-}
-
 export interface InboxMessageCreateParams {
   /**
    * The email body.
@@ -430,7 +423,6 @@ export declare namespace InboxMessages {
     type EmailMessageAddressParams as EmailMessageAddressParams,
     type EmailMessagePointer as EmailMessagePointer,
     type MessageAttachment as MessageAttachment,
-    type MessageAttachmentCreateParams as MessageAttachmentCreateParams,
     type EmailMessagePointersCursorPage as EmailMessagePointersCursorPage,
     type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,

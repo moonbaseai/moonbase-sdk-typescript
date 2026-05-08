@@ -196,7 +196,6 @@ Types:
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessageAddressParams</a></code>
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessagePointer</a></code>
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">MessageAttachment</a></code>
-- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">MessageAttachmentCreateParams</a></code>
 
 Methods:
 
