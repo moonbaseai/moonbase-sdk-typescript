@@ -82,6 +82,8 @@ export {
   type FunnelStepValueParam,
   type GeoField,
   type GeoValue,
+  type IdentifierField,
+  type IdentifierValue,
   type IntegerField,
   type IntegerValue,
   type Item,

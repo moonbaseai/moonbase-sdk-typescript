@@ -98,6 +98,7 @@ export interface FieldCreateParams {
   field:
     | FieldCreateParams.SingleLineTextFieldCreateParams
     | FieldCreateParams.MultiLineTextFieldCreateParams
+    | FieldCreateParams.IdentifierFieldCreateParams
     | FieldCreateParams.IntegerFieldCreateParams
     | FieldCreateParams.FloatFieldCreateParams
     | FieldCreateParams.MonetaryFieldCreateParams
@@ -191,6 +192,22 @@ export namespace FieldCreateParams {
     /**
      * If `true`, values must be unique across all items. Defaults to `false`.
      */
+    unique?: boolean;
+  }
+
+  export interface IdentifierFieldCreateParams {
+    name: string;
+
+    type: 'field/identifier';
+
+    cardinality?: 'one' | 'many';
+
+    default_values?: Array<CollectionsAPI.IdentifierValue>;
+
+    description?: string;
+
+    required?: boolean;
+
     unique?: boolean;
   }
 
@@ -909,6 +926,7 @@ export interface FieldUpdateParams {
   field:
     | FieldUpdateParams.SingleLineTextFieldUpdateParams
     | FieldUpdateParams.MultiLineTextFieldUpdateParams
+    | FieldUpdateParams.IdentifierFieldUpdateParams
     | FieldUpdateParams.IntegerFieldUpdateParams
     | FieldUpdateParams.FloatFieldUpdateParams
     | FieldUpdateParams.MonetaryFieldUpdateParams
@@ -1000,6 +1018,22 @@ export namespace FieldUpdateParams {
     /**
      * If `true`, values must be unique across all items.
      */
+    unique?: boolean;
+  }
+
+  export interface IdentifierFieldUpdateParams {
+    type: 'field/identifier';
+
+    cardinality?: 'one' | 'many';
+
+    default_values?: Array<CollectionsAPI.IdentifierValue> | null;
+
+    description?: string | null;
+
+    name?: string;
+
+    required?: boolean;
+
     unique?: boolean;
   }
 

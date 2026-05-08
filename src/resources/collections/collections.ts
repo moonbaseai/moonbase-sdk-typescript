@@ -787,6 +787,7 @@ export interface EmailValue {
 export type Field =
   | SingleLineTextField
   | MultiLineTextField
+  | IdentifierField
   | IntegerField
   | FloatField
   | MonetaryField
@@ -813,6 +814,7 @@ export type Field =
 export type FieldDefaultValue =
   | SingleLineTextValue
   | MultiLineTextValue
+  | IdentifierValue
   | IntegerValue
   | FloatValue
   | MonetaryValue
@@ -866,6 +868,7 @@ export interface FieldPointer {
 export type FieldValue =
   | SingleLineTextValue
   | MultiLineTextValue
+  | IdentifierValue
   | IntegerValue
   | FloatValue
   | MonetaryValue
@@ -891,6 +894,7 @@ export type FieldValue =
 export type FieldValueParam =
   | SingleLineTextValue
   | MultiLineTextValue
+  | IdentifierValue
   | IntegerValue
   | FloatValue
   | MonetaryValue
@@ -1113,6 +1117,86 @@ export interface GeoValue {
   data: string;
 
   type: 'value/geo';
+}
+
+/**
+ * A field that stores opaque external identifiers verbatim.
+ */
+export interface IdentifierField {
+  /**
+   * Unique identifier for the object.
+   */
+  id: string;
+
+  /**
+   * Specifies whether the field can hold a single value (`one`) or multiple values
+   * (`many`).
+   */
+  cardinality: 'one' | 'many';
+
+  /**
+   * Time at which the object was created, as an ISO 8601 timestamp in UTC.
+   */
+  created_at: string;
+
+  default_values: Array<FieldDefaultValue>;
+
+  kind: 'system' | 'inverse' | 'custom';
+
+  /**
+   * The human-readable name of the field (e.g., "Stripe Id").
+   */
+  name: string;
+
+  /**
+   * If `true`, the value of this field is system-managed and cannot be updated via
+   * the API.
+   */
+  readonly: boolean;
+
+  /**
+   * A unique, stable, machine-readable identifier for the field within its
+   * collection (e.g., `stripe_id`).
+   */
+  ref: string;
+
+  /**
+   * If `true`, this field must have a value.
+   */
+  required: boolean;
+
+  /**
+   * The data type of the field. Always `field/identifier` for this field.
+   */
+  type: 'field/identifier';
+
+  /**
+   * If `true`, values for this field must be unique across all items in the
+   * collection.
+   */
+  unique: boolean;
+
+  /**
+   * Time at which the object was last updated, as an ISO 8601 timestamp in UTC.
+   */
+  updated_at: string;
+
+  /**
+   * An optional, longer-form description of the field's purpose.
+   */
+  description?: string;
+}
+
+/**
+ * Identifier string
+ */
+export interface IdentifierValue {
+  /**
+   * An external identifier as text, uo to 255 characters in length.
+   */
+  data: string;
+
+  type: 'value/identifier';
 }
 
 /**
@@ -2455,6 +2539,7 @@ export interface URLValue {
 export type Value =
   | SingleLineTextValue
   | MultiLineTextValue
+  | IdentifierValue
   | IntegerValue
   | FloatValue
   | MonetaryValue
@@ -2479,6 +2564,7 @@ export type Value =
 export type ValueParam =
   | SingleLineTextValue
   | MultiLineTextValue
+  | IdentifierValue
   | IntegerValue
   | FloatValue
   | MonetaryValue
@@ -2598,6 +2684,8 @@ export declare namespace Collections {
     type FunnelStepValueParam as FunnelStepValueParam,
     type GeoField as GeoField,
     type GeoValue as GeoValue,
+    type IdentifierField as IdentifierField,
+    type IdentifierValue as IdentifierValue,
     type IntegerField as IntegerField,
     type IntegerValue as IntegerValue,
     type Item as Item,
