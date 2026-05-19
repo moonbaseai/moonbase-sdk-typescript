@@ -1,7 +1,6 @@
 import fs from 'fs';
 import type { ResponseLike } from '@moonbaseai/sdk/internal/to-file';
 import { toFile } from '@moonbaseai/sdk/core/uploads';
-import { File } from 'node:buffer';
 
 class MyClass {
   name: string = 'foo';
