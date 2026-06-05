@@ -42,7 +42,7 @@ export class Files extends APIResource {
   }
 
   /**
-   * Upload a file
+   * Uploads a file to your library. The file must be 5 MB or smaller.
    */
   upload(body: FileUploadParams, options?: RequestOptions): APIPromise<MoonbaseFile> {
     return this._client.post('/files', multipartFormRequestOptions({ body, ...options }, this._client));
@@ -125,7 +125,8 @@ export interface FileListParams extends CursorPageParams {
 
 export interface FileUploadParams {
   /**
-   * The File object to be uploaded.
+   * The raw file content to upload in a multipart/form-data request. Must be 5 MB or
+   * smaller.
    */
   file: Uploadable;
 
