@@ -71,6 +71,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/collections',
   },
   {
+    clientCallName: 'client.collections.delete',
+    fullyQualifiedName: 'collections.delete',
+    httpMethod: 'delete',
+    httpPath: '/collections/{id}',
+  },
+  {
     clientCallName: 'client.collections.fields.create',
     fullyQualifiedName: 'collections.fields.create',
     httpMethod: 'post',
