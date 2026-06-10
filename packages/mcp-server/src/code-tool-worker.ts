@@ -115,6 +115,7 @@ const fuse = new Fuse(
     'client.funnels.retrieve',
     'client.funnels.update',
     'client.collections.create',
+    'client.collections.delete',
     'client.collections.list',
     'client.collections.retrieve',
     'client.collections.update',

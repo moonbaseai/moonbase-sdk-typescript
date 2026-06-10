@@ -27,6 +27,7 @@ import {
 import * as ViewsAPI from '../views/views';
 import { APIPromise } from '../../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagination';
+import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -96,6 +97,21 @@ export class Collections extends APIResource {
     options?: RequestOptions,
   ): PagePromise<CollectionListResponsesCursorPage, CollectionListResponse> {
     return this._client.getAPIList('/collections', CursorPage<CollectionListResponse>, { query, ...options });
+  }
+
+  /**
+   * Permanently deletes a collection.
+   *
+   * @example
+   * ```ts
+   * await client.collections.delete('id');
+   * ```
+   */
+  delete(id: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.delete(path`/collections/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 

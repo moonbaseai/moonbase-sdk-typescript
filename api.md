@@ -121,6 +121,7 @@ Methods:
 - <code title="get /collections/{id}">client.collections.<a href="./src/resources/collections/collections.ts">retrieve</a>(id) -> Collection</code>
 - <code title="patch /collections/{id}">client.collections.<a href="./src/resources/collections/collections.ts">update</a>(id, { ...params }) -> Collection</code>
 - <code title="get /collections">client.collections.<a href="./src/resources/collections/collections.ts">list</a>({ ...params }) -> CollectionListResponsesCursorPage</code>
+- <code title="delete /collections/{id}">client.collections.<a href="./src/resources/collections/collections.ts">delete</a>(id) -> void</code>
 
 ## Fields
 
