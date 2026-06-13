@@ -29,13 +29,13 @@ export class InboxMessages extends APIResource {
    *       'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
    *   },
    *   inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
-   *   bcc: [{ email: 'steve@example.com', name: 'Steve' }],
-   *   cc: [{ email: 'joe@example.com', name: 'Joe' }],
    *   subject: 'Test Subject',
    *   to: [
    *     { email: 'bob@example.com', name: 'Bob' },
    *     { email: 'jack@example.com' },
    *   ],
+   *   bcc: [{ email: 'steve@example.com', name: 'Steve' }],
+   *   cc: [{ email: 'joe@example.com', name: 'Joe' }],
    * });
    * ```
    */
@@ -308,41 +308,74 @@ export interface MessageAttachment {
   type: 'message_attachment';
 }
 
-export interface InboxMessageCreateParams {
-  /**
-   * The email body.
-   */
-  body: Shared.FormattedText;
+export type InboxMessageCreateParams =
+  | InboxMessageCreateParams.Variant0
+  | InboxMessageCreateParams.EmailMessageReplyCreateParams;
 
-  /**
-   * The inbox to use for sending the email.
-   */
-  inbox_id: string;
+export declare namespace InboxMessageCreateParams {
+  export interface Variant0 {
+    /**
+     * The email body.
+     */
+    body: Shared.FormattedText;
 
-  /**
-   * A list of the BCC recipients.
-   */
-  bcc?: Array<EmailMessageAddressParams>;
+    /**
+     * The inbox to use for sending the email.
+     */
+    inbox_id: string;
 
-  /**
-   * A list of the CC recipients.
-   */
-  cc?: Array<EmailMessageAddressParams>;
+    /**
+     * The subject line of the email.
+     */
+    subject: string;
 
-  /**
-   * The ID of the conversation, if responding to an existing conversation.
-   */
-  conversation_id?: string;
+    /**
+     * A list of recipients.
+     */
+    to: Array<EmailMessageAddressParams>;
 
-  /**
-   * The subject line of the email.
-   */
-  subject?: string;
+    /**
+     * A list of the BCC recipients.
+     */
+    bcc?: Array<EmailMessageAddressParams>;
 
-  /**
-   * A list of recipients.
-   */
-  to?: Array<EmailMessageAddressParams>;
+    /**
+     * A list of the CC recipients.
+     */
+    cc?: Array<EmailMessageAddressParams>;
+  }
+
+  export interface EmailMessageReplyCreateParams {
+    /**
+     * The email body.
+     */
+    body: Shared.FormattedText;
+
+    /**
+     * The ID of the conversation to reply to.
+     */
+    conversation_id: string;
+
+    /**
+     * The inbox to use for sending the email.
+     */
+    inbox_id: string;
+
+    /**
+     * A list of the BCC recipients.
+     */
+    bcc?: Array<EmailMessageAddressParams>;
+
+    /**
+     * A list of the CC recipients.
+     */
+    cc?: Array<EmailMessageAddressParams>;
+
+    /**
+     * A list of recipients. If omitted, recipients are derived from the conversation.
+     */
+    to?: Array<EmailMessageAddressParams>;
+  }
 }
 
 export interface InboxMessageRetrieveParams {
