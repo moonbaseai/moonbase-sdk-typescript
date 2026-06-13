@@ -11,7 +11,9 @@ describe('resource inboxMessages', () => {
   test('create: only required params', async () => {
     const responsePromise = client.inboxMessages.create({
       body: {},
-      inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
+      inbox_id: 'inbox_id',
+      subject: 'subject',
+      to: [{ email: 'dev@stainless.com' }],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -24,19 +26,12 @@ describe('resource inboxMessages', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.inboxMessages.create({
-      body: {
-        markdown:
-          'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
-      },
-      inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
-      bcc: [{ email: 'steve@example.com', name: 'Steve' }],
-      cc: [{ email: 'joe@example.com', name: 'Joe' }],
-      conversation_id: 'conversation_id',
-      subject: 'Test Subject',
-      to: [
-        { email: 'bob@example.com', name: 'Bob' },
-        { email: 'jack@example.com', name: 'name' },
-      ],
+      body: { markdown: 'markdown' },
+      inbox_id: 'inbox_id',
+      subject: 'subject',
+      to: [{ email: 'dev@stainless.com', name: 'name' }],
+      bcc: [{ email: 'dev@stainless.com', name: 'name' }],
+      cc: [{ email: 'dev@stainless.com', name: 'name' }],
     });
   });
 
