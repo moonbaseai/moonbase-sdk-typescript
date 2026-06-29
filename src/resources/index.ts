@@ -245,7 +245,20 @@ export {
   type UnsubscribeListParams,
   type UnsubscribesCursorPage,
 } from './unsubscribes';
-export { Views, type View, type ViewRetrieveParams } from './views/views';
+export {
+  Views,
+  type View,
+  type ViewAggregate,
+  type ViewAggregateFieldStatistic,
+  type ViewAggregateItemCount,
+  type ViewField,
+  type ViewRelationValueFilter,
+  type ViewListResponse,
+  type ViewCreateParams,
+  type ViewUpdateParams,
+  type ViewListParams,
+  type ViewListResponsesCursorPage,
+} from './views/views';
 export {
   WebhookEndpoints,
   type Endpoint,

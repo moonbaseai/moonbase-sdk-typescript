@@ -149,9 +149,33 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/collections/{collection_id}/items/upsert',
   },
   {
+    clientCallName: 'client.views.create',
+    fullyQualifiedName: 'views.create',
+    httpMethod: 'post',
+    httpPath: '/views',
+  },
+  {
     clientCallName: 'client.views.retrieve',
     fullyQualifiedName: 'views.retrieve',
     httpMethod: 'get',
+    httpPath: '/views/{id}',
+  },
+  {
+    clientCallName: 'client.views.update',
+    fullyQualifiedName: 'views.update',
+    httpMethod: 'patch',
+    httpPath: '/views/{id}',
+  },
+  {
+    clientCallName: 'client.views.list',
+    fullyQualifiedName: 'views.list',
+    httpMethod: 'get',
+    httpPath: '/views',
+  },
+  {
+    clientCallName: 'client.views.delete',
+    fullyQualifiedName: 'views.delete',
+    httpMethod: 'delete',
     httpPath: '/views/{id}',
   },
   {

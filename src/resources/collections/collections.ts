@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as CollectionsAPI from './collections';
 import * as FunnelsAPI from '../funnels';
 import * as FieldsAPI from './fields';
 import {
@@ -24,7 +25,6 @@ import {
   ItemUpsertParams,
   Items,
 } from './items';
-import * as ViewsAPI from '../views/views';
 import { APIPromise } from '../../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagination';
 import { buildHeaders } from '../../internal/headers';
@@ -412,7 +412,29 @@ export interface Collection {
    *
    * **Note:** Only present when requested using the `include` query parameter.
    */
-  views?: Array<ViewsAPI.View>;
+  views?: Array<Collection.View>;
+}
+
+export namespace Collection {
+  export interface View {
+    id: string;
+
+    /**
+     * A lightweight reference to a `Collection`, containing the minimal information
+     * needed to identify it.
+     */
+    collection: CollectionsAPI.CollectionPointer;
+
+    created_at: string;
+
+    name: string;
+
+    type: 'view';
+
+    updated_at: string;
+
+    view_type: 'table' | 'board';
+  }
 }
 
 /**
@@ -1385,6 +1407,9 @@ export interface ItemsFilterAndGroup {
   op: 'and';
 }
 
+/**
+ * Include only items that do NOT match the nested `filter`.
+ */
 export interface ItemsFilterNotGroup {
   /**
    * A nested filter which must NOT match in order for this `not` filter to match.
@@ -1412,7 +1437,8 @@ export interface ItemsFilterOrGroup {
  */
 export interface ItemsFilterValueExists {
   /**
-   * The id or key of the field for which a value must exist.
+   * The id or key of the field for which a value must exist, or a path to the field
+   * for which a value must exist.
    */
   field: string;
 
@@ -1425,7 +1451,8 @@ export interface ItemsFilterValueExists {
  */
 export interface ItemsFilterValueMatches {
   /**
-   * The id or key of the field in which values are matched.
+   * The id or key of the field in which values are matched, or a path to the field
+   * in which values are matched.
    */
   field: string;
 

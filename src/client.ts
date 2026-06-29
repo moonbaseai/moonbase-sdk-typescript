@@ -272,7 +272,20 @@ import {
   InboxMessages,
   MessageAttachment,
 } from './resources/inbox-messages/inbox-messages';
-import { View, ViewRetrieveParams, Views } from './resources/views/views';
+import {
+  View,
+  ViewAggregate,
+  ViewAggregateFieldStatistic,
+  ViewAggregateItemCount,
+  ViewCreateParams,
+  ViewField,
+  ViewListParams,
+  ViewListResponse,
+  ViewListResponsesCursorPage,
+  ViewRelationValueFilter,
+  ViewUpdateParams,
+  Views,
+} from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
 import { isRunningInBrowser } from './internal/detect-platform';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -1225,7 +1238,20 @@ export declare namespace Moonbase {
     type CollectionListParams as CollectionListParams,
   };
 
-  export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
+  export {
+    Views as Views,
+    type View as View,
+    type ViewAggregate as ViewAggregate,
+    type ViewAggregateFieldStatistic as ViewAggregateFieldStatistic,
+    type ViewAggregateItemCount as ViewAggregateItemCount,
+    type ViewField as ViewField,
+    type ViewRelationValueFilter as ViewRelationValueFilter,
+    type ViewListResponse as ViewListResponse,
+    type ViewListResponsesCursorPage as ViewListResponsesCursorPage,
+    type ViewCreateParams as ViewCreateParams,
+    type ViewUpdateParams as ViewUpdateParams,
+    type ViewListParams as ViewListParams,
+  };
 
   export {
     Inboxes as Inboxes,
