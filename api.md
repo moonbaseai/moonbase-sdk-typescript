@@ -154,10 +154,20 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/views/views.ts">View</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewAggregate</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewAggregateFieldStatistic</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewAggregateItemCount</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewField</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewRelationValueFilter</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewListResponse</a></code>
 
 Methods:
 
-- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id, { ...params }) -> View</code>
+- <code title="post /views">client.views.<a href="./src/resources/views/views.ts">create</a>({ ...params }) -> View</code>
+- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id) -> View</code>
+- <code title="patch /views/{id}">client.views.<a href="./src/resources/views/views.ts">update</a>(id, { ...params }) -> View</code>
+- <code title="get /views">client.views.<a href="./src/resources/views/views.ts">list</a>({ ...params }) -> ViewListResponsesCursorPage</code>
+- <code title="delete /views/{id}">client.views.<a href="./src/resources/views/views.ts">delete</a>(id) -> void</code>
 
 ## Items
 
