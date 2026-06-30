@@ -3,7 +3,6 @@
 import { APIResource } from '../core/resource';
 import * as InboxesAPI from './inboxes';
 import * as Shared from './shared';
-import * as InboxMessagesAPI from './inbox-messages/inbox-messages';
 import { APIPromise } from '../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -124,11 +123,11 @@ export interface InboxConversation {
   inbox?: InboxesAPI.Inbox;
 
   /**
-   * The `EmailMessage` objects that belong to this conversation.
+   * The `Message` objects that belong to this conversation.
    *
    * **Note:** Only present when requested using the `include` query parameter.
    */
-  messages?: Array<InboxMessagesAPI.EmailMessage>;
+  messages?: Array<unknown>;
 
   /**
    * If the conversation is snoozed, this is the time it will reappear in the inbox,

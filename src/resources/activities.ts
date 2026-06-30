@@ -145,9 +145,9 @@ export interface ActivityInboxMessageSent {
   id: string;
 
   /**
-   * The `EmailMessage` that was sent.
+   * The `Message` that was sent.
    */
-  message: InboxMessagesAPI.EmailMessagePointer | null;
+  message: InboxMessagesAPI.MessagePointer | null;
 
   /**
    * The time at which the event occurred, as an ISO 8601 timestamp in UTC.
@@ -667,7 +667,7 @@ export type ConstituentEntityPointer =
   | CollectionsAPI.ItemPointer
   | FilesAPI.FilePointer
   | MeetingsAPI.MeetingPointer
-  | InboxMessagesAPI.EmailMessagePointer
+  | InboxMessagesAPI.MessagePointer
   | NotesAPI.NotePointer
   | ProgramsAPI.ProgramPointer
   | ProgramMessagesAPI.ProgramMessagePointer
@@ -737,10 +737,10 @@ export namespace ActivityListParams {
     eq?:
       | 'call'
       | 'collection'
-      | 'email_message'
       | 'file'
       | 'item'
       | 'meeting'
+      | 'message'
       | 'note'
       | 'program'
       | 'program_message'

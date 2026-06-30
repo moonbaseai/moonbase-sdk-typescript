@@ -10,10 +10,13 @@ const client = new Moonbase({
 describe('resource inboxMessages', () => {
   test('create: only required params', async () => {
     const responsePromise = client.inboxMessages.create({
-      body: {},
-      inbox_id: 'inbox_id',
-      subject: 'subject',
-      to: [{ email: 'dev@stainless.com' }],
+      message: {
+        body: {},
+        inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
+        subject: 'Test Subject',
+        to: [{ email: 'bob@example.com' }, { email: 'jack@example.com' }],
+        type: 'email_message',
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -26,12 +29,21 @@ describe('resource inboxMessages', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.inboxMessages.create({
-      body: { markdown: 'markdown' },
-      inbox_id: 'inbox_id',
-      subject: 'subject',
-      to: [{ email: 'dev@stainless.com', name: 'name' }],
-      bcc: [{ email: 'dev@stainless.com', name: 'name' }],
-      cc: [{ email: 'dev@stainless.com', name: 'name' }],
+      message: {
+        body: {
+          markdown:
+            'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+        },
+        inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
+        subject: 'Test Subject',
+        to: [
+          { email: 'bob@example.com', name: 'Bob' },
+          { email: 'jack@example.com', name: 'name' },
+        ],
+        type: 'email_message',
+        bcc: [{ email: 'steve@example.com', name: 'Steve' }],
+        cc: [{ email: 'joe@example.com', name: 'Joe' }],
+      },
     });
   });
 
@@ -54,7 +66,9 @@ describe('resource inboxMessages', () => {
   });
 
   test('update: only required params', async () => {
-    const responsePromise = client.inboxMessages.update('id', { lock_version: 0 });
+    const responsePromise = client.inboxMessages.update('id', {
+      message: { lock_version: 0, type: 'email_message' },
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -66,18 +80,21 @@ describe('resource inboxMessages', () => {
 
   test('update: required and optional params', async () => {
     const response = await client.inboxMessages.update('id', {
-      lock_version: 0,
-      bcc: [{ email: 'steve@example.com', name: 'Steve' }],
-      body: {
-        markdown:
-          'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+      message: {
+        lock_version: 0,
+        type: 'email_message',
+        bcc: [{ email: 'steve@example.com', name: 'Steve' }],
+        body: {
+          markdown:
+            'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+        },
+        cc: [{ email: 'joe@example.com', name: 'Joe' }],
+        subject: 'Test Subject',
+        to: [
+          { email: 'bob@example.com', name: 'Bob' },
+          { email: 'jack@example.com', name: 'name' },
+        ],
       },
-      cc: [{ email: 'joe@example.com', name: 'Joe' }],
-      subject: 'Test Subject',
-      to: [
-        { email: 'bob@example.com', name: 'Bob' },
-        { email: 'jack@example.com', name: 'name' },
-      ],
     });
   });
 
