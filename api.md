@@ -202,18 +202,24 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">Address</a></code>
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessage</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessageAddress</a></code>
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessageAddressParams</a></code>
-- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessagePointer</a></code>
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">MessageAttachment</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">MessagePointer</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">SlackMessage</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">SlackMessageAddress</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">SlackMessageAddressParams</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">InboxMessageCreateResponse</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">InboxMessageRetrieveResponse</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">InboxMessageUpdateResponse</a></code>
 
 Methods:
 
-- <code title="post /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">create</a>({ ...params }) -> EmailMessage</code>
-- <code title="get /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">retrieve</a>(id, { ...params }) -> EmailMessage</code>
-- <code title="patch /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">update</a>(id, { ...params }) -> EmailMessage</code>
-- <code title="get /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">list</a>({ ...params }) -> EmailMessagePointersCursorPage</code>
+- <code title="post /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">create</a>({ ...params }) -> InboxMessageCreateResponse</code>
+- <code title="get /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">retrieve</a>(id, { ...params }) -> InboxMessageRetrieveResponse</code>
+- <code title="patch /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">update</a>(id, { ...params }) -> InboxMessageUpdateResponse</code>
+- <code title="get /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">list</a>({ ...params }) -> MessagePointersCursorPage</code>
 - <code title="delete /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">delete</a>(id) -> void</code>
 
 ## Attachments

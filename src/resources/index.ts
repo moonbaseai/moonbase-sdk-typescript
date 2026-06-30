@@ -168,16 +168,22 @@ export {
 } from './inbox-conversations';
 export {
   InboxMessages,
-  type Address,
   type EmailMessage,
+  type EmailMessageAddress,
   type EmailMessageAddressParams,
-  type EmailMessagePointer,
   type MessageAttachment,
+  type MessagePointer,
+  type SlackMessage,
+  type SlackMessageAddress,
+  type SlackMessageAddressParams,
+  type InboxMessageCreateResponse,
+  type InboxMessageRetrieveResponse,
+  type InboxMessageUpdateResponse,
   type InboxMessageCreateParams,
   type InboxMessageRetrieveParams,
   type InboxMessageUpdateParams,
   type InboxMessageListParams,
-  type EmailMessagePointersCursorPage,
+  type MessagePointersCursorPage,
 } from './inbox-messages/inbox-messages';
 export { Inboxes, type Inbox, type InboxListParams, type InboxesCursorPage } from './inboxes';
 export {

@@ -3,14 +3,20 @@
 export { Attachments, type AttachmentCreateParams, type AttachmentDeleteParams } from './attachments';
 export {
   InboxMessages,
-  type Address,
   type EmailMessage,
+  type EmailMessageAddress,
   type EmailMessageAddressParams,
-  type EmailMessagePointer,
   type MessageAttachment,
+  type MessagePointer,
+  type SlackMessage,
+  type SlackMessageAddress,
+  type SlackMessageAddressParams,
+  type InboxMessageCreateResponse,
+  type InboxMessageRetrieveResponse,
+  type InboxMessageUpdateResponse,
   type InboxMessageCreateParams,
   type InboxMessageRetrieveParams,
   type InboxMessageUpdateParams,
   type InboxMessageListParams,
-  type EmailMessagePointersCursorPage,
+  type MessagePointersCursorPage,
 } from './inbox-messages';
