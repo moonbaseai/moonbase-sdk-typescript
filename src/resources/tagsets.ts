@@ -106,6 +106,11 @@ export interface Tagset {
   id: string;
 
   /**
+   * Where a tagset is available (`calls`, `meetings`, or `inbox` with an inbox ID).
+   */
+  associations: Array<TagsetAssociation>;
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
@@ -136,6 +141,54 @@ export interface Tagset {
   description?: string;
 }
 
+/**
+ * Where a tagset is available. Associations are discriminated by `type`.
+ */
+export type TagsetAssociation =
+  | TagsetAssociation.TagsetCallsAssociation
+  | TagsetAssociation.TagsetMeetingsAssociation
+  | TagsetAssociation.TagsetInboxAssociation;
+
+export namespace TagsetAssociation {
+  /**
+   * Makes this tagset available for calls.
+   */
+  export interface TagsetCallsAssociation {
+    /**
+     * String representing the association type. Always `calls` for call tagset
+     * associations.
+     */
+    type: 'calls';
+  }
+
+  /**
+   * Makes this tagset available for meetings.
+   */
+  export interface TagsetMeetingsAssociation {
+    /**
+     * String representing the association type. Always `meetings` for meeting tagset
+     * associations.
+     */
+    type: 'meetings';
+  }
+
+  /**
+   * Makes this tagset available in an inbox.
+   */
+  export interface TagsetInboxAssociation {
+    /**
+     * Unique identifier of the inbox this tagset is assigned to.
+     */
+    id: string;
+
+    /**
+     * String representing the association type. Always `inbox` for inbox tagset
+     * associations.
+     */
+    type: 'inbox';
+  }
+}
+
 export interface TagsetPointer {
   id: string;
 
@@ -147,6 +200,12 @@ export interface TagsetCreateParams {
    * The name of the tagset.
    */
   name: string;
+
+  /**
+   * Optional list of associations for this tagset. Include `{type: "calls"}`,
+   * `{type: "meetings"}`, or `{type: "inbox", id}`.
+   */
+  associations?: Array<TagsetAssociation>;
 
   /**
    * An optional description of the tagset's purpose.
@@ -202,6 +261,13 @@ export namespace TagsetCreateParams {
 }
 
 export interface TagsetUpdateParams {
+  /**
+   * Optional full list of associations for this tagset. If provided, it replaces all
+   * existing associations. An empty array clears all associations, and omitting it
+   * preserves existing associations.
+   */
+  associations?: Array<TagsetAssociation>;
+
   /**
    * An updated description of the tagset.
    */
@@ -278,6 +344,7 @@ export interface TagsetListParams extends CursorPageParams {
 export declare namespace Tagsets {
   export {
     type Tagset as Tagset,
+    type TagsetAssociation as TagsetAssociation,
     type TagsetPointer as TagsetPointer,
     type TagsetsCursorPage as TagsetsCursorPage,
     type TagsetCreateParams as TagsetCreateParams,

@@ -78,9 +78,10 @@ import {
   Form,
   FormCreateParams,
   FormListParams,
+  FormListResponse,
+  FormListResponsesCursorPage,
   FormUpdateParams,
   Forms,
-  FormsCursorPage,
 } from './resources/forms';
 import {
   Funnel,
@@ -151,6 +152,7 @@ import {
 } from './resources/programs';
 import {
   Tagset,
+  TagsetAssociation,
   TagsetCreateParams,
   TagsetListParams,
   TagsetPointer,
@@ -1298,6 +1300,7 @@ export declare namespace Moonbase {
   export {
     Tagsets as Tagsets,
     type Tagset as Tagset,
+    type TagsetAssociation as TagsetAssociation,
     type TagsetPointer as TagsetPointer,
     type TagsetsCursorPage as TagsetsCursorPage,
     type TagsetCreateParams as TagsetCreateParams,
@@ -1334,7 +1337,8 @@ export declare namespace Moonbase {
   export {
     Forms as Forms,
     type Form as Form,
-    type FormsCursorPage as FormsCursorPage,
+    type FormListResponse as FormListResponse,
+    type FormListResponsesCursorPage as FormListResponsesCursorPage,
     type FormCreateParams as FormCreateParams,
     type FormUpdateParams as FormUpdateParams,
     type FormListParams as FormListParams,
