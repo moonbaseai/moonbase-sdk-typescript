@@ -234,6 +234,7 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/tagsets.ts">Tagset</a></code>
+- <code><a href="./src/resources/tagsets.ts">TagsetAssociation</a></code>
 - <code><a href="./src/resources/tagsets.ts">TagsetPointer</a></code>
 
 Methods:
@@ -285,13 +286,14 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/forms.ts">Form</a></code>
+- <code><a href="./src/resources/forms.ts">FormListResponse</a></code>
 
 Methods:
 
 - <code title="post /forms">client.forms.<a href="./src/resources/forms.ts">create</a>({ ...params }) -> Form</code>
 - <code title="get /forms/{id}">client.forms.<a href="./src/resources/forms.ts">retrieve</a>(id) -> Form</code>
 - <code title="patch /forms/{id}">client.forms.<a href="./src/resources/forms.ts">update</a>(id, { ...params }) -> Form</code>
-- <code title="get /forms">client.forms.<a href="./src/resources/forms.ts">list</a>({ ...params }) -> FormsCursorPage</code>
+- <code title="get /forms">client.forms.<a href="./src/resources/forms.ts">list</a>({ ...params }) -> FormListResponsesCursorPage</code>
 - <code title="delete /forms/{id}">client.forms.<a href="./src/resources/forms.ts">delete</a>(id) -> void</code>
 
 # Unsubscribes

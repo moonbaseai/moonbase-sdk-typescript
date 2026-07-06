@@ -143,10 +143,11 @@ export {
 export {
   Forms,
   type Form,
+  type FormListResponse,
   type FormCreateParams,
   type FormUpdateParams,
   type FormListParams,
-  type FormsCursorPage,
+  type FormListResponsesCursorPage,
 } from './forms';
 export {
   Funnels,
@@ -237,6 +238,7 @@ export {
 export {
   Tagsets,
   type Tagset,
+  type TagsetAssociation,
   type TagsetPointer,
   type TagsetCreateParams,
   type TagsetUpdateParams,
