@@ -292,6 +292,12 @@ export namespace FieldCreateParams {
    */
   export interface MonetaryFieldCreateParams {
     /**
+     * The default currency for the field, as a 3-letter uppercase ISO 4217 code (e.g.,
+     * `USD`, `EUR`, `GBP`).
+     */
+    default_unit: string;
+
+    /**
      * The human-readable name for the field.
      */
     name: string;
@@ -306,12 +312,6 @@ export namespace FieldCreateParams {
      * Defaults to `one`.
      */
     cardinality?: 'one' | 'many';
-
-    /**
-     * The default currency for the field, as a 3-letter ISO 4217 code (e.g., `USD`,
-     * `EUR`, `GBP`).
-     */
-    default_unit?: string;
 
     default_values?: Array<CollectionsAPI.MonetaryValue>;
 
