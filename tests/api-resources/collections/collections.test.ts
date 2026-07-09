@@ -23,6 +23,7 @@ describe('resource collections', () => {
     const response = await client.collections.create({
       name: 'Leads',
       description: 'Inbound leads from marketing',
+      icon_name: 'users',
     });
   });
 
