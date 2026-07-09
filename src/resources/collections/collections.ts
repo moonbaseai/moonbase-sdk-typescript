@@ -47,6 +47,7 @@ export class Collections extends APIResource {
    * const collection = await client.collections.create({
    *   name: 'Leads',
    *   description: 'Inbound leads from marketing',
+   *   icon_name: 'users',
    * });
    * ```
    */
@@ -73,6 +74,7 @@ export class Collections extends APIResource {
    * ```ts
    * const collection = await client.collections.update('id', {
    *   description: 'Qualified inbound leads',
+   *   icon_name: 'flag',
    *   name: 'Hot Leads',
    * });
    * ```
@@ -406,6 +408,12 @@ export interface Collection {
    * An optional, longer-form description of the collection's purpose.
    */
   description?: string;
+
+  /**
+   * The collection's icon, as a Phosphor icon name in kebab-case (e.g. `users`,
+   * `chart-bar`). Only present when an icon is set.
+   */
+  icon_name?: string;
 
   /**
    * A list of saved `View` objects for presenting the collection's data.
@@ -2646,6 +2654,8 @@ export interface CollectionListResponse {
   updated_at: string;
 
   description?: string;
+
+  icon_name?: string;
 }
 
 export interface CollectionCreateParams {
@@ -2659,6 +2669,12 @@ export interface CollectionCreateParams {
    * An optional, longer-form description of the collection's purpose.
    */
   description?: string;
+
+  /**
+   * An optional icon for the collection, as a Phosphor icon name in kebab-case (e.g.
+   * `users`, `chart-bar`).
+   */
+  icon_name?: string;
 }
 
 export interface CollectionUpdateParams {
@@ -2666,6 +2682,12 @@ export interface CollectionUpdateParams {
    * An optional, longer-form description of the collection's purpose.
    */
   description?: string;
+
+  /**
+   * The collection's icon, as a Phosphor icon name in kebab-case (e.g. `users`,
+   * `chart-bar`), or `null` to clear it.
+   */
+  icon_name?: string | null;
 
   /**
    * The user-facing name of the collection.
