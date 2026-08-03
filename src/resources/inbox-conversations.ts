@@ -54,6 +54,12 @@ export interface InboxConversation {
   bulk: boolean;
 
   /**
+   * The communication channel of the conversation, which can be `email`, `chat`, or
+   * `slack`.
+   */
+  channel: 'email' | 'chat' | 'slack';
+
+  /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
