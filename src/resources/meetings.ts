@@ -40,7 +40,7 @@ export class Meetings extends APIResource {
    *     content_type: 'video/mp4',
    *     url: 'https://example.com/recording.mp4',
    *   },
-   *   tags: [{ id: '1CLJt2vYMiFzRLEp238B7G', type: 'tag' }],
+   *   tags: [{ id: '1CLJt2vJy3SZLhqYW8rQoN', type: 'tag' }],
    *   transcript: {
    *     provider: 'example',
    *     provider_id: 'def456',

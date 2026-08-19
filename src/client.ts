@@ -78,9 +78,10 @@ import {
   Form,
   FormCreateParams,
   FormListParams,
+  FormListResponse,
+  FormListResponsesCursorPage,
   FormUpdateParams,
   Forms,
-  FormsCursorPage,
 } from './resources/forms';
 import {
   Funnel,
@@ -151,6 +152,7 @@ import {
 } from './resources/programs';
 import {
   Tagset,
+  TagsetAssociation,
   TagsetCreateParams,
   TagsetListParams,
   TagsetPointer,
@@ -260,19 +262,38 @@ import {
   ValueParam,
 } from './resources/collections/collections';
 import {
-  Address,
   EmailMessage,
+  EmailMessageAddress,
   EmailMessageAddressParams,
-  EmailMessagePointer,
-  EmailMessagePointersCursorPage,
   InboxMessageCreateParams,
+  InboxMessageCreateResponse,
   InboxMessageListParams,
   InboxMessageRetrieveParams,
+  InboxMessageRetrieveResponse,
   InboxMessageUpdateParams,
+  InboxMessageUpdateResponse,
   InboxMessages,
   MessageAttachment,
+  MessagePointer,
+  MessagePointersCursorPage,
+  SlackMessage,
+  SlackMessageAddress,
+  SlackMessageAddressParams,
 } from './resources/inbox-messages/inbox-messages';
-import { View, ViewRetrieveParams, Views } from './resources/views/views';
+import {
+  View,
+  ViewAggregate,
+  ViewAggregateFieldStatistic,
+  ViewAggregateItemCount,
+  ViewCreateParams,
+  ViewField,
+  ViewListParams,
+  ViewListResponse,
+  ViewListResponsesCursorPage,
+  ViewRelationValueFilter,
+  ViewUpdateParams,
+  Views,
+} from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
 import { isRunningInBrowser } from './internal/detect-platform';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -957,11 +978,19 @@ export class Moonbase {
     return () => controller.abort();
   }
 
-  private buildBody({ options: { body, headers: rawHeaders } }: { options: FinalRequestOptions }): {
+  private buildBody({ options }: { options: FinalRequestOptions }): {
     bodyHeaders: HeadersLike;
     body: BodyInit | undefined;
   } {
+    const { body, headers: rawHeaders } = options;
     if (!body) {
+      // A resource method always passes a `body` key when its operation defines a
+      // request body, even if the caller omitted an optional body param. Keep the
+      // content-type for those, and only elide it for operations with no body at
+      // all (e.g. GET/DELETE).
+      if (body == null && 'body' in options) {
+        return this.#encoder({ body, headers: buildHeaders([rawHeaders]) });
+      }
       return { bodyHeaders: undefined, body: undefined };
     }
     const headers = buildHeaders([rawHeaders]);
@@ -1217,7 +1246,20 @@ export declare namespace Moonbase {
     type CollectionListParams as CollectionListParams,
   };
 
-  export { Views as Views, type View as View, type ViewRetrieveParams as ViewRetrieveParams };
+  export {
+    Views as Views,
+    type View as View,
+    type ViewAggregate as ViewAggregate,
+    type ViewAggregateFieldStatistic as ViewAggregateFieldStatistic,
+    type ViewAggregateItemCount as ViewAggregateItemCount,
+    type ViewField as ViewField,
+    type ViewRelationValueFilter as ViewRelationValueFilter,
+    type ViewListResponse as ViewListResponse,
+    type ViewListResponsesCursorPage as ViewListResponsesCursorPage,
+    type ViewCreateParams as ViewCreateParams,
+    type ViewUpdateParams as ViewUpdateParams,
+    type ViewListParams as ViewListParams,
+  };
 
   export {
     Inboxes as Inboxes,
@@ -1237,12 +1279,18 @@ export declare namespace Moonbase {
 
   export {
     InboxMessages as InboxMessages,
-    type Address as Address,
     type EmailMessage as EmailMessage,
+    type EmailMessageAddress as EmailMessageAddress,
     type EmailMessageAddressParams as EmailMessageAddressParams,
-    type EmailMessagePointer as EmailMessagePointer,
     type MessageAttachment as MessageAttachment,
-    type EmailMessagePointersCursorPage as EmailMessagePointersCursorPage,
+    type MessagePointer as MessagePointer,
+    type SlackMessage as SlackMessage,
+    type SlackMessageAddress as SlackMessageAddress,
+    type SlackMessageAddressParams as SlackMessageAddressParams,
+    type InboxMessageCreateResponse as InboxMessageCreateResponse,
+    type InboxMessageRetrieveResponse as InboxMessageRetrieveResponse,
+    type InboxMessageUpdateResponse as InboxMessageUpdateResponse,
+    type MessagePointersCursorPage as MessagePointersCursorPage,
     type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
     type InboxMessageUpdateParams as InboxMessageUpdateParams,
@@ -1252,6 +1300,7 @@ export declare namespace Moonbase {
   export {
     Tagsets as Tagsets,
     type Tagset as Tagset,
+    type TagsetAssociation as TagsetAssociation,
     type TagsetPointer as TagsetPointer,
     type TagsetsCursorPage as TagsetsCursorPage,
     type TagsetCreateParams as TagsetCreateParams,
@@ -1288,7 +1337,8 @@ export declare namespace Moonbase {
   export {
     Forms as Forms,
     type Form as Form,
-    type FormsCursorPage as FormsCursorPage,
+    type FormListResponse as FormListResponse,
+    type FormListResponsesCursorPage as FormListResponsesCursorPage,
     type FormCreateParams as FormCreateParams,
     type FormUpdateParams as FormUpdateParams,
     type FormListParams as FormListParams,

@@ -61,7 +61,7 @@ export class Forms extends APIResource {
    * @example
    * ```ts
    * // Automatically fetches more pages as needed.
-   * for await (const form of client.forms.list()) {
+   * for await (const formListResponse of client.forms.list()) {
    *   // ...
    * }
    * ```
@@ -69,8 +69,8 @@ export class Forms extends APIResource {
   list(
     query: FormListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<FormsCursorPage, Form> {
-    return this._client.getAPIList('/forms', CursorPage<Form>, { query, ...options });
+  ): PagePromise<FormListResponsesCursorPage, FormListResponse> {
+    return this._client.getAPIList('/forms', CursorPage<FormListResponse>, { query, ...options });
   }
 
   /**
@@ -89,7 +89,7 @@ export class Forms extends APIResource {
   }
 }
 
-export type FormsCursorPage = CursorPage<Form>;
+export type FormListResponsesCursorPage = CursorPage<FormListResponse>;
 
 /**
  * A Form provides a way to create `Items` in a `Collection`, often via a public
@@ -110,12 +110,17 @@ export interface Form {
   /**
    * The `Collection` that submissions to this form are saved to.
    */
-  collection: CollectionsAPI.Collection;
+  collection: CollectionsAPI.CollectionPointer;
 
   /**
    * Time at which the object was created, as an ISO 8601 timestamp in UTC.
    */
   created_at: string;
+
+  /**
+   * The HTML snippet for embedding the form on your website.
+   */
+  html_embed: string;
 
   /**
    * The name of the form, used as the title on its public page.
@@ -153,6 +158,36 @@ export interface Form {
    * `https://example.com/thanks?email={{ submission.email | uri_encode }}`. The
    * rendered URL must parse as a valid URL or the submission errors.
    */
+  redirect_url?: string;
+}
+
+/**
+ * Information about the most essential attributes of a Form (does not include the
+ * embed HTML).
+ */
+export interface FormListResponse {
+  id: string;
+
+  business_email_required: boolean;
+
+  /**
+   * A lightweight reference to a `Collection`, containing the minimal information
+   * needed to identify it.
+   */
+  collection: CollectionsAPI.CollectionPointer;
+
+  created_at: string;
+
+  name: string;
+
+  pages_enabled: boolean;
+
+  type: 'form';
+
+  updated_at: string;
+
+  pages_url?: string;
+
   redirect_url?: string;
 }
 
@@ -232,7 +267,8 @@ export interface FormListParams extends CursorPageParams {
 export declare namespace Forms {
   export {
     type Form as Form,
-    type FormsCursorPage as FormsCursorPage,
+    type FormListResponse as FormListResponse,
+    type FormListResponsesCursorPage as FormListResponsesCursorPage,
     type FormCreateParams as FormCreateParams,
     type FormUpdateParams as FormUpdateParams,
     type FormListParams as FormListParams,

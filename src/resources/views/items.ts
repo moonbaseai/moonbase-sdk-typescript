@@ -13,6 +13,14 @@ import { path } from '../../internal/utils/path';
 export class Items extends APIResource {
   /**
    * Returns a list of items that are part of the specified view.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const item of client.views.items.list('id')) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     id: string,

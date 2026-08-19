@@ -121,6 +121,7 @@ Methods:
 - <code title="get /collections/{id}">client.collections.<a href="./src/resources/collections/collections.ts">retrieve</a>(id) -> Collection</code>
 - <code title="patch /collections/{id}">client.collections.<a href="./src/resources/collections/collections.ts">update</a>(id, { ...params }) -> Collection</code>
 - <code title="get /collections">client.collections.<a href="./src/resources/collections/collections.ts">list</a>({ ...params }) -> CollectionListResponsesCursorPage</code>
+- <code title="delete /collections/{id}">client.collections.<a href="./src/resources/collections/collections.ts">delete</a>(id) -> void</code>
 
 ## Fields
 
@@ -153,10 +154,20 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/views/views.ts">View</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewAggregate</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewAggregateFieldStatistic</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewAggregateItemCount</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewField</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewRelationValueFilter</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewListResponse</a></code>
 
 Methods:
 
-- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id, { ...params }) -> View</code>
+- <code title="post /views">client.views.<a href="./src/resources/views/views.ts">create</a>({ ...params }) -> View</code>
+- <code title="get /views/{id}">client.views.<a href="./src/resources/views/views.ts">retrieve</a>(id) -> View</code>
+- <code title="patch /views/{id}">client.views.<a href="./src/resources/views/views.ts">update</a>(id, { ...params }) -> View</code>
+- <code title="get /views">client.views.<a href="./src/resources/views/views.ts">list</a>({ ...params }) -> ViewListResponsesCursorPage</code>
+- <code title="delete /views/{id}">client.views.<a href="./src/resources/views/views.ts">delete</a>(id) -> void</code>
 
 ## Items
 
@@ -191,18 +202,24 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">Address</a></code>
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessage</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessageAddress</a></code>
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessageAddressParams</a></code>
-- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">EmailMessagePointer</a></code>
 - <code><a href="./src/resources/inbox-messages/inbox-messages.ts">MessageAttachment</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">MessagePointer</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">SlackMessage</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">SlackMessageAddress</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">SlackMessageAddressParams</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">InboxMessageCreateResponse</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">InboxMessageRetrieveResponse</a></code>
+- <code><a href="./src/resources/inbox-messages/inbox-messages.ts">InboxMessageUpdateResponse</a></code>
 
 Methods:
 
-- <code title="post /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">create</a>({ ...params }) -> EmailMessage</code>
-- <code title="get /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">retrieve</a>(id, { ...params }) -> EmailMessage</code>
-- <code title="patch /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">update</a>(id, { ...params }) -> EmailMessage</code>
-- <code title="get /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">list</a>({ ...params }) -> EmailMessagePointersCursorPage</code>
+- <code title="post /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">create</a>({ ...params }) -> InboxMessageCreateResponse</code>
+- <code title="get /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">retrieve</a>(id, { ...params }) -> InboxMessageRetrieveResponse</code>
+- <code title="patch /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">update</a>(id, { ...params }) -> InboxMessageUpdateResponse</code>
+- <code title="get /inbox_messages">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">list</a>({ ...params }) -> MessagePointersCursorPage</code>
 - <code title="delete /inbox_messages/{id}">client.inboxMessages.<a href="./src/resources/inbox-messages/inbox-messages.ts">delete</a>(id) -> void</code>
 
 ## Attachments
@@ -217,6 +234,7 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/tagsets.ts">Tagset</a></code>
+- <code><a href="./src/resources/tagsets.ts">TagsetAssociation</a></code>
 - <code><a href="./src/resources/tagsets.ts">TagsetPointer</a></code>
 
 Methods:
@@ -268,13 +286,14 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/forms.ts">Form</a></code>
+- <code><a href="./src/resources/forms.ts">FormListResponse</a></code>
 
 Methods:
 
 - <code title="post /forms">client.forms.<a href="./src/resources/forms.ts">create</a>({ ...params }) -> Form</code>
 - <code title="get /forms/{id}">client.forms.<a href="./src/resources/forms.ts">retrieve</a>(id) -> Form</code>
 - <code title="patch /forms/{id}">client.forms.<a href="./src/resources/forms.ts">update</a>(id, { ...params }) -> Form</code>
-- <code title="get /forms">client.forms.<a href="./src/resources/forms.ts">list</a>({ ...params }) -> FormsCursorPage</code>
+- <code title="get /forms">client.forms.<a href="./src/resources/forms.ts">list</a>({ ...params }) -> FormListResponsesCursorPage</code>
 - <code title="delete /forms/{id}">client.forms.<a href="./src/resources/forms.ts">delete</a>(id) -> void</code>
 
 # Unsubscribes

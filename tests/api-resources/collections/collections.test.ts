@@ -23,6 +23,7 @@ describe('resource collections', () => {
     const response = await client.collections.create({
       name: 'Leads',
       description: 'Inbound leads from marketing',
+      icon_name: 'users',
     });
   });
 
@@ -71,5 +72,16 @@ describe('resource collections', () => {
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Moonbase.NotFoundError);
+  });
+
+  test('delete', async () => {
+    const responsePromise = client.collections.delete('id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 });

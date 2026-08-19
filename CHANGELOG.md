@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.1.0-alpha.16 (2026-08-03)
+
+Full Changelog: [v0.1.0-alpha.15...v0.1.0-alpha.16](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.15...v0.1.0-alpha.16)
+
+### Features
+
+* **api:** add associations parameter/field and type to tagsets ([b07f9f0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/b07f9f050b1fbd5faa92a904d8ef1095956e60ab))
+* **api:** add channel field to InboxConversation ([c6b7b3c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/c6b7b3cb321faba69899be0259e56ce464bc103c))
+* **api:** add channel_type field and Slack support to inbox messages ([5a1c1f3](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/5a1c1f354bf70c19e5500c5027406c74ea39d6ba))
+* **api:** add delete method to collections ([ba7cb6a](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/ba7cb6adbab33847c823b4d8393d2a3b976b26ac))
+* **api:** add icon_name to collections create/update/responses ([95a1d3c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/95a1d3ce8a5ccb77e7818ece31523e5005e058a6))
+* **api:** add view_options fields to views, update filter/sort path descriptions ([7186e54](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/7186e54ab919c36d46ded88ff2555e9aa919f8e8))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([abe3dca](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/abe3dcabeb0feb188ba44d366718c91705765f17))
+
+
+### Bug Fixes
+
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([0d91d6b](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/0d91d6be3f8729d8a44438f729bb76e0d3215330))
+* **client:** send content-type header for requests with an omitted optional body ([792bdd7](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/792bdd7b05c65c8efb80219b8bf7bd8e827d45d5))
+* **mcp:** use `pure-lockfile` when building mcp server ([0759c72](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/0759c72b12135b131bb5342a3d756a86897f4356))
+* **stlc:** stop hand-edited CI workflows from blocking seals and builds ([5cd92f1](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/5cd92f157e345d2f453867030bbe81c129d957d3))
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([39ea6c8](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/39ea6c83362d807d1fd0a05ac286f648f2bbd151))
+* **types:** make default_unit required in monetary field creation ([3770eff](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/3770eff494f4603cb783fab21db536ca1ef280cc))
+* **types:** make subject and to required in inbox_messages create params ([80c48f0](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/80c48f0a1c91c76cbd33b30cc83f4159af20ecea))
+
+
+### Chores
+
+* **internal:** codegen related update ([f15e38c](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/f15e38c100c1a4e07c2fc55997a536cb39cb14b6))
+* **internal:** codegen related update ([e3a301d](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/e3a301d4a68b6944e4d413f7a98aa79f5cd14b81))
+* **tests:** remove redundant File import ([0366709](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/036670920cc8d9d37bebe16172ebc27b534dddda))
+
+
+### Documentation
+
+* **api:** update upload method and parameter descriptions in files ([6dc0982](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/6dc09829cdebbc807aec23a8e8d880b48722e417))
+
 ## 0.1.0-alpha.15 (2026-05-08)
 
 Full Changelog: [v0.1.0-alpha.14...v0.1.0-alpha.15](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.14...v0.1.0-alpha.15)

@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as InboxMessagesAPI from './inbox-messages';
 import * as InboxConversationsAPI from '../inbox-conversations';
 import * as Shared from '../shared';
 import * as CollectionsAPI from '../collections/collections';
@@ -23,24 +24,23 @@ export class InboxMessages extends APIResource {
    *
    * @example
    * ```ts
-   * const emailMessage = await client.inboxMessages.create({
-   *   body: {
-   *     markdown:
-   *       'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
+   * const inboxMessage = await client.inboxMessages.create({
+   *   message: {
+   *     body: {},
+   *     inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
+   *     subject: 'Test Subject',
+   *     to: [
+   *       { email: 'bob@example.com' },
+   *       { email: 'jack@example.com' },
+   *     ],
+   *     type: 'email_message',
    *   },
-   *   inbox_id: '1CLJt2v6KXDyzDuM57pQqo',
-   *   bcc: [{ email: 'steve@example.com', name: 'Steve' }],
-   *   cc: [{ email: 'joe@example.com', name: 'Joe' }],
-   *   subject: 'Test Subject',
-   *   to: [
-   *     { email: 'bob@example.com', name: 'Bob' },
-   *     { email: 'jack@example.com' },
-   *   ],
    * });
    * ```
    */
-  create(body: InboxMessageCreateParams, options?: RequestOptions): APIPromise<EmailMessage> {
-    return this._client.post('/inbox_messages', { body, ...options });
+  create(params: InboxMessageCreateParams, options?: RequestOptions): APIPromise<InboxMessageCreateResponse> {
+    const { message } = params;
+    return this._client.post('/inbox_messages', { body: message, ...options });
   }
 
   /**
@@ -48,7 +48,7 @@ export class InboxMessages extends APIResource {
    *
    * @example
    * ```ts
-   * const emailMessage = await client.inboxMessages.retrieve(
+   * const inboxMessage = await client.inboxMessages.retrieve(
    *   'id',
    * );
    * ```
@@ -57,7 +57,7 @@ export class InboxMessages extends APIResource {
     id: string,
     query: InboxMessageRetrieveParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<EmailMessage> {
+  ): APIPromise<InboxMessageRetrieveResponse> {
     return this._client.get(path`/inbox_messages/${id}`, { query, ...options });
   }
 
@@ -66,27 +66,19 @@ export class InboxMessages extends APIResource {
    *
    * @example
    * ```ts
-   * const emailMessage = await client.inboxMessages.update(
+   * const inboxMessage = await client.inboxMessages.update(
    *   'id',
-   *   {
-   *     lock_version: 0,
-   *     bcc: [{ email: 'steve@example.com', name: 'Steve' }],
-   *     body: {
-   *       markdown:
-   *         'This is the body of the message. It supports [markdown](https://en.wikipedia.org/wiki/Markdown).',
-   *     },
-   *     cc: [{ email: 'joe@example.com', name: 'Joe' }],
-   *     subject: 'Test Subject',
-   *     to: [
-   *       { email: 'bob@example.com', name: 'Bob' },
-   *       { email: 'jack@example.com' },
-   *     ],
-   *   },
+   *   { message: { lock_version: 0, type: 'email_message' } },
    * );
    * ```
    */
-  update(id: string, body: InboxMessageUpdateParams, options?: RequestOptions): APIPromise<EmailMessage> {
-    return this._client.patch(path`/inbox_messages/${id}`, { body, ...options });
+  update(
+    id: string,
+    params: InboxMessageUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<InboxMessageUpdateResponse> {
+    const { message } = params;
+    return this._client.patch(path`/inbox_messages/${id}`, { body: message, ...options });
   }
 
   /**
@@ -95,7 +87,7 @@ export class InboxMessages extends APIResource {
    * @example
    * ```ts
    * // Automatically fetches more pages as needed.
-   * for await (const emailMessagePointer of client.inboxMessages.list()) {
+   * for await (const messagePointer of client.inboxMessages.list()) {
    *   // ...
    * }
    * ```
@@ -103,8 +95,8 @@ export class InboxMessages extends APIResource {
   list(
     query: InboxMessageListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<EmailMessagePointersCursorPage, EmailMessagePointer> {
-    return this._client.getAPIList('/inbox_messages', CursorPage<EmailMessagePointer>, { query, ...options });
+  ): PagePromise<MessagePointersCursorPage, MessagePointer> {
+    return this._client.getAPIList('/inbox_messages', CursorPage<MessagePointer>, { query, ...options });
   }
 
   /**
@@ -123,47 +115,7 @@ export class InboxMessages extends APIResource {
   }
 }
 
-export type EmailMessagePointersCursorPage = CursorPage<EmailMessagePointer>;
-
-/**
- * The Address object represents a recipient or sender of a message. It contains an
- * email address and can be linked to a person and an organization in your
- * collections.
- */
-export interface Address {
-  /**
-   * Unique identifier for the object.
-   */
-  id: string;
-
-  /**
-   * The email address.
-   */
-  email: string;
-
-  /**
-   * The role of the address in the message. Can be `from`, `reply_to`, `to`, `cc`,
-   * or `bcc`.
-   */
-  role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc';
-
-  /**
-   * String representing the object’s type. Always `message_address` for this object.
-   */
-  type: 'message_address';
-
-  /**
-   * A reference to an `Item` within a specific `Collection`, providing the context
-   * needed to locate the item.
-   */
-  organization?: CollectionsAPI.ItemPointer;
-
-  /**
-   * A reference to an `Item` within a specific `Collection`, providing the context
-   * needed to locate the item.
-   */
-  person?: CollectionsAPI.ItemPointer;
-}
+export type MessagePointersCursorPage = CursorPage<MessagePointer>;
 
 /**
  * The Email Message object represents a single email within a `Conversation`.
@@ -230,7 +182,7 @@ export interface EmailMessage {
    *
    * **Note:** Only present when requested using the `include` query parameter.
    */
-  addresses?: Array<Address>;
+  addresses?: Array<EmailMessageAddress>;
 
   /**
    * A list of `Attachment` objects on the message.
@@ -252,6 +204,46 @@ export interface EmailMessage {
   summary?: string;
 }
 
+/**
+ * The EmailMessageAddress object represents a recipient or sender of a message. It
+ * contains an email address and can be linked to a person and an organization in
+ * your collections.
+ */
+export interface EmailMessageAddress {
+  /**
+   * Unique identifier for the object.
+   */
+  id: string;
+
+  /**
+   * The email address.
+   */
+  email: string;
+
+  /**
+   * The role of the address in the message. Can be `from`, `reply_to`, `to`, `cc`,
+   * or `bcc`.
+   */
+  role: 'from' | 'reply_to' | 'to' | 'cc' | 'bcc';
+
+  /**
+   * String representing the object’s type. Always `message_address` for this object.
+   */
+  type: 'email_message_address';
+
+  /**
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
+   */
+  organization?: CollectionsAPI.ItemPointer;
+
+  /**
+   * A reference to an `Item` within a specific `Collection`, providing the context
+   * needed to locate the item.
+   */
+  person?: CollectionsAPI.ItemPointer;
+}
+
 export interface EmailMessageAddressParams {
   /**
    * The email address.
@@ -262,12 +254,6 @@ export interface EmailMessageAddressParams {
    * The recipient's name.
    */
   name?: string;
-}
-
-export interface EmailMessagePointer {
-  id: string;
-
-  type: 'email_message';
 }
 
 /**
@@ -308,41 +294,364 @@ export interface MessageAttachment {
   type: 'message_attachment';
 }
 
-export interface InboxMessageCreateParams {
+export interface MessagePointer {
+  id: string;
+
+  type: 'message';
+}
+
+/**
+ * The Slack Message object represents a single Slack post within a `Conversation`.
+ */
+export interface SlackMessage {
   /**
-   * The email body.
+   * Unique identifier for the object.
+   */
+  id: string;
+
+  /**
+   * Structured content that can be rendered in multiple formats, currently
+   * supporting Markdown.
    */
   body: Shared.FormattedText;
 
   /**
-   * The inbox to use for sending the email.
+   * `true` if the message appears to be part of a bulk mailing.
    */
-  inbox_id: string;
+  bulk: boolean;
 
   /**
-   * A list of the BCC recipients.
+   * The time the message was received, as an ISO 8601 timestamp in UTC.
    */
-  bcc?: Array<EmailMessageAddressParams>;
+  created_at: string;
 
   /**
-   * A list of the CC recipients.
+   * `true` if the message is a draft that has not been sent.
    */
-  cc?: Array<EmailMessageAddressParams>;
+  draft: boolean;
 
   /**
-   * The ID of the conversation, if responding to an existing conversation.
+   * The current lock version of the message for optimistic concurrency control.
    */
-  conversation_id?: string;
+  lock_version: number;
 
   /**
-   * The subject line of the email.
+   * `true` if the message is classified as spam.
    */
-  subject?: string;
+  spam: boolean;
 
   /**
-   * A list of recipients.
+   * The subject line of the message (for messages received from Slack, this is a
+   * snippet of the message; for messages sent to Slack, it can be set, but is not
+   * sent to Slack).
    */
-  to?: Array<EmailMessageAddressParams>;
+  subject: string;
+
+  /**
+   * `true` if the message is in the trash.
+   */
+  trash: boolean;
+
+  /**
+   * String representing the object’s type. Always `slack_message` for this object.
+   */
+  type: 'slack_message';
+
+  /**
+   * `true` if the message has not been read.
+   */
+  unread: boolean;
+
+  /**
+   * A list of `SlackMessageAddress` objects associated with the message (sender and
+   * recipients).
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
+   */
+  addresses?: Array<SlackMessageAddress>;
+
+  /**
+   * A list of `Attachment` objects on the message.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
+   */
+  attachments?: Array<MessageAttachment>;
+
+  /**
+   * The `Conversation` thread this message is part of.
+   *
+   * **Note:** Only present when requested using the `include` query parameter.
+   */
+  conversation?: InboxConversationsAPI.InboxConversation;
+
+  /**
+   * A concise, system-generated summary of the message content.
+   */
+  summary?: string;
+}
+
+/**
+ * The SlackMessageChannelAddress object represents a Slack channels address on a
+ * message. It contains a Slack Channel ID and can be linked to a person and an
+ * organization in your collections.
+ */
+export type SlackMessageAddress =
+  | SlackMessageAddress.SlackMessageChannelAddress
+  | SlackMessageAddress.SlackMessageUserAddress;
+
+export namespace SlackMessageAddress {
+  /**
+   * The SlackMessageChannelAddress object represents a Slack channels address on a
+   * message. It contains a Slack Channel ID and can be linked to a person and an
+   * organization in your collections.
+   */
+  export interface SlackMessageChannelAddress {
+    /**
+     * Unique identifier for the object.
+     */
+    id: string;
+
+    /**
+     * The Slack Channel ID.
+     */
+    provider_id: string;
+
+    /**
+     * The role of the address in the message. Can be `from`, `reply_to`, `to`, `cc`,
+     * or `bcc`.
+     */
+    role: 'from' | 'to' | 'cc' | 'bcc';
+
+    /**
+     * String representing the object’s type. Always `slack_message_channel_address`
+     * for this object.
+     */
+    type: 'slack_message_channel_address';
+
+    /**
+     * A reference to an `Item` within a specific `Collection`, providing the context
+     * needed to locate the item.
+     */
+    organization?: CollectionsAPI.ItemPointer;
+
+    /**
+     * A reference to an `Item` within a specific `Collection`, providing the context
+     * needed to locate the item.
+     */
+    person?: CollectionsAPI.ItemPointer;
+  }
+
+  /**
+   * The SlackMessageUserAddress object represents a Slack user address on a message.
+   * It contains a Slack User ID and can be linked to a person and an organization in
+   * your collections.
+   */
+  export interface SlackMessageUserAddress {
+    /**
+     * Unique identifier for the object.
+     */
+    id: string;
+
+    /**
+     * The Slack User ID
+     */
+    provider_id: string;
+
+    /**
+     * The role of the address in the message. Can be `from`, `reply_to`, `to`, `cc`,
+     * or `bcc`.
+     */
+    role: 'from' | 'to' | 'cc' | 'bcc';
+
+    /**
+     * String representing the object’s type. Always `slack_message_user_address` for
+     * this object.
+     */
+    type: 'slack_message_user_address';
+
+    /**
+     * A reference to an `Item` within a specific `Collection`, providing the context
+     * needed to locate the item.
+     */
+    organization?: CollectionsAPI.ItemPointer;
+
+    /**
+     * A reference to an `Item` within a specific `Collection`, providing the context
+     * needed to locate the item.
+     */
+    person?: CollectionsAPI.ItemPointer;
+  }
+}
+
+export interface SlackMessageAddressParams {
+  /**
+   * The Slack channel ID.
+   */
+  provider_id: string;
+
+  type: 'slack_channel';
+
+  /**
+   * The channel name name.
+   */
+  name?: string;
+}
+
+/**
+ * The Email Message object represents a single email within a `Conversation`.
+ */
+export type InboxMessageCreateResponse = EmailMessage | SlackMessage;
+
+/**
+ * The Email Message object represents a single email within a `Conversation`.
+ */
+export type InboxMessageRetrieveResponse = EmailMessage | SlackMessage;
+
+/**
+ * The Email Message object represents a single email within a `Conversation`.
+ */
+export type InboxMessageUpdateResponse = EmailMessage | SlackMessage;
+
+export interface InboxMessageCreateParams {
+  /**
+   * Parameters for creating an email message draft. Provide either the fields for a
+   * new conversation, or a `conversation_id` to reply to an existing conversation.
+   */
+  message:
+    | InboxMessageCreateParams.EmailMessageNewConversationCreateParams
+    | InboxMessageCreateParams.SlackMessageNewConversationCreateParams
+    | InboxMessageCreateParams.EmailMessageReplyCreateParams
+    | InboxMessageCreateParams.SlackMessageReplyCreateParams;
+}
+
+export namespace InboxMessageCreateParams {
+  /**
+   * Parameters for creating a draft in a new conversation.
+   */
+  export interface EmailMessageNewConversationCreateParams {
+    /**
+     * The email body.
+     */
+    body: Shared.FormattedText;
+
+    /**
+     * The inbox to use for sending the email.
+     */
+    inbox_id: string;
+
+    /**
+     * The subject line of the email.
+     */
+    subject: string;
+
+    /**
+     * A list of recipients.
+     */
+    to: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+
+    type: 'email_message';
+
+    /**
+     * A list of the BCC recipients.
+     */
+    bcc?: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+
+    /**
+     * A list of the CC recipients.
+     */
+    cc?: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+  }
+
+  /**
+   * Parameters for creating a draft in a new conversation.
+   */
+  export interface SlackMessageNewConversationCreateParams {
+    /**
+     * The message body.
+     */
+    body: Shared.FormattedText;
+
+    /**
+     * The inbox to use for sending the Slack message.
+     */
+    inbox_id: string;
+
+    /**
+     * The subject line of the conversation (not included in actual Slack message).
+     */
+    subject: string;
+
+    /**
+     * The Slack channel to post the message in.
+     */
+    to: Array<InboxMessagesAPI.SlackMessageAddressParams>;
+
+    type: 'slack_message';
+  }
+
+  /**
+   * Parameters for creating a draft reply in an existing conversation.
+   */
+  export interface EmailMessageReplyCreateParams {
+    /**
+     * The email body.
+     */
+    body: Shared.FormattedText;
+
+    /**
+     * The ID of the conversation to reply to.
+     */
+    conversation_id: string;
+
+    /**
+     * The inbox to use for sending the email.
+     */
+    inbox_id: string;
+
+    type: 'email_message';
+
+    /**
+     * A list of the BCC recipients.
+     */
+    bcc?: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+
+    /**
+     * A list of the CC recipients.
+     */
+    cc?: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+
+    /**
+     * A list of recipients. If omitted, recipients are derived from the conversation.
+     */
+    to?: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+  }
+
+  /**
+   * Parameters for creating a draft reply in an existing conversation.
+   */
+  export interface SlackMessageReplyCreateParams {
+    /**
+     * The message body.
+     */
+    body: Shared.FormattedText;
+
+    /**
+     * The ID of the conversation to reply to.
+     */
+    conversation_id: string;
+
+    /**
+     * The inbox to use for sending the Slack message.
+     */
+    inbox_id: string;
+
+    type: 'slack_message';
+
+    /**
+     * The Slack channel to post the message in.
+     */
+    to?: Array<InboxMessagesAPI.SlackMessageAddressParams>;
+  }
 }
 
 export interface InboxMessageRetrieveParams {
@@ -355,34 +664,77 @@ export interface InboxMessageRetrieveParams {
 
 export interface InboxMessageUpdateParams {
   /**
-   * The current lock version of the draft for optimistic concurrency control.
+   * Parameters for updating a draft message in an existing conversation.
    */
-  lock_version: number;
+  message:
+    | InboxMessageUpdateParams.EmailMessageUpdateParams
+    | InboxMessageUpdateParams.SlackMessageUpdateParams;
+}
+
+export namespace InboxMessageUpdateParams {
+  /**
+   * Parameters for updating a draft message in an existing conversation.
+   */
+  export interface EmailMessageUpdateParams {
+    /**
+     * The current lock version of the draft for optimistic concurrency control.
+     */
+    lock_version: number;
+
+    type: 'email_message';
+
+    /**
+     * A list of the BCC recipients.
+     */
+    bcc?: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+
+    /**
+     * The email body.
+     */
+    body?: Shared.FormattedText;
+
+    /**
+     * A list of the CC recipients.
+     */
+    cc?: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+
+    /**
+     * The subject line of the email.
+     */
+    subject?: string;
+
+    /**
+     * A list of the recipients.
+     */
+    to?: Array<InboxMessagesAPI.EmailMessageAddressParams>;
+  }
 
   /**
-   * A list of the BCC recipients.
+   * Parameters for updating a draft message in an existing conversation.
    */
-  bcc?: Array<EmailMessageAddressParams>;
+  export interface SlackMessageUpdateParams {
+    /**
+     * The current lock version of the draft for optimistic concurrency control.
+     */
+    lock_version: number;
 
-  /**
-   * The email body.
-   */
-  body?: Shared.FormattedText;
+    type: 'slack_message';
 
-  /**
-   * A list of the CC recipients.
-   */
-  cc?: Array<EmailMessageAddressParams>;
+    /**
+     * The message body.
+     */
+    body?: Shared.FormattedText;
 
-  /**
-   * The subject line of the email.
-   */
-  subject?: string;
+    /**
+     * The subject line of the conversation (not included in actual Slack message).
+     */
+    subject?: string;
 
-  /**
-   * A list of the recipients.
-   */
-  to?: Array<EmailMessageAddressParams>;
+    /**
+     * The Slack channel to post the message in.
+     */
+    to?: Array<InboxMessagesAPI.SlackMessageAddressParams>;
+  }
 }
 
 export interface InboxMessageListParams extends CursorPageParams {
@@ -418,12 +770,18 @@ InboxMessages.Attachments = Attachments;
 
 export declare namespace InboxMessages {
   export {
-    type Address as Address,
     type EmailMessage as EmailMessage,
+    type EmailMessageAddress as EmailMessageAddress,
     type EmailMessageAddressParams as EmailMessageAddressParams,
-    type EmailMessagePointer as EmailMessagePointer,
     type MessageAttachment as MessageAttachment,
-    type EmailMessagePointersCursorPage as EmailMessagePointersCursorPage,
+    type MessagePointer as MessagePointer,
+    type SlackMessage as SlackMessage,
+    type SlackMessageAddress as SlackMessageAddress,
+    type SlackMessageAddressParams as SlackMessageAddressParams,
+    type InboxMessageCreateResponse as InboxMessageCreateResponse,
+    type InboxMessageRetrieveResponse as InboxMessageRetrieveResponse,
+    type InboxMessageUpdateResponse as InboxMessageUpdateResponse,
+    type MessagePointersCursorPage as MessagePointersCursorPage,
     type InboxMessageCreateParams as InboxMessageCreateParams,
     type InboxMessageRetrieveParams as InboxMessageRetrieveParams,
     type InboxMessageUpdateParams as InboxMessageUpdateParams,

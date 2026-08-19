@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as CollectionsAPI from './collections';
 import * as FunnelsAPI from '../funnels';
 import * as FieldsAPI from './fields';
 import {
@@ -24,9 +25,9 @@ import {
   ItemUpsertParams,
   Items,
 } from './items';
-import * as ViewsAPI from '../views/views';
 import { APIPromise } from '../../core/api-promise';
 import { CursorPage, type CursorPageParams, PagePromise } from '../../core/pagination';
+import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -46,6 +47,7 @@ export class Collections extends APIResource {
    * const collection = await client.collections.create({
    *   name: 'Leads',
    *   description: 'Inbound leads from marketing',
+   *   icon_name: 'users',
    * });
    * ```
    */
@@ -72,6 +74,7 @@ export class Collections extends APIResource {
    * ```ts
    * const collection = await client.collections.update('id', {
    *   description: 'Qualified inbound leads',
+   *   icon_name: 'flag',
    *   name: 'Hot Leads',
    * });
    * ```
@@ -96,6 +99,21 @@ export class Collections extends APIResource {
     options?: RequestOptions,
   ): PagePromise<CollectionListResponsesCursorPage, CollectionListResponse> {
     return this._client.getAPIList('/collections', CursorPage<CollectionListResponse>, { query, ...options });
+  }
+
+  /**
+   * Permanently deletes a collection.
+   *
+   * @example
+   * ```ts
+   * await client.collections.delete('id');
+   * ```
+   */
+  delete(id: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.delete(path`/collections/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -392,11 +410,39 @@ export interface Collection {
   description?: string;
 
   /**
+   * The collection's icon, as a Phosphor icon name in kebab-case (e.g. `users`,
+   * `chart-bar`). Only present when an icon is set.
+   */
+  icon_name?: string;
+
+  /**
    * A list of saved `View` objects for presenting the collection's data.
    *
    * **Note:** Only present when requested using the `include` query parameter.
    */
-  views?: Array<ViewsAPI.View>;
+  views?: Array<Collection.View>;
+}
+
+export namespace Collection {
+  export interface View {
+    id: string;
+
+    /**
+     * A lightweight reference to a `Collection`, containing the minimal information
+     * needed to identify it.
+     */
+    collection: CollectionsAPI.CollectionPointer;
+
+    created_at: string;
+
+    name: string;
+
+    type: 'view';
+
+    updated_at: string;
+
+    view_type: 'table' | 'board';
+  }
 }
 
 /**
@@ -1369,6 +1415,9 @@ export interface ItemsFilterAndGroup {
   op: 'and';
 }
 
+/**
+ * Include only items that do NOT match the nested `filter`.
+ */
 export interface ItemsFilterNotGroup {
   /**
    * A nested filter which must NOT match in order for this `not` filter to match.
@@ -1396,7 +1445,8 @@ export interface ItemsFilterOrGroup {
  */
 export interface ItemsFilterValueExists {
   /**
-   * The id or key of the field for which a value must exist.
+   * The id or key of the field for which a value must exist, or a path to the field
+   * for which a value must exist.
    */
   field: string;
 
@@ -1409,7 +1459,8 @@ export interface ItemsFilterValueExists {
  */
 export interface ItemsFilterValueMatches {
   /**
-   * The id or key of the field in which values are matched.
+   * The id or key of the field in which values are matched, or a path to the field
+   * in which values are matched.
    */
   field: string;
 
@@ -2603,6 +2654,8 @@ export interface CollectionListResponse {
   updated_at: string;
 
   description?: string;
+
+  icon_name?: string;
 }
 
 export interface CollectionCreateParams {
@@ -2616,6 +2669,12 @@ export interface CollectionCreateParams {
    * An optional, longer-form description of the collection's purpose.
    */
   description?: string;
+
+  /**
+   * An optional icon for the collection, as a Phosphor icon name in kebab-case (e.g.
+   * `users`, `chart-bar`).
+   */
+  icon_name?: string;
 }
 
 export interface CollectionUpdateParams {
@@ -2623,6 +2682,12 @@ export interface CollectionUpdateParams {
    * An optional, longer-form description of the collection's purpose.
    */
   description?: string;
+
+  /**
+   * The collection's icon, as a Phosphor icon name in kebab-case (e.g. `users`,
+   * `chart-bar`), or `null` to clear it.
+   */
+  icon_name?: string | null;
 
   /**
    * The user-facing name of the collection.

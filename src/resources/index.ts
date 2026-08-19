@@ -143,10 +143,11 @@ export {
 export {
   Forms,
   type Form,
+  type FormListResponse,
   type FormCreateParams,
   type FormUpdateParams,
   type FormListParams,
-  type FormsCursorPage,
+  type FormListResponsesCursorPage,
 } from './forms';
 export {
   Funnels,
@@ -168,16 +169,22 @@ export {
 } from './inbox-conversations';
 export {
   InboxMessages,
-  type Address,
   type EmailMessage,
+  type EmailMessageAddress,
   type EmailMessageAddressParams,
-  type EmailMessagePointer,
   type MessageAttachment,
+  type MessagePointer,
+  type SlackMessage,
+  type SlackMessageAddress,
+  type SlackMessageAddressParams,
+  type InboxMessageCreateResponse,
+  type InboxMessageRetrieveResponse,
+  type InboxMessageUpdateResponse,
   type InboxMessageCreateParams,
   type InboxMessageRetrieveParams,
   type InboxMessageUpdateParams,
   type InboxMessageListParams,
-  type EmailMessagePointersCursorPage,
+  type MessagePointersCursorPage,
 } from './inbox-messages/inbox-messages';
 export { Inboxes, type Inbox, type InboxListParams, type InboxesCursorPage } from './inboxes';
 export {
@@ -231,6 +238,7 @@ export {
 export {
   Tagsets,
   type Tagset,
+  type TagsetAssociation,
   type TagsetPointer,
   type TagsetCreateParams,
   type TagsetUpdateParams,
@@ -245,7 +253,20 @@ export {
   type UnsubscribeListParams,
   type UnsubscribesCursorPage,
 } from './unsubscribes';
-export { Views, type View, type ViewRetrieveParams } from './views/views';
+export {
+  Views,
+  type View,
+  type ViewAggregate,
+  type ViewAggregateFieldStatistic,
+  type ViewAggregateItemCount,
+  type ViewField,
+  type ViewRelationValueFilter,
+  type ViewListResponse,
+  type ViewCreateParams,
+  type ViewUpdateParams,
+  type ViewListParams,
+  type ViewListResponsesCursorPage,
+} from './views/views';
 export {
   WebhookEndpoints,
   type Endpoint,
