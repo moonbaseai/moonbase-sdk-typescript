@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.17 (2026-09-01)
+
+Full Changelog: [v0.1.0-alpha.16...v0.1.0-alpha.17](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.16...v0.1.0-alpha.17)
+
+### Chores
+
+* **internal:** allow the mock server port to be set with STAINLESS_MOCK_PORT ([4fc448d](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/4fc448dcdd6415091dd5091bf55e3fa780f0741d))
+
+
+### Documentation
+
+* **mcp:** document code execution modes and the local code runner ([9fadb50](https://github.com/moonbaseai/moonbase-sdk-typescript/commit/9fadb50d0d103f91c3ee3d285a7965c1c71253a8))
+
 ## 0.1.0-alpha.16 (2026-08-03)
 
 Full Changelog: [v0.1.0-alpha.15...v0.1.0-alpha.16](https://github.com/moonbaseai/moonbase-sdk-typescript/compare/v0.1.0-alpha.15...v0.1.0-alpha.16)
